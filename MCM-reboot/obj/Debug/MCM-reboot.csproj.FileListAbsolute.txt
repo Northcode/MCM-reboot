@@ -1,1 +1,2 @@
 C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.exe.config
+C:\Private\Jens\Git-Repos\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.exe.config
