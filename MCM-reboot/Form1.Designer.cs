@@ -55,7 +55,7 @@
             this.Titlebar.Dock = System.Windows.Forms.DockStyle.Top;
             this.Titlebar.Location = new System.Drawing.Point(0, 0);
             this.Titlebar.Name = "Titlebar";
-            this.Titlebar.Size = new System.Drawing.Size(639, 34);
+            this.Titlebar.Size = new System.Drawing.Size(935, 34);
             this.Titlebar.TabIndex = 0;
             this.Titlebar.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             this.Titlebar.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
@@ -67,7 +67,7 @@
             this.titleMin.Dock = System.Windows.Forms.DockStyle.Right;
             this.titleMin.FlatAppearance.BorderSize = 0;
             this.titleMin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.titleMin.Location = new System.Drawing.Point(525, 0);
+            this.titleMin.Location = new System.Drawing.Point(821, 0);
             this.titleMin.Name = "titleMin";
             this.titleMin.Size = new System.Drawing.Size(37, 34);
             this.titleMin.TabIndex = 2;
@@ -81,7 +81,7 @@
             this.titleMax.Dock = System.Windows.Forms.DockStyle.Right;
             this.titleMax.FlatAppearance.BorderSize = 0;
             this.titleMax.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.titleMax.Location = new System.Drawing.Point(562, 0);
+            this.titleMax.Location = new System.Drawing.Point(858, 0);
             this.titleMax.Name = "titleMax";
             this.titleMax.Size = new System.Drawing.Size(33, 34);
             this.titleMax.TabIndex = 1;
@@ -95,7 +95,7 @@
             this.titleClose.Dock = System.Windows.Forms.DockStyle.Right;
             this.titleClose.FlatAppearance.BorderSize = 0;
             this.titleClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.titleClose.Location = new System.Drawing.Point(595, 0);
+            this.titleClose.Location = new System.Drawing.Point(891, 0);
             this.titleClose.Name = "titleClose";
             this.titleClose.Size = new System.Drawing.Size(44, 34);
             this.titleClose.TabIndex = 0;
@@ -113,25 +113,26 @@
             this.mainContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainContent.Location = new System.Drawing.Point(4, 34);
             this.mainContent.Name = "mainContent";
-            this.mainContent.Size = new System.Drawing.Size(635, 433);
+            this.mainContent.Size = new System.Drawing.Size(931, 531);
             this.mainContent.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(8, 249);
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.Location = new System.Drawing.Point(61, 480);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 2;
             this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // picSlideShow
             // 
             this.picSlideShow.Image = ((System.Drawing.Image)(resources.GetObject("picSlideShow.Image")));
-            this.picSlideShow.Location = new System.Drawing.Point(8, 6);
+            this.picSlideShow.Location = new System.Drawing.Point(0, 0);
             this.picSlideShow.Name = "picSlideShow";
-            this.picSlideShow.Size = new System.Drawing.Size(523, 237);
+            this.picSlideShow.Size = new System.Drawing.Size(927, 531);
             this.picSlideShow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picSlideShow.TabIndex = 1;
             this.picSlideShow.TabStop = false;
@@ -141,9 +142,9 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(200)))), ((int)(((byte)(245)))));
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(631, 0);
+            this.panel1.Location = new System.Drawing.Point(927, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(4, 433);
+            this.panel1.Size = new System.Drawing.Size(4, 531);
             this.panel1.TabIndex = 0;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown_1);
             this.panel1.MouseEnter += new System.EventHandler(this.panel1_MouseEnter);
@@ -156,9 +157,9 @@
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(200)))), ((int)(((byte)(245)))));
             this.panel2.Controls.Add(this.panel4);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 467);
+            this.panel2.Location = new System.Drawing.Point(0, 565);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(639, 4);
+            this.panel2.Size = new System.Drawing.Size(935, 4);
             this.panel2.TabIndex = 2;
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
             this.panel2.MouseEnter += new System.EventHandler(this.panel2_MouseEnter);
@@ -169,7 +170,7 @@
             // panel4
             // 
             this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel4.Location = new System.Drawing.Point(635, 0);
+            this.panel4.Location = new System.Drawing.Point(931, 0);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(4, 4);
             this.panel4.TabIndex = 1;
@@ -185,7 +186,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel3.Location = new System.Drawing.Point(0, 34);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(4, 433);
+            this.panel3.Size = new System.Drawing.Size(4, 531);
             this.panel3.TabIndex = 3;
             // 
             // Form1
@@ -193,7 +194,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(639, 471);
+            this.ClientSize = new System.Drawing.Size(935, 569);
             this.Controls.Add(this.mainContent);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
