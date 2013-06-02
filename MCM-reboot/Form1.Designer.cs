@@ -30,6 +30,7 @@
 		{
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -142,6 +143,9 @@
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 =======
+=======
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+>>>>>>> origin/dev-Andreas
 =======
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
 >>>>>>> origin/dev-Andreas
@@ -350,7 +354,12 @@
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Panel panel4;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> dev-Andreas
+=======
+		private System.Windows.Forms.PictureBox picSlideShow;
+		private System.Windows.Forms.Button button1;
+>>>>>>> origin/dev-Andreas
 =======
 		private System.Windows.Forms.PictureBox picSlideShow;
 		private System.Windows.Forms.Button button1;
