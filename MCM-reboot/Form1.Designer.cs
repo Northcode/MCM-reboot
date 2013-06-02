@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
 <<<<<<< HEAD
+<<<<<<< HEAD
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -141,17 +142,23 @@
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 =======
+=======
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+>>>>>>> origin/dev-Andreas
 			this.Titlebar = new System.Windows.Forms.Panel();
 			this.titleMin = new System.Windows.Forms.Button();
 			this.titleMax = new System.Windows.Forms.Button();
 			this.titleClose = new System.Windows.Forms.Button();
 			this.mainContent = new System.Windows.Forms.Panel();
+			this.button1 = new System.Windows.Forms.Button();
+			this.picSlideShow = new System.Windows.Forms.PictureBox();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.panel2 = new System.Windows.Forms.Panel();
-			this.panel3 = new System.Windows.Forms.Panel();
 			this.panel4 = new System.Windows.Forms.Panel();
+			this.panel3 = new System.Windows.Forms.Panel();
 			this.Titlebar.SuspendLayout();
 			this.mainContent.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.picSlideShow)).BeginInit();
 			this.panel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -214,13 +221,37 @@
 			// 
 			// mainContent
 			// 
-			this.mainContent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+			this.mainContent.AutoScroll = true;
+			this.mainContent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+			this.mainContent.Controls.Add(this.button1);
+			this.mainContent.Controls.Add(this.picSlideShow);
 			this.mainContent.Controls.Add(this.panel1);
 			this.mainContent.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.mainContent.Location = new System.Drawing.Point(4, 34);
 			this.mainContent.Name = "mainContent";
 			this.mainContent.Size = new System.Drawing.Size(635, 433);
 			this.mainContent.TabIndex = 1;
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(8, 249);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(75, 23);
+			this.button1.TabIndex = 2;
+			this.button1.Text = "button1";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click_1);
+			// 
+			// picSlideShow
+			// 
+			this.picSlideShow.Image = ((System.Drawing.Image)(resources.GetObject("picSlideShow.Image")));
+			this.picSlideShow.Location = new System.Drawing.Point(8, 6);
+			this.picSlideShow.Name = "picSlideShow";
+			this.picSlideShow.Size = new System.Drawing.Size(523, 237);
+			this.picSlideShow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+			this.picSlideShow.TabIndex = 1;
+			this.picSlideShow.TabStop = false;
+			this.picSlideShow.Click += new System.EventHandler(this.picSlideShow_Click);
 			// 
 			// panel1
 			// 
@@ -251,15 +282,6 @@
 			this.panel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseMove);
 			this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseUp);
 			// 
-			// panel3
-			// 
-			this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(200)))), ((int)(((byte)(245)))));
-			this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
-			this.panel3.Location = new System.Drawing.Point(0, 34);
-			this.panel3.Name = "panel3";
-			this.panel3.Size = new System.Drawing.Size(4, 433);
-			this.panel3.TabIndex = 3;
-			// 
 			// panel4
 			// 
 			this.panel4.Dock = System.Windows.Forms.DockStyle.Right;
@@ -272,6 +294,15 @@
 			this.panel4.MouseLeave += new System.EventHandler(this.panel4_MouseLeave);
 			this.panel4.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel4_MouseMove);
 			this.panel4.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel4_MouseUp);
+			// 
+			// panel3
+			// 
+			this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(200)))), ((int)(((byte)(245)))));
+			this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
+			this.panel3.Location = new System.Drawing.Point(0, 34);
+			this.panel3.Name = "panel3";
+			this.panel3.Size = new System.Drawing.Size(4, 433);
+			this.panel3.TabIndex = 3;
 			// 
 			// Form1
 			// 
@@ -286,8 +317,10 @@
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "Form1";
 			this.Text = "Form1";
+			this.Load += new System.EventHandler(this.Form1_Load);
 			this.Titlebar.ResumeLayout(false);
 			this.mainContent.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.picSlideShow)).EndInit();
 			this.panel2.ResumeLayout(false);
 			this.ResumeLayout(false);
 >>>>>>> dev-Andreas
@@ -316,7 +349,12 @@
 		private System.Windows.Forms.Panel panel2;
 		private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.Panel panel4;
+<<<<<<< HEAD
 >>>>>>> dev-Andreas
+=======
+		private System.Windows.Forms.PictureBox picSlideShow;
+		private System.Windows.Forms.Button button1;
+>>>>>>> origin/dev-Andreas
 	}
 }
 

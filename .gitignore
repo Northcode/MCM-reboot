@@ -1,4 +1,5 @@
 #################
+<<<<<<< HEAD
 ## Eclipse
 #################
 
@@ -30,6 +31,8 @@ local.properties
 
 
 #################
+=======
+>>>>>>> origin/dev-Andreas
 ## Visual Studio
 #################
 
@@ -48,7 +51,10 @@ local.properties
 x64/
 build/
 [Bb]in/
+<<<<<<< HEAD
 [Oo]bj/
+=======
+>>>>>>> origin/dev-Andreas
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -60,7 +66,10 @@ build/
 *.meta
 *.obj
 *.pch
+<<<<<<< HEAD
 *.pdb
+=======
+>>>>>>> origin/dev-Andreas
 *.pgc
 *.pgd
 *.rsp
@@ -78,6 +87,7 @@ build/
 *.log
 *.scc
 
+<<<<<<< HEAD
 # Visual C++ cache files
 ipch/
 *.aps
@@ -86,6 +96,8 @@ ipch/
 *.sdf
 *.cachefile
 
+=======
+>>>>>>> origin/dev-Andreas
 # Visual Studio profiler
 *.psess
 *.vsp
@@ -120,6 +132,7 @@ DocProject/Help/*.hhk
 DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
+<<<<<<< HEAD
 
 # Click-Once directory
 publish/
@@ -213,3 +226,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+=======
+>>>>>>> origin/dev-Andreas
