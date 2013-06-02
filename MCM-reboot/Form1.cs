@@ -13,6 +13,7 @@ namespace MCM_reboot
 {
 	public partial class Form1 : Form
 	{
+<<<<<<< HEAD
 		#region ImageSlideShow
 
 		Timer fadeTimer;
@@ -56,6 +57,9 @@ namespace MCM_reboot
 		}
 
 		#endregion
+=======
+		
+>>>>>>> 694be5f933a793b567d4c9b92a34c0da9eff153b
 
 		public Form1()
 		{
@@ -205,6 +209,50 @@ namespace MCM_reboot
 		private void panel4_MouseUp(object sender, MouseEventArgs e)
 		{
 			mresizeingwh = false;
+		}
+
+		#endregion
+        #region ImageSlideShow
+
+		Timer fadeTimer;
+		int lightCounter;
+		Color fadeTo;
+		Image img;
+
+		void FadeImage()
+		{
+			fadeTimer.Start();
+		}
+
+		void fadeTick(object sender, EventArgs e)
+		{
+			if (lightCounter == 100)
+			{
+				lightCounter = 50;
+				fadeTimer.Stop();
+				picSlideShow.Image = img;
+				MessageBox.Show("anim complete");
+			}
+			else
+			{
+				picSlideShow.Image = LightenImg(lightCounter++, fadeTo.R, fadeTo.G, fadeTo.B, picSlideShow.Image);
+			}
+		}
+
+		Image LightenImg(int level,int nRed, int nGreen, int nBlue, Image imgLight)
+		{
+			//convert image to graphics object
+			Graphics graphics = Graphics.FromImage(imgLight);
+			int conversion = (5 * (level - 50)); //calculate new alpha value
+			//create mask with blended alpha value and chosen color as pen 
+			Pen pLight = new Pen(Color.FromArgb(conversion, nRed,
+								 nGreen, nBlue), imgLight.Width * 2);
+			//apply created mask to graphics object
+			graphics.DrawLine(pLight, -1, -1, imgLight.Width, imgLight.Height);
+			//save created graphics object and modify image object by that
+			graphics.Save();
+			graphics.Dispose(); //dispose graphics object
+			return imgLight; //return modified image
 		}
 
 		#endregion
