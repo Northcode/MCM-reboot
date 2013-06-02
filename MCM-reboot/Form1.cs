@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,8 +31,7 @@ namespace MCM_reboot
 			{
 				lightCounter = 50;
 				fadeTimer.Stop();
-				picSlideShow.Image = img;
-				MessageBox.Show("anim complete");
+                picSlideShow.Image = MCM_reboot.Properties.Resources.back2;
 			}
 			else
 			{
@@ -61,7 +61,7 @@ namespace MCM_reboot
 		{
 			InitializeComponent();
 			fadeTimer = new Timer();
-			fadeTimer.Interval = 100;
+			fadeTimer.Interval = 50;
 			fadeTimer.Tick += fadeTick;
 			lightCounter = 50;
 		}
@@ -221,11 +221,19 @@ namespace MCM_reboot
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			img = picSlideShow.Image;
+            Resizeable = true;
 		}
 
 		private void picSlideShow_Click(object sender, EventArgs e)
 		{
 			img = picSlideShow.Image.Clone() as Image;
 		}
+
+        private void picSlideShow_Paint(object sender, PaintEventArgs e)
+        {
+            LinearGradientBrush lgb = new LinearGradientBrush(picSlideShow.ClientRectangle, Color.FromArgb(0,Color.White), Color.White, 3f, true);
+            e.Graphics.FillRectangle(lgb, picSlideShow.ClientRectangle);
+            lgb.Dispose();
+        }
 	}
 }
