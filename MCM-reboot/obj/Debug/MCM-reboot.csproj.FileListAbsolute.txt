@@ -1,5 +1,4 @@
 C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.exe.config
-<<<<<<< HEAD
 C:\Private\Jens\Git-Repos\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.exe.config
 C:\Private\Jens\Git-Repos\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.exe
 C:\Private\Jens\Git-Repos\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.pdb
@@ -9,7 +8,6 @@ C:\Private\Jens\Git-Repos\MCM-reboot\MCM-reboot\obj\Debug\MCM_reboot.Properties.
 C:\Private\Jens\Git-Repos\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.csproj.GenerateResource.Cache
 C:\Private\Jens\Git-Repos\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.exe
 C:\Private\Jens\Git-Repos\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.pdb
-=======
 C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.exe
 C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.pdb
 C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.csprojResolveAssemblyReference.cache
@@ -18,4 +16,3 @@ C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\obj\Debug\MCM_reboot.Pro
 C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.csproj.GenerateResource.Cache
 C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.exe
 C:\Users\Andreas\Documents\GitHub\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.pdb
->>>>>>> dev-Andreas
