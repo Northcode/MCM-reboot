@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace MCM_wpf
+namespace MCM
 {
     /// <summary>
     /// Interaction logic for App.xaml
