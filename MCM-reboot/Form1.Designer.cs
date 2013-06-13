@@ -28,27 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.Titlebar = new System.Windows.Forms.Panel();
             this.titleMin = new System.Windows.Forms.Button();
             this.titleMax = new System.Windows.Forms.Button();
             this.titleClose = new System.Windows.Forms.Button();
             this.mainContent = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.picSlideShow = new System.Windows.Forms.PictureBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+<<<<<<< HEAD
+            this.lblTitle = new System.Windows.Forms.Label();
+=======
+            this.picSlideShow = new System.Windows.Forms.PictureBox();
+>>>>>>> dev
             this.Titlebar.SuspendLayout();
             this.mainContent.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.picSlideShow)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picSlideShow)).BeginInit();
             this.SuspendLayout();
             // 
             // Titlebar
             // 
             this.Titlebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(200)))), ((int)(((byte)(245)))));
+            this.Titlebar.Controls.Add(this.lblTitle);
             this.Titlebar.Controls.Add(this.titleMin);
             this.Titlebar.Controls.Add(this.titleMax);
             this.Titlebar.Controls.Add(this.titleClose);
@@ -107,36 +116,86 @@
             // 
             this.mainContent.AutoScroll = true;
             this.mainContent.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.mainContent.Controls.Add(this.button1);
-            this.mainContent.Controls.Add(this.picSlideShow);
+            this.mainContent.Controls.Add(this.tabControl1);
+            this.mainContent.Controls.Add(this.panel5);
             this.mainContent.Controls.Add(this.panel1);
             this.mainContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainContent.Location = new System.Drawing.Point(4, 34);
             this.mainContent.Name = "mainContent";
+<<<<<<< HEAD
+            this.mainContent.Size = new System.Drawing.Size(635, 416);
+=======
             this.mainContent.Size = new System.Drawing.Size(931, 531);
+>>>>>>> dev
             this.mainContent.TabIndex = 1;
             // 
-            // button1
+            // tabControl1
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Location = new System.Drawing.Point(61, 480);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+<<<<<<< HEAD
+            this.tabControl1.Size = new System.Drawing.Size(631, 333);
+=======
+            this.tabControl1.Size = new System.Drawing.Size(927, 448);
+>>>>>>> dev
+            this.tabControl1.TabIndex = 3;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.picSlideShow);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+<<<<<<< HEAD
+            this.tabPage1.Size = new System.Drawing.Size(623, 307);
+=======
+            this.tabPage1.Size = new System.Drawing.Size(919, 422);
+>>>>>>> dev
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Main";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+<<<<<<< HEAD
             // picSlideShow
             // 
-            this.picSlideShow.Image = ((System.Drawing.Image)(resources.GetObject("picSlideShow.Image")));
-            this.picSlideShow.Location = new System.Drawing.Point(0, 0);
+            this.picSlideShow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picSlideShow.Image = global::MCM_reboot.Properties.Resources.back2;
+            this.picSlideShow.Location = new System.Drawing.Point(3, 3);
             this.picSlideShow.Name = "picSlideShow";
-            this.picSlideShow.Size = new System.Drawing.Size(927, 531);
-            this.picSlideShow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picSlideShow.TabIndex = 1;
+            this.picSlideShow.Size = new System.Drawing.Size(617, 301);
+            this.picSlideShow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picSlideShow.TabIndex = 2;
             this.picSlideShow.TabStop = false;
             this.picSlideShow.Click += new System.EventHandler(this.picSlideShow_Click);
+            this.picSlideShow.Paint += new System.Windows.Forms.PaintEventHandler(this.picSlideShow_Paint);
+            // 
+=======
+>>>>>>> dev
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(919, 422);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+<<<<<<< HEAD
+            this.panel5.Location = new System.Drawing.Point(0, 333);
+=======
+            this.panel5.Location = new System.Drawing.Point(0, 448);
+>>>>>>> dev
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(927, 83);
+            this.panel5.TabIndex = 2;
             // 
             // panel1
             // 
@@ -144,7 +203,11 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(927, 0);
             this.panel1.Name = "panel1";
+<<<<<<< HEAD
+            this.panel1.Size = new System.Drawing.Size(4, 416);
+=======
             this.panel1.Size = new System.Drawing.Size(4, 531);
+>>>>>>> dev
             this.panel1.TabIndex = 0;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown_1);
             this.panel1.MouseEnter += new System.EventHandler(this.panel1_MouseEnter);
@@ -157,7 +220,11 @@
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(200)))), ((int)(((byte)(245)))));
             this.panel2.Controls.Add(this.panel4);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+<<<<<<< HEAD
+            this.panel2.Location = new System.Drawing.Point(0, 450);
+=======
             this.panel2.Location = new System.Drawing.Point(0, 565);
+>>>>>>> dev
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(935, 4);
             this.panel2.TabIndex = 2;
@@ -186,15 +253,46 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel3.Location = new System.Drawing.Point(0, 34);
             this.panel3.Name = "panel3";
+<<<<<<< HEAD
+            this.panel3.Size = new System.Drawing.Size(4, 416);
+            this.panel3.TabIndex = 3;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(7, 5);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(110, 22);
+            this.lblTitle.TabIndex = 3;
+            this.lblTitle.Text = "MC Manager";
+=======
             this.panel3.Size = new System.Drawing.Size(4, 531);
             this.panel3.TabIndex = 3;
+            // 
+            // picSlideShow
+            // 
+            this.picSlideShow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picSlideShow.Image = global::MCM_reboot.Properties.Resources.back2;
+            this.picSlideShow.Location = new System.Drawing.Point(3, 3);
+            this.picSlideShow.Name = "picSlideShow";
+            this.picSlideShow.Size = new System.Drawing.Size(913, 416);
+            this.picSlideShow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picSlideShow.TabIndex = 0;
+            this.picSlideShow.TabStop = false;
+            this.picSlideShow.Paint += new System.Windows.Forms.PaintEventHandler(this.picSlideShow_Paint);
+>>>>>>> dev
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+<<<<<<< HEAD
+            this.ClientSize = new System.Drawing.Size(639, 454);
+=======
             this.ClientSize = new System.Drawing.Size(935, 569);
+>>>>>>> dev
             this.Controls.Add(this.mainContent);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -204,25 +302,35 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Titlebar.ResumeLayout(false);
+            this.Titlebar.PerformLayout();
             this.mainContent.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.picSlideShow)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picSlideShow)).EndInit();
             this.ResumeLayout(false);
 
-        }
+        }   
 
         #endregion
 
-        private System.Windows.Forms.Panel Titlebar;
-        private System.Windows.Forms.Button titleClose;
-        private System.Windows.Forms.Button titleMin;
-        private System.Windows.Forms.Button titleMax;
-        private System.Windows.Forms.Panel mainContent;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.Panel Titlebar;
+		private System.Windows.Forms.Button titleClose;
+		private System.Windows.Forms.Button titleMin;
+		private System.Windows.Forms.Button titleMax;
+		private System.Windows.Forms.Panel mainContent;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Panel panel5;
+<<<<<<< HEAD
+        private System.Windows.Forms.Label lblTitle;
+=======
         private System.Windows.Forms.PictureBox picSlideShow;
-        private System.Windows.Forms.Button button1;
-    }
+>>>>>>> dev
+	}
 }
