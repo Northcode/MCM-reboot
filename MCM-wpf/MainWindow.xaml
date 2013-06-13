@@ -53,6 +53,18 @@
                 <Label Content="Start Minecraft" BorderThickness="0"></Label>
                 <Button Content="Default Minecraft Launcher" Background="White" BorderThickness="0"></Button>
                 <Button Content="Custom MCM Launcher" Background="White" BorderThickness="0"></Button>
+                <ComboBox>
+                    <Label Content="Test"></Label>
+                    <ComboBox>
+                        <Label Content="Test"></Label>
+                        <ComboBox>
+                            <Label Content="Test"></Label>
+                            <ComboBox>
+                                <Label Content="Test"></Label>
+                            </ComboBox>
+                        </ComboBox>
+                    </ComboBox>
+                </ComboBox>
             </ComboBox>
         </Grid>
     </Grid>
