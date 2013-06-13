@@ -12,11 +12,10 @@
 
 # Build results
 
-[Dd]ebug/
-[Rr]elease/
 x64/
 build/
 [Bb]in/
+obj/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
