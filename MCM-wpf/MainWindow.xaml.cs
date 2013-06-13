@@ -21,37 +21,20 @@ namespace MCM
     public partial class MainWindow : Window
     {
 
-        MouseButtonEventArgs mlast;
-        bool mmoving = false;
-        bool mresizeingh = false;
-        bool mresizeingw = false;
-        bool mresizeingwh = false;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void Rectangle_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            MessageBox.Show("START MINECRAFT WITH LAUNCHER!");
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            if (this.WindowState == System.Windows.WindowState.Maximized)
-            {
-                this.WindowState = System.Windows.WindowState.Normal;
-            }
-            else if (this.WindowState == System.Windows.WindowState.Normal)
-            {
-                this.WindowState = System.Windows.WindowState.Maximized;
-            }
+            MessageBox.Show("START MINECRAFT WITHOUT LAUNCHER!");
         }
     }
 }
