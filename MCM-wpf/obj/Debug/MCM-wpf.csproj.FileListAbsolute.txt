@@ -1,0 +1,13 @@
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MCM-wpf.csprojResolveAssemblyReference.cache
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MainWindow.baml
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MainWindow.g.cs
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\App.g.cs
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MCM-wpf.csproj.GenerateResource.Cache
+E:\Desktop\MCM-reboot\MCM-wpf\bin\Debug\MC Manager.exe.config
+E:\Desktop\MCM-reboot\MCM-wpf\bin\Debug\MC Manager.exe
+E:\Desktop\MCM-reboot\MCM-wpf\bin\Debug\MC Manager.pdb
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MC Manager_MarkupCompile.cache
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MC Manager.g.resources
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MCM.Properties.Resources.resources
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MC Manager.exe
+E:\Desktop\MCM-reboot\MCM-wpf\obj\Debug\MC Manager.pdb
