@@ -41,7 +41,11 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+<<<<<<< HEAD
+            this.lblTitle = new System.Windows.Forms.Label();
+=======
             this.picSlideShow = new System.Windows.Forms.PictureBox();
+>>>>>>> dev
             this.Titlebar.SuspendLayout();
             this.mainContent.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -53,6 +57,7 @@
             // Titlebar
             // 
             this.Titlebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(200)))), ((int)(((byte)(245)))));
+            this.Titlebar.Controls.Add(this.lblTitle);
             this.Titlebar.Controls.Add(this.titleMin);
             this.Titlebar.Controls.Add(this.titleMax);
             this.Titlebar.Controls.Add(this.titleClose);
@@ -117,7 +122,11 @@
             this.mainContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainContent.Location = new System.Drawing.Point(4, 34);
             this.mainContent.Name = "mainContent";
+<<<<<<< HEAD
+            this.mainContent.Size = new System.Drawing.Size(635, 416);
+=======
             this.mainContent.Size = new System.Drawing.Size(931, 531);
+>>>>>>> dev
             this.mainContent.TabIndex = 1;
             // 
             // tabControl1
@@ -128,7 +137,11 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
+<<<<<<< HEAD
+            this.tabControl1.Size = new System.Drawing.Size(631, 333);
+=======
             this.tabControl1.Size = new System.Drawing.Size(927, 448);
+>>>>>>> dev
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
@@ -137,11 +150,31 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+<<<<<<< HEAD
+            this.tabPage1.Size = new System.Drawing.Size(623, 307);
+=======
             this.tabPage1.Size = new System.Drawing.Size(919, 422);
+>>>>>>> dev
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+<<<<<<< HEAD
+            // picSlideShow
+            // 
+            this.picSlideShow.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picSlideShow.Image = global::MCM_reboot.Properties.Resources.back2;
+            this.picSlideShow.Location = new System.Drawing.Point(3, 3);
+            this.picSlideShow.Name = "picSlideShow";
+            this.picSlideShow.Size = new System.Drawing.Size(617, 301);
+            this.picSlideShow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picSlideShow.TabIndex = 2;
+            this.picSlideShow.TabStop = false;
+            this.picSlideShow.Click += new System.EventHandler(this.picSlideShow_Click);
+            this.picSlideShow.Paint += new System.Windows.Forms.PaintEventHandler(this.picSlideShow_Paint);
+            // 
+=======
+>>>>>>> dev
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -155,7 +188,11 @@
             // panel5
             // 
             this.panel5.Dock = System.Windows.Forms.DockStyle.Bottom;
+<<<<<<< HEAD
+            this.panel5.Location = new System.Drawing.Point(0, 333);
+=======
             this.panel5.Location = new System.Drawing.Point(0, 448);
+>>>>>>> dev
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(927, 83);
             this.panel5.TabIndex = 2;
@@ -166,7 +203,11 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(927, 0);
             this.panel1.Name = "panel1";
+<<<<<<< HEAD
+            this.panel1.Size = new System.Drawing.Size(4, 416);
+=======
             this.panel1.Size = new System.Drawing.Size(4, 531);
+>>>>>>> dev
             this.panel1.TabIndex = 0;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown_1);
             this.panel1.MouseEnter += new System.EventHandler(this.panel1_MouseEnter);
@@ -179,7 +220,11 @@
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(137)))), ((int)(((byte)(200)))), ((int)(((byte)(245)))));
             this.panel2.Controls.Add(this.panel4);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+<<<<<<< HEAD
+            this.panel2.Location = new System.Drawing.Point(0, 450);
+=======
             this.panel2.Location = new System.Drawing.Point(0, 565);
+>>>>>>> dev
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(935, 4);
             this.panel2.TabIndex = 2;
@@ -208,6 +253,20 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel3.Location = new System.Drawing.Point(0, 34);
             this.panel3.Name = "panel3";
+<<<<<<< HEAD
+            this.panel3.Size = new System.Drawing.Size(4, 416);
+            this.panel3.TabIndex = 3;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(7, 5);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(110, 22);
+            this.lblTitle.TabIndex = 3;
+            this.lblTitle.Text = "MC Manager";
+=======
             this.panel3.Size = new System.Drawing.Size(4, 531);
             this.panel3.TabIndex = 3;
             // 
@@ -222,13 +281,18 @@
             this.picSlideShow.TabIndex = 0;
             this.picSlideShow.TabStop = false;
             this.picSlideShow.Paint += new System.Windows.Forms.PaintEventHandler(this.picSlideShow_Paint);
+>>>>>>> dev
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+<<<<<<< HEAD
+            this.ClientSize = new System.Drawing.Size(639, 454);
+=======
             this.ClientSize = new System.Drawing.Size(935, 569);
+>>>>>>> dev
             this.Controls.Add(this.mainContent);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -238,6 +302,7 @@
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Titlebar.ResumeLayout(false);
+            this.Titlebar.PerformLayout();
             this.mainContent.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -262,6 +327,10 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Panel panel5;
+<<<<<<< HEAD
+        private System.Windows.Forms.Label lblTitle;
+=======
         private System.Windows.Forms.PictureBox picSlideShow;
+>>>>>>> dev
 	}
 }
