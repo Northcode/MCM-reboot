@@ -10,6 +10,6 @@ namespace MCM.BackupFramework
         public string Name { get; set; }
 
         //Download/Update url
-        public string url { get; set; }
+        public string Url { get; set; }
     }
 }

@@ -14,7 +14,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="212"/>
                     </Grid.ColumnDefinitions>
-                    <ListBox Margin="0" Grid.Column="0">
+                    <ListBox x:Name="lstBackup" Margin="0" Grid.Column="0">
                         <Label Content="Backup List"></Label>
                     </ListBox>
                     <Label Content="Backup Info" FontFamily="Consolas" FontSize="14" Height="30" Grid.Column="1" VerticalAlignment="Top"/>

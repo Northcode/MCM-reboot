@@ -8,7 +8,6 @@ namespace MCM.BackupFramework
     class ModPack
     {
         public string Name { get; set; }
-
-        public List<Mod> mods { get; set; }
+        public List<Mod> Mods { get; set; }
     }
 }

@@ -1,0 +1,20 @@
+﻿Versions info url: https://s3.amazonaws.com/Minecraft.Download/versions/versions.json
+
+Specific version info url: https://s3.amazonaws.com/Minecraft.Download/versions/{version_id}/{version_id}.json
+Minecraft.jar: https://s3.amazonaws.com/Minecraft.Download/versions/{version_id}/{version_id}.jar
+
+liberary url:
+	example libname: = "net.minecraft:launchwrapper:1.2"
+	python function for liburl:
+	def mcliburl(name):
+		s = name.split(':')
+		a = s[0].replace('.','/') + "/" + str(s[1]) + "/" + str(s[2])
+		b = str(s[1]) + "-" + str(s[2]) + ".jar"
+		return "https://s3.amazonaws.com/Minecraft.Download/libraries/" + a + "/" + b
+
+liberaries (os spesific):
+	def mcliburlnatives(name,os):
+		s = name.split(':')
+		a = s[0].replace('.','/') + "/" + str(s[1]) + "/" + str(s[2])
+		b = str(s[1]) + "-" + str(s[2]) + "-" + os + ".jar"
+		return "https://s3.amazonaws.com/Minecraft.Download/libraries/" + a + "/" + b

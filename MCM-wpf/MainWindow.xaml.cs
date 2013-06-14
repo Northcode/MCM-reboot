@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCM.BackupFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,11 +21,17 @@ namespace MCM
     /// </summary>
     public partial class MainWindow : Window
     {
-
-
         public MainWindow()
         {
             InitializeComponent();
+
+            //Testing mcversion stuff
+            MCVersion mrds = new MCVersion() { Major = 1, Minor = 5, Revision = 2, IsSnapshot = false, Name = "Redstone Update!" };
+            lstBackup.Items.Add(new Label() { Content = mrds.Name + " - " + mrds.ToString() });
+            MCVersion sncht = new MCVersion() { Name = "Horses snaphot!" , IsSnapshot = true, SnapshotYear = 2013, SnapshotWeek = 16, SnapshotWeekVer = 0 };
+            lstBackup.Items.Add(new Label() { Content = sncht.Name + " - " + sncht.ToString() });
+            MCVersion adv = new MCVersion() { Major = 0, Minor = 8, Revision = 0, IsSnapshot = false, Name = "Adventure Update!" };
+            lstBackup.Items.Add(new Label() { Content = adv.Name + " - " + adv.ToString() });
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
