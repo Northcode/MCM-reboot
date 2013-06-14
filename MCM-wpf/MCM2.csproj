@@ -70,8 +70,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BackupFramework\IBackup.cs" />
+    <Compile Include="BackupFramework\IBackupFormat.cs" />
     <Compile Include="BackupFramework\JarBackup.cs" />
     <Compile Include="BackupFramework\MCVersion.cs" />
+    <Compile Include="BackupFramework\Mod.cs" />
+    <Compile Include="BackupFramework\ModPack.cs" />
+    <Compile Include="Data\BackupData.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
