@@ -11,7 +11,6 @@ namespace MCM.BackupFramework
         public string Description { get; set; }
 
         public string Path { get; set; }
-
         public MCVersion McVersion { get; set; }
 
         public void Unpack()
