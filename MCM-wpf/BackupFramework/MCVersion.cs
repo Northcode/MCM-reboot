@@ -13,7 +13,7 @@ namespace MCM.BackupFramework
     /// 
     /// An MCVersion is not just a version of minecraft, but also a custom version, containing mods etc...
     /// </summary>
-    struct MCVersion
+    class MCVersion
     {
         public string name { get; set; }
 
