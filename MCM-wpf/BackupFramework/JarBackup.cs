@@ -7,8 +7,12 @@ namespace MCM.BackupFramework
 {
     class JarBackup : IBackup
     {
-        string name { get; set; }
-        
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        public string Path { get; set; }
+
+        public MCVersion McVersion { get; set; }
 
         public void Unpack()
         {
@@ -18,6 +22,12 @@ namespace MCM.BackupFramework
         public void Pack()
         {
             throw new NotImplementedException();
+        }
+
+
+        public object ListItem
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }
