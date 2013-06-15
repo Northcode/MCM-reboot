@@ -16,16 +16,18 @@ namespace MCM.MinecraftFramework
         public string mainClass { get; set; }
         public List<Library> Libraries { get; set; }
 
-        public void convertFromJson(string json)
+        public static MinecraftVersion fromJson(string json)
         {
+            MinecraftVersion version = new MinecraftVersion();
+
             JObject obj = JObject.Parse(json);
 
-            this.Key = (string)obj["id"];
-            this.Type = ((string)obj["type"] == "release" ? ReleaseType.release : ReleaseType.snapshot);
-            this.Arguments = ((string)obj["processArguments"] == "legacy" ? ProcessArguments.legacy : ProcessArguments.username_session_version);
-            this.MinecraftArguments = (string)obj["minecraftArguments"];
-            this.minimumLauncherVersion = Convert.ToInt32((string)obj["minimumLauncherVersion"]);
-            this.mainClass = (string)obj["mainClass"];
+            version.Key = (string)obj["id"];
+            version.Type = (ReleaseType)Enum.Parse(typeof(ReleaseType), (string)obj["type"]);
+            version.Arguments = (ProcessArguments)Enum.Parse(typeof(ProcessArguments), (string)obj["processArguments"]);
+            version.MinecraftArguments = (string)obj["minecraftArguments"];
+            version.minimumLauncherVersion = Convert.ToInt32((string)obj["minimumLauncherVersion"]);
+            version.mainClass = (string)obj["mainClass"];
 
             foreach(JObject obj2 in obj["libraries"].Children<JObject>())
             {
@@ -42,8 +44,10 @@ namespace MCM.MinecraftFramework
                         lib.ExtractExclusions.Add((string)obj3);
                     }
                 }
-                Libraries.Add(lib);
+                version.Libraries.Add(lib);
             }
+
+            return version;
         }
     }
 }
