@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCM-reboot", "MCM-reboot.csproj", "{045DF24A-6378-49C8-A503-4CDBA8A5FFB2}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCM2", "..\MCM-wpf\MCM2.csproj", "{94F91C7C-CA23-4676-A55C-AA139C5654B2}"
 EndProject
 Global
