@@ -13,5 +13,29 @@ namespace MCM
     /// </summary>
     public partial class App : Application
     {
+        public static MainWindow mainWindow;
+
+        App()
+        {
+            InitializeComponent();
+        }
+
+        [STAThread]
+        static void Main()
+        {
+            mainWindow = new MainWindow();
+            App app = new App();
+            app.Run(mainWindow);
+        }
+
+        public static void Log(string Line)
+        {
+            if (mainWindow != null)
+            {
+                mainWindow.Dispatcher.Invoke((Action)(() => {
+                    mainWindow.txtLog.Text += Line + "\n";
+                }));
+            }
+        }
     }
 }
