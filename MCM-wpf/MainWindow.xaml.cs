@@ -25,6 +25,9 @@ namespace MCM
         {
             InitializeComponent();
 
+            // News feed display
+            webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
+
             //Testing mcversion stuff
             MCVersion mrds = new MCVersion() { Major = 1, Minor = 5, Revision = 2, IsSnapshot = false, Name = "Redstone Update!" };
             lstBackup.Items.Add(new Label() { Content = mrds.Name + " - " + mrds.ToString() });
