@@ -12,6 +12,7 @@ namespace MCM.MinecraftFramework
         public static string BinPath = AppdataPath + "\\bin";
         public static string AssetsPath = AppdataPath + "\\assets";
         public static string NativesPath = BinPath + "\\natives";
+        public static string VersionsPath = BinPath + "\\versions";
 
         public const string AssetsUrl = "https://s3.amazonaws.com/Minecraft.Resources/";
         public const string LibraryUrl = "https://s3.amazonaws.com/Minecraft.Download/libraries/";
