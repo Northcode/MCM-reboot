@@ -22,12 +22,11 @@ namespace MCM.MinecraftFramework
 
             this.Key = (string)obj["id"];
             this.Type = ((string)obj["type"] == "release" ? ReleaseType.release : ReleaseType.snapshot);
-            this.Arguments = ProcessArguments.username_session_version; // Parse something here
+            this.Arguments = ((string)obj["processArguments"] == "legacy" ? ProcessArguments.legacy : ProcessArguments.username_session_version);
             this.MinecraftArguments = (string)obj["minecraftArguments"];
             this.minimumLauncherVersion = Convert.ToInt32((string)obj["minimumLauncherVersion"]);
             this.mainClass = (string)obj["mainClass"];
 
-            
             foreach(JObject obj2 in obj["libraries"].Children<JObject>())
             {
                 Library lib = new Library();
