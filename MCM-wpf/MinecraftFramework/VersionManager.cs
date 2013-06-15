@@ -11,7 +11,7 @@ namespace MCM.MinecraftFramework
     {
         public static List<MinecraftVersion> versions { get; set; }
 
-        public void convertFromJson(string json)
+        public static void LoadJson(string json)
         {
             JObject obj = JObject.Parse(json);
 
@@ -20,8 +20,7 @@ namespace MCM.MinecraftFramework
                 String file = MinecraftData.VersionsPath + "\\" + (string)obj2["id"] + "\\" + (string)obj2["id"] + ".json";
                 if (File.Exists(file))
                 {
-                    MinecraftVersion mcv = new MinecraftVersion();
-                    mcv.convertFromJson(File.ReadAllText(file));
+                    MinecraftVersion mcv = MinecraftVersion.fromJson(File.ReadAllText(file));
                     versions.Add(mcv);
                 }
             }
