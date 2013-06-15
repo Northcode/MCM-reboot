@@ -32,6 +32,13 @@ namespace MCM
             lstBackup.Items.Add(new Label() { Content = sncht.Name + " - " + sncht.ToString() });
             MCVersion adv = new MCVersion() { Major = 0, Minor = 8, Revision = 0, IsSnapshot = false, Name = "Adventure Update!" };
             lstBackup.Items.Add(new Label() { Content = adv.Name + " - " + adv.ToString() });
+
+            MinecraftFramework.Library lb = new MinecraftFramework.Library() { IsNative = true, ExtractExclusions = new List<string>(new string[]{"META-INF/"}), Name = "org.lwjgl.lwjgl:lwjgl-platform:2.9.0" };
+
+            lstBackup.Items.Add(new TextBox() { Text = lb.Url, IsReadOnly = true });
+            lstBackup.Items.Add(new TextBox() { Text = lb.Extractpath, IsReadOnly = true });
+
+            lb.Extract();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

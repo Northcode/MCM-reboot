@@ -21,6 +21,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="More stuff here">
+                <Grid>
+                    <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True"></TextBox>
+                </Grid>
             </TabItem>
         </TabControl>
         <Grid HorizontalAlignment="Left" Grid.Row="1" Width="559" Margin="0,7">
