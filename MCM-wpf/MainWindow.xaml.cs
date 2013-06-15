@@ -41,14 +41,14 @@ namespace MCM
             lb.Extract();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Start Minecraft
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("START MINECRAFT WITH LAUNCHER!");
-        }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("START MINECRAFT WITHOUT LAUNCHER!");
         }
     }
 }
