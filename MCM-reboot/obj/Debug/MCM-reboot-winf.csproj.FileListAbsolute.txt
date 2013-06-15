@@ -1,3 +1,0 @@
-E:\Desktop\MCM-reboot\MCM-reboot\bin\Debug\MCM-reboot.exe.config
-E:\Desktop\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.exe
-E:\Desktop\MCM-reboot\MCM-reboot\obj\Debug\MCM-reboot.pdb
