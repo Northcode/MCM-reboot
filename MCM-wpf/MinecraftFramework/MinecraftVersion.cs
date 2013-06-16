@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using MCM.BackupFramework;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,15 +7,47 @@ using System.Text;
 
 namespace MCM.MinecraftFramework
 {
-    public class MinecraftVersion
+    public class MinecraftVersion : TinyMinecraftVersion
     {
-        public string Key { get; set; }
-        public ReleaseType Type { get; set; }
         public ProcessArguments Arguments { get; set; }
         public string MinecraftArguments { get; set; }
         public int minimumLauncherVersion { get; set; }
         public string mainClass { get; set; }
         public List<Library> Libraries { get; set; }
+
+        public MCVersion MC_Version
+        {
+            get
+            {
+                MCVersion mcv = new MCVersion();
+                mcv.Name = Key;
+                if (Type == ReleaseType.release)
+                {
+                    mcv.IsSnapshot = false;
+                    string[] versions = Key.Split('.');
+                    if (versions.Length == 3)
+                    {
+                        mcv.Major = Convert.ToInt32(versions[0]);
+                        mcv.Minor = Convert.ToInt32(versions[1]);
+                        mcv.Revision = Convert.ToInt32(versions[2]);
+                    }
+                    else
+                    {
+                        mcv.Major = Convert.ToInt32(versions[0]);
+                        mcv.Minor = Convert.ToInt32(versions[1]);
+                    }
+                }
+                else
+                {
+                    mcv.IsSnapshot = true;
+                    string[] subA = Key.Split('w');
+                    mcv.SnapshotYear = 2000 + Convert.ToInt32(subA[0]);
+                    mcv.SnapshotWeek = Convert.ToInt32(subA[1].Substring(0,subA[1].Length - 2));
+                    mcv.SnapshotWeekVer = (int)(subA[1].Last()) - 92;
+                }
+                return mcv;
+            }
+        }
 
         public static MinecraftVersion fromJson(string json)
         {
