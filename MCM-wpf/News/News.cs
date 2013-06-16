@@ -21,9 +21,6 @@ namespace MCM
             HideScriptErrors(webBrowser_launcherFeed, true);
             webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
 
-            NewsBlocked = false;
-            HideScriptErrors(webBrowser_launcherFeed_Mojang, true);
-            webBrowser_launcherFeed_Mojang.Navigate("https://mojang.com/");
 
             NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
