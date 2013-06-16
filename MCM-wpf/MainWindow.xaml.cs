@@ -56,6 +56,14 @@ namespace MCM
 
         }
 
+        private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+            if (((ListBoxItem)comboBox_users.SelectedItem).Uid == "(new)")
+            {
+
+            }
+        }
+
         
     }
 }
