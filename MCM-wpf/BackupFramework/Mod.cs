@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MCM.BackupFramework
 {
-    class Mod
+    public class Mod
     {
         public string Name { get; set; }
 
