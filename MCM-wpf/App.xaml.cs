@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCM.News;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -36,6 +37,11 @@ namespace MCM
                     mainWindow.txtLog.Text += Line + "\n";
                 }));
             }
+        }
+
+        public static void InvokeAction(Action a)
+        {
+            mainWindow.Dispatcher.Invoke(a);
         }
     }
 }

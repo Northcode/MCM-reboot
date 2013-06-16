@@ -45,7 +45,13 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Mojang">
-                        <WebBrowser x:Name="webBrowser_launcherFeed_Mojang" Margin="0" Navigating="BlockWebbrowser"/>
+                        <Grid Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ListBox x:Name="lstMojangFeed" x:FieldModifier="public" Grid.Row="0">
+                            </ListBox>
+                        </Grid>
                     </TabItem>
                     <TabItem Header="Twitter">
                         <Grid Margin="0">
