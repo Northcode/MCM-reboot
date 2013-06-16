@@ -1,4 +1,5 @@
-﻿using MCM.BackupFramework;
+﻿using MahApps.Metro.Controls;
+using MCM.BackupFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace MCM
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainWindow()
         {
