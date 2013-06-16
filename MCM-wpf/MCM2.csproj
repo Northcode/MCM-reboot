@@ -84,7 +84,9 @@
     <Compile Include="MinecraftFramework\MinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\ProcessArguments.cs" />
     <Compile Include="MinecraftFramework\ReleaseType.cs" />
+    <Compile Include="MinecraftFramework\TinyMinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\VersionManager.cs" />
+    <Compile Include="test.cs" />
     <Compile Include="Utils\StreamHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
