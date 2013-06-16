@@ -16,7 +16,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -54,6 +54,7 @@
       <HintPath>C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.IO.Compression.dll</HintPath>
     </Reference>
     <Reference Include="System.Printing" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\MCM-reboot\packages\MahApps.Metro.0.10.1.1\lib\net40\System.Windows.Interactivity.dll</HintPath>
@@ -85,6 +86,7 @@
     <Compile Include="MinecraftFramework\ProcessArguments.cs" />
     <Compile Include="MinecraftFramework\ReleaseType.cs" />
     <Compile Include="MinecraftFramework\VersionManager.cs" />
+    <Compile Include="News\News.cs" />
     <Compile Include="Utils\StreamHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
