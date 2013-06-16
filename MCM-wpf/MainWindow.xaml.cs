@@ -24,27 +24,13 @@ namespace MCM
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        public bool NewsBlocked;
-
         public MainWindow()
         {
             InitializeComponent();
 
             // News feed display
-
-            //Set NewsBlocked to False for every Navigate call
-            NewsBlocked = false;
-            HideScriptErrors(webBrowser_launcherFeed, true);
-            webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
-
-            NewsBlocked = false;
-            HideScriptErrors(webBrowser_launcherFeed_Mojang, true);
-            webBrowser_launcherFeed_Mojang.Navigate("https://mojang.com/");
-
-            NewsBlocked = false;
-            HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
-            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/notch");
-
+            initializeNewsFeed();
+            //MessageBox.Show(twitterFeed);
             //Testing mcversion stuff
             MCVersion mrds = new MCVersion() { Major = 1, Minor = 5, Revision = 2, IsSnapshot = false, Name = "Redstone Update!" };
             lstBackup.Items.Add(new Label() { Content = mrds.Name + " - " + mrds.ToString() });
@@ -70,42 +56,6 @@ namespace MCM
 
         }
 
-        public void HideScriptErrors(WebBrowser wb, bool hide)
-        {
-            var fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
-            if (fiComWebBrowser == null) return;
-            var objComWebBrowser = fiComWebBrowser.GetValue(wb);
-            if (objComWebBrowser == null)
-            {
-                wb.Loaded += (o, s) => HideScriptErrors(wb, hide); //In case we are to early
-                return;
-            }
-            objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { hide });
-        }
-
-        private void BlockWebbrowser(object sender, NavigatingCancelEventArgs e)
-        {
-            App.Log("Navigating to: " + e.Uri.ToString());
-            e.Cancel = NewsBlocked;
-            NewsBlocked = true;
-        }
-
-        void NotchTwitter(object sender, RoutedEventArgs e)
-        {
-            NewsBlocked = false;
-            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/notch");
-        }
-
-        void JebTwitter(object sender, RoutedEventArgs e)
-        {
-            NewsBlocked = false;
-            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/jeb_");
-        }
-
-        void DinnerTwitter(object sender, RoutedEventArgs e)
-        {
-            NewsBlocked = false;
-            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/dinnerbone");
-        }
+        
     }
 }
