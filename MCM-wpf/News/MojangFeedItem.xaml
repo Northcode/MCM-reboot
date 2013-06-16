@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="232" d:DesignWidth="494">
+             d:DesignHeight="55" d:DesignWidth="494">
     <Grid Background="#ECECEC">
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="178*"/>
-            <RowDefinition Height="29*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="TitleText" x:FieldModifier="public" Text="TITLE" FontSize="16" Foreground="#333" Grid.Row="0"/>
-        <TextBlock x:Name="ContentText" x:FieldModifier="public"  Text="DATA" FontSize="12" Foreground="#333" Grid.Row="1" Margin="0" />
-        <TextBlock x:Name="DateText" x:FieldModifier="public"  Text="DATE" FontSize="12" FontWeight="Bold" Foreground="#666" Margin="0" Grid.Row="2" />
+        <Expander x:Name="TitleText" x:FieldModifier="public" Header="TITLE" FontSize="16" Foreground="#333" Grid.Row="0" HorizontalAlignment="Stretch" BorderThickness="0" Expanded="ExpandData" Collapsed="TitleText_Collapsed">
+            <WebBrowser x:Name="webViewer" Height="250" Visibility="Collapsed" />
+        </Expander>
+        <TextBlock x:Name="DateText" x:FieldModifier="public"  Text="DATE" FontSize="12" FontWeight="Bold" Foreground="#666" Margin="0" Grid.Row="1" />
     </Grid>
 </UserControl>

@@ -45,8 +45,11 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Mojang">
-                        <Grid>
-                            <ListBox>
+                        <Grid Margin="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <ListBox x:Name="lstMojangFeed" x:FieldModifier="public" Grid.Row="0">
                             </ListBox>
                         </Grid>
                     </TabItem>
