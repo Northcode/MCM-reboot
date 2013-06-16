@@ -41,11 +41,26 @@
                 <TabControl Margin="0">
                     <TabItem Header="Launcher Feed">
                         <Grid Margin="0">
-                            <WebBrowser x:Name="webBrowser_launcherFeed" Margin="0"/>
+                            <WebBrowser x:Name="webBrowser_launcherFeed" Margin="0" Navigating="BlockWebbrowser"/>
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Mojang"/>
-                    <TabItem Header="Twitter"/>
+                    <TabItem Header="Mojang">
+                        <WebBrowser x:Name="webBrowser_launcherFeed_Mojang" Margin="0" Navigating="BlockWebbrowser"/>
+                    </TabItem>
+                    <TabItem Header="Twitter">
+                        <Grid Margin="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="130"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ListBox Grid.Column="0" HorizontalAlignment="Stretch">
+                                <Button Content="Notch" Height="30" Margin="0" HorizontalAlignment="Stretch" Click="NotchTwitter"/>
+                                <Button Content="Jeb" Height="30" Margin="0" HorizontalAlignment="Stretch" Click="JebTwitter"/>
+                                <Button Content="Dinnerbone" Height="30" Margin="0" HorizontalAlignment="Stretch" Click="DinnerTwitter"/>
+                            </ListBox>
+                            <WebBrowser x:Name="webBrowser_launcherFeed_Twitter" Margin="0" Navigating="BlockWebbrowser" Grid.Column="1"/>
+                        </Grid>
+                    </TabItem>
                 </TabControl>
             </TabItem>
         </TabControl>
@@ -75,7 +90,7 @@
             <Label Content="Multiplayer status:" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Left" Width="133" Grid.ColumnSpan="2"></Label>
             <Label Content="(bool)" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Left" Width="127" Grid.ColumnSpan="2"></Label>
             <Label Content="(bool)" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Width="127" Grid.ColumnSpan="2"></Label>
-            <Button Content="Start Minecraft" Grid.Column="4" Margin="0,0,10,27" Grid.Row="1" Click="Button_Click_2" HorizontalAlignment="Right" Width="115" VerticalAlignment="Bottom"/>
+            <Button Content="Start Minecraft" Grid.Column="4" Margin="0,0,10,27" Grid.Row="1" Click="StartMinecraft" HorizontalAlignment="Right" Width="115" VerticalAlignment="Bottom"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>
