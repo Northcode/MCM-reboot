@@ -1,8 +1,11 @@
-﻿using MCM.BackupFramework;
+﻿using MahApps.Metro.Controls;
+using MCM.BackupFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,15 +22,15 @@ namespace MCM
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         public MainWindow()
         {
             InitializeComponent();
 
             // News feed display
-            webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
-
+            initializeNewsFeed();
+            //MessageBox.Show(twitterFeed);
             //Testing mcversion stuff
             MCVersion mrds = new MCVersion() { Major = 1, Minor = 5, Revision = 2, IsSnapshot = false, Name = "Redstone Update!" };
             lstBackup.Items.Add(new Label() { Content = mrds.Name + " - " + mrds.ToString() });
@@ -41,7 +44,6 @@ namespace MCM
             lstBackup.Items.Add(new TextBox() { Text = lb.Url, IsReadOnly = true });
             lstBackup.Items.Add(new TextBox() { Text = lb.Extractpath, IsReadOnly = true });
 
-            lb.Extract();
         }
 
         /// <summary>
@@ -49,9 +51,11 @@ namespace MCM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void StartMinecraft(object sender, RoutedEventArgs e)
         {
 
         }
+
+        
     }
 }
