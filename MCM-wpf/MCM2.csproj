@@ -85,7 +85,11 @@
     <Compile Include="MinecraftFramework\MinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\ProcessArguments.cs" />
     <Compile Include="MinecraftFramework\ReleaseType.cs" />
+    <Compile Include="MinecraftFramework\TinyMinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\VersionManager.cs" />
+    <Compile Include="News\MojangFeedItem.xaml.cs">
+      <DependentUpon>MojangFeedItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="News\News.cs" />
     <Compile Include="Utils\StreamHelper.cs" />
     <Page Include="MainWindow.xaml">
@@ -107,6 +111,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="News\MojangFeedItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <AppDesigner Include="Properties\" />

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MCM.BackupFramework
 {
-    class ModPack
+    public class ModPack
     {
         public string Name { get; set; }
         public List<Mod> Mods { get; set; }
