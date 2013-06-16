@@ -50,15 +50,10 @@
                     <TabItem Header="Twitter">
                         <Grid Margin="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="130"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="694"/>
                             </Grid.ColumnDefinitions>
-                            <ListBox Grid.Column="0" HorizontalAlignment="Stretch">
-                                <Button Content="Notch" Height="30" Margin="0" HorizontalAlignment="Stretch" Click="NotchTwitter"/>
-                                <Button Content="Jeb" Height="30" Margin="0" HorizontalAlignment="Stretch" Click="JebTwitter"/>
-                                <Button Content="Dinnerbone" Height="30" Margin="0" HorizontalAlignment="Stretch" Click="DinnerTwitter"/>
-                            </ListBox>
-                            <WebBrowser x:Name="webBrowser_launcherFeed_Twitter" Margin="0" Navigating="BlockWebbrowser" Grid.Column="1"/>
+                            <ListBox Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,564,0"/>
+                            <WebBrowser x:Name="webBrowser_launcherFeed_Twitter" Margin="10,0,0,0" Navigating="BlockWebbrowser"/>
                         </Grid>
                     </TabItem>
                 </TabControl>
