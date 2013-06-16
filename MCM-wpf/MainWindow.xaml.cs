@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,13 +24,26 @@ namespace MCM
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        public bool NewsBlocked;
+
         public MainWindow()
         {
             InitializeComponent();
 
             // News feed display
+
+            //Set NewsBlocked to False for every Navigate call
+            NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed, true);
             webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
+
+            NewsBlocked = false;
+            HideScriptErrors(webBrowser_launcherFeed_Mojang, true);
+            webBrowser_launcherFeed_Mojang.Navigate("https://mojang.com/");
+
+            NewsBlocked = false;
+            HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
+            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/notch");
 
             //Testing mcversion stuff
             MCVersion mrds = new MCVersion() { Major = 1, Minor = 5, Revision = 2, IsSnapshot = false, Name = "Redstone Update!" };
@@ -44,7 +58,6 @@ namespace MCM
             lstBackup.Items.Add(new TextBox() { Text = lb.Url, IsReadOnly = true });
             lstBackup.Items.Add(new TextBox() { Text = lb.Extractpath, IsReadOnly = true });
 
-            lb.Extract();
         }
 
         /// <summary>
@@ -52,7 +65,7 @@ namespace MCM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void StartMinecraft(object sender, RoutedEventArgs e)
         {
 
         }
@@ -68,6 +81,31 @@ namespace MCM
                 return;
             }
             objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { hide });
+        }
+
+        private void BlockWebbrowser(object sender, NavigatingCancelEventArgs e)
+        {
+            App.Log("Navigating to: " + e.Uri.ToString());
+            e.Cancel = NewsBlocked;
+            NewsBlocked = true;
+        }
+
+        void NotchTwitter(object sender, RoutedEventArgs e)
+        {
+            NewsBlocked = false;
+            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/notch");
+        }
+
+        void JebTwitter(object sender, RoutedEventArgs e)
+        {
+            NewsBlocked = false;
+            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/jeb_");
+        }
+
+        void DinnerTwitter(object sender, RoutedEventArgs e)
+        {
+            NewsBlocked = false;
+            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/dinnerbone");
         }
     }
 }
