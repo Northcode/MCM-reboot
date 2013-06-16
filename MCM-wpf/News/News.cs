@@ -1,12 +1,16 @@
 ﻿using MahApps.Metro.Controls;
+using MCM.News;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel.Syndication;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace MCM
 {
@@ -21,15 +25,14 @@ namespace MCM
             HideScriptErrors(webBrowser_launcherFeed, true);
             webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
 
-            NewsBlocked = false;
-            HideScriptErrors(webBrowser_launcherFeed_Mojang, true);
-            webBrowser_launcherFeed_Mojang.Navigate("https://mojang.com/");
 
             NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
             //webBrowser_launcherFeed_Twitter.Source = new Uri("file:///C:/Users/Jens/Desktop/test.html");
 
             //webBrowser_launcherFeed_Mojang.NavigateToString(parseMojang());
+            Task t = new Task(parseMojang);
+            t.Start();
         }
 
         public void HideScriptErrors(WebBrowser wb, bool hide)
@@ -52,24 +55,27 @@ namespace MCM
             NewsBlocked = true;
         }
 
-        private string parseMojang()
+        private void parseMojang()
         {
-            SyndicationFeed feed = new SyndicationFeed("Mojang", "Mojang feed", new Uri("https://mojang.com/feed/"));
+            XmlReader rssr = XmlReader.Create("https://mojang.com/feed/");
+            SyndicationFeed feed = SyndicationFeed.Load(rssr);
 
-            int i = 0;
-            StringBuilder sb = new StringBuilder();
-
-            foreach (SyndicationItem item in feed.Items)
+            foreach (SyndicationItem item in feed.Items.Take(5))
             {
-                sb.AppendLine(item.Content.ToString());
-                if (i == 5)
-                    break;
-                i++;
-
+                MojangFeedItem feeditem = null;
+                App.InvokeAction((Action)(() => { 
+                    feeditem = new MojangFeedItem();
+                    feeditem.TitleText.Header = item.Title.Text;
+                    XElement x = item.ElementExtensions.First(p => p.OuterName == "encoded").GetObject<XElement>();
+                    feeditem.Data = x.Value;
+                    feeditem.DateText.Text = item.PublishDate.ToString();
+                    feeditem.Init();
+                }));
+                App.InvokeAction((Action)(() =>
+                {
+                    App.mainWindow.lstMojangFeed.Items.Add(feeditem);
+                }));
             }
-
-
-            return sb.ToString();
         }
 
     }
