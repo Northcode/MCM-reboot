@@ -23,13 +23,23 @@ namespace MCM
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        public bool NewsBlocked;
+
         public MainWindow()
         {
             InitializeComponent();
 
             // News feed display
+            NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed, true);
             webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
+
+            HideScriptErrors(webBrowser_launcherFeed_Mojang, true);
+            webBrowser_launcherFeed_Mojang.Navigate("https://mojang.com/");
+
+            HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
+            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/notch");
+            NewsBlocked = true;
 
             //Testing mcversion stuff
             MCVersion mrds = new MCVersion() { Major = 1, Minor = 5, Revision = 2, IsSnapshot = false, Name = "Redstone Update!" };
@@ -52,7 +62,7 @@ namespace MCM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void StartMinecraft(object sender, RoutedEventArgs e)
         {
 
         }
@@ -68,6 +78,32 @@ namespace MCM
                 return;
             }
             objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { hide });
+        }
+
+        private void BlockWebbrowser(object sender, NavigatingCancelEventArgs e)
+        {
+            e.Cancel = NewsBlocked;
+        }
+
+        void NotchTwitter(object sender, RoutedEventArgs e)
+        {
+            NewsBlocked = false;
+            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/notch");
+            NewsBlocked = true;
+        }
+
+        void JebTwitter(object sender, RoutedEventArgs e)
+        {
+            NewsBlocked = false;
+            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/jeb_");
+            NewsBlocked = true;
+        }
+
+        void DinnerTwitter(object sender, RoutedEventArgs e)
+        {
+            NewsBlocked = false;
+            webBrowser_launcherFeed_Twitter.Navigate("https://twitter.com/dinnerbone");
+            NewsBlocked = true;
         }
     }
 }
