@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -27,19 +28,32 @@ namespace MCM.News
             InitializeComponent();
         }
 
+        void MojangFeedItem_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (webViewer.Visibility == System.Windows.Visibility.Visible)
+            {
+                Height = (Parent as ListBox).ActualHeight - 40;
+                webViewer.Height = Height - 50;
+            }
+        }
+
         public void Init()
         {
             webViewer.NavigateToString(Data);
+            (Parent as ListBox).SizeChanged += MojangFeedItem_SizeChanged;
         }
 
         private void ExpandData(object sender, RoutedEventArgs e)
         {
-            Height = 310;
+            VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
             webViewer.Visibility = System.Windows.Visibility.Visible;
+            Height = (Parent as ListBox).ActualHeight - 40;
+            webViewer.Height = Height - 50;
         }
 
         private void TitleText_Collapsed(object sender, RoutedEventArgs e)
         {
+            VerticalAlignment = System.Windows.VerticalAlignment.Top;
             Height = 55;
             webViewer.Visibility = System.Windows.Visibility.Collapsed;
         }

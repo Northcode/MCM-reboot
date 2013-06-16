@@ -7,6 +7,7 @@ using System.Reflection;
 using System.ServiceModel.Syndication;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using System.Xml;
@@ -55,6 +56,16 @@ namespace MCM
             NewsBlocked = true;
         }
 
+        void CollapseCheck(object sender,RoutedEventArgs e)
+        {
+            
+        }
+
+        void TitleText_Collapsed(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
         private void parseMojang()
         {
             XmlReader rssr = XmlReader.Create("https://mojang.com/feed/");
@@ -69,14 +80,18 @@ namespace MCM
                     XElement x = item.ElementExtensions.First(p => p.OuterName == "encoded").GetObject<XElement>();
                     feeditem.Data = x.Value;
                     feeditem.DateText.Text = item.PublishDate.ToString();
-                    feeditem.Init();
                 }));
                 App.InvokeAction((Action)(() =>
                 {
                     App.mainWindow.lstMojangFeed.Items.Add(feeditem);
+                    feeditem.Init();
+                    feeditem.TitleText.Expanded += CollapseCheck;
+                    feeditem.TitleText.Collapsed += TitleText_Collapsed;
                 }));
             }
         }
+
+        
 
     }
 }
