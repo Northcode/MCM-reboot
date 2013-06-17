@@ -1,4 +1,4 @@
-﻿<Window x:Class="MCM.User.NewUser"
+﻿<Controls:MetroWindow x:Class="MCM.User.NewUser"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -25,4 +25,4 @@
         </TabControl>
 
     </Grid>
-</Window>
+</Controls:MetroWindow>
