@@ -58,7 +58,13 @@ namespace MCM
 
         void CollapseCheck(object sender,RoutedEventArgs e)
         {
-            
+            for (int i = 0; i < lstMojangFeed.Items.Count; i++)
+            {
+                if (((MojangFeedItem)lstMojangFeed.Items[i]).TitleText != e.Source)
+                {
+                    ((MojangFeedItem)lstMojangFeed.Items[i]).TitleText.IsExpanded = false;
+                }
+            }
         }
 
         void TitleText_Collapsed(object sender, RoutedEventArgs e)
