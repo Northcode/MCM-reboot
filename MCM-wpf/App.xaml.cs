@@ -1,4 +1,5 @@
-﻿using MCM.News;
+﻿using MCM.Data;
+using MCM.News;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -24,6 +25,8 @@ namespace MCM
         [STAThread]
         static void Main()
         {
+            PathData.InitDirectories();
+            NewsStorage.InitDirectories();
             mainWindow = new MainWindow();
             App app = new App();
             app.Run(mainWindow);
