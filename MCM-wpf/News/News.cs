@@ -3,7 +3,6 @@ using MCM.News;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.ServiceModel.Syndication;
 using System.Text;
@@ -29,7 +28,8 @@ namespace MCM
 
             NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
-            webBrowser_launcherFeed_Twitter.Source = new Uri("file:///C:/Users/Jens/Desktop/test.html");
+            //webBrowser_launcherFeed_Twitter.Source = new Uri("file:///C:/Users/Jens/Desktop/test.html");
+
             //webBrowser_launcherFeed_Mojang.NavigateToString(parseMojang());
             Task t = new Task(parseMojang);
             t.Start();
@@ -50,7 +50,7 @@ namespace MCM
 
         private void BlockWebbrowser(object sender, NavigatingCancelEventArgs e)
         {
-            //App.Log("Navigating to: " + e.Uri.ToString());
+            App.Log("Navigating to: " + e.Uri.ToString());
             e.Cancel = NewsBlocked;
             NewsBlocked = true;
         }
