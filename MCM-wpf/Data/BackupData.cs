@@ -8,9 +8,9 @@ namespace MCM.Data
 {
     class BackupData
     {
-        public static List<IBackupFormat> formats;
+        public static List<IBackupFormat> formats {get; set; }
 
-        public List<IBackup> backups;
+        public List<IBackup> backups { get; set; }
 
     }
 }
