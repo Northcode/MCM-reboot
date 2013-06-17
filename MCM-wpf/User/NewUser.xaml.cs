@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace MCM.User
     /// <summary>
     /// Interaction logic for NewUser.xaml
     /// </summary>
-    public partial class NewUser : Window
+    public partial class NewUser : MetroWindow
     {
         public NewUser()
         {
