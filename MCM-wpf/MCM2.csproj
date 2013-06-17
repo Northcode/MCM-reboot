@@ -78,6 +78,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Data\MinecraftUserData.cs" />
     <Compile Include="Data\PathData.cs" />
     <Compile Include="MinecraftFramework\Library.cs" />
     <Compile Include="MinecraftFramework\MinecraftAsset.cs" />
@@ -96,6 +97,7 @@
     </Compile>
     <Compile Include="News\News.cs" />
     <Compile Include="News\NewsStorage.cs" />
+    <Compile Include="User\MinecraftUser.cs" />
     <Compile Include="User\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
     </Compile>
