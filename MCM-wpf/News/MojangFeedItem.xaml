@@ -10,9 +10,7 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Expander x:Name="TitleText" x:FieldModifier="public" Header="TITLE" FontSize="16" Foreground="#333" Grid.Row="0" HorizontalAlignment="Stretch" BorderThickness="0" Expanded="ExpandData" Collapsed="TitleText_Collapsed">
-            <WebBrowser x:Name="webViewer" VerticalAlignment="Stretch" Visibility="Collapsed" />
-        </Expander>
+        <Button x:Name="TitleText" x:FieldModifier="public" FontSize="16" Foreground="#333" Grid.Row="0" HorizontalAlignment="Stretch" BorderThickness="0" />
         <TextBlock x:Name="DateText" x:FieldModifier="public"  Text="DATE" FontSize="12" FontWeight="Bold" Foreground="#666" Margin="0" Grid.Row="1" />
     </Grid>
 </UserControl>

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -17,20 +15,13 @@ using System.Windows.Shapes;
 namespace MCM.News
 {
     /// <summary>
-    /// Interaction logic for MojangFeedItem.xaml
+    /// Interaction logic for MojangFeedDisplay.xaml
     /// </summary>
-    public partial class MojangFeedItem : UserControl
+    public partial class MojangFeedDisplay : UserControl
     {
-        public string Data { get; set; }
-
-        public MojangFeedItem()
+        public MojangFeedDisplay()
         {
             InitializeComponent();
-        }
-
-        public void Init()
-        {
-            
         }
     }
 }
