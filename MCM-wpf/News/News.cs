@@ -3,6 +3,7 @@ using MCM.News;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.ServiceModel.Syndication;
 using System.Text;
@@ -26,13 +27,12 @@ namespace MCM
             HideScriptErrors(webBrowser_launcherFeed, true);
             webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
 
-
             NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
             //webBrowser_launcherFeed_Twitter.Source = new Uri("file:///C:/Users/Jens/Desktop/test.html");
 
             //webBrowser_launcherFeed_Mojang.NavigateToString(parseMojang());
-            Task t = new Task(parseMojang);
+            Task t = new Task(ParseMojangFeed);
             t.Start();
         }
 
@@ -66,32 +66,63 @@ namespace MCM
             
         }
 
-        private void parseMojang()
+        private void ParseMojangFeed()
         {
-            XmlReader rssr = XmlReader.Create("https://mojang.com/feed/");
+            if (NewsStorage.MojangFeedExists)
+            {
+                App.Log("Local mojang feed found, preloading that...");
+                //Load local feed
+                ParseMojangXml(NewsStorage.MojangFeedPath);
+
+                //Download remote feed & load
+                Task t = new Task(DownloadMojangFeed);
+                t.Start();
+            }
+            else
+            {
+                DownloadMojangFeed();
+            }
+        }
+
+        private void DownloadMojangFeed()
+        {
+            WebClient wc = new WebClient();
+            App.Log("Downloading new feed from: https://mojang.com/feed/ to: " + NewsStorage.MojangFeedPath);
+            wc.DownloadFile("https://mojang.com/feed/", NewsStorage.MojangFeedPath);
+            App.Log("Download complete!");
+            ParseMojangXml(NewsStorage.MojangFeedPath);
+        }
+
+        private void ParseMojangXml(string Path)
+        {
+            App.Log("Loading mojang feed from: " + Path);
+            XmlReader rssr = XmlReader.Create(Path);
             SyndicationFeed feed = SyndicationFeed.Load(rssr);
 
+            App.InvokeAction(delegate { App.mainWindow.lstMojangFeed.Items.Clear(); });
+            App.Log("Loaded items: ");
             foreach (SyndicationItem item in feed.Items.Take(5))
             {
+                App.Log(item.Id);
                 MojangFeedItem feeditem = null;
-                App.InvokeAction((Action)(() => { 
+                App.InvokeAction(delegate
+                {
                     feeditem = new MojangFeedItem();
                     feeditem.TitleText.Header = item.Title.Text;
                     XElement x = item.ElementExtensions.First(p => p.OuterName == "encoded").GetObject<XElement>();
                     feeditem.Data = x.Value;
                     feeditem.DateText.Text = item.PublishDate.ToString();
-                }));
-                App.InvokeAction((Action)(() =>
+                });
+                App.InvokeAction(delegate
                 {
                     App.mainWindow.lstMojangFeed.Items.Add(feeditem);
                     feeditem.Init();
                     feeditem.TitleText.Expanded += CollapseCheck;
                     feeditem.TitleText.Collapsed += TitleText_Collapsed;
-                }));
+                });
             }
+            rssr.Close();
+            App.Log("Load of feed: " + Path + " complete!");
         }
-
-        
-
     }
 }
