@@ -49,6 +49,18 @@ namespace MCM.MinecraftFramework
             }
         }
 
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("Minecraft Version: " + Key);
+            sb.AppendLine("Process Arguments: " + Arguments.ToString());
+            sb.AppendLine("Minecraft Arguments: " + MinecraftArguments);
+            sb.AppendLine("minimumLauncherVersion: " + minimumLauncherVersion);
+            sb.AppendLine("mainClass: "+ mainClass);
+            sb.AppendLine("Lib count: " + Libraries.Count);
+            return sb.ToString();
+        }
+
         public static MinecraftVersion fromJson(string json)
         {
             MinecraftVersion version = new MinecraftVersion();
@@ -61,6 +73,7 @@ namespace MCM.MinecraftFramework
             version.MinecraftArguments = (string)obj["minecraftArguments"];
             version.minimumLauncherVersion = Convert.ToInt32((string)obj["minimumLauncherVersion"]);
             version.mainClass = (string)obj["mainClass"];
+            version.Libraries = new List<Library>();
 
             foreach(JObject obj2 in obj["libraries"].Children<JObject>())
             {
