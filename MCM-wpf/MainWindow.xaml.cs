@@ -44,7 +44,10 @@ namespace MCM
         /// <param name="e"></param>
         private void StartMinecraftButton(object sender, RoutedEventArgs e)
         {
-
+            if (lstBackup.SelectedItem != null)
+            {
+                App.StartMinecraft((lstBackup.SelectedItem as Label).Tag as MinecraftFramework.MinecraftVersion);
+            }
         }
 
         private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
