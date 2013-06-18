@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MCM.User;
+using MCM.Data;
 
 namespace MCM
 {
@@ -31,7 +32,7 @@ namespace MCM
 
             // News feed display
             initializeNewsFeed();
-            //MessageBox.Show(twitterFeed);
+            updateUsersList();
 
             
         }
@@ -57,10 +58,25 @@ namespace MCM
                 App.Log("new");
                 NewUser nu = new NewUser();
                 nu.ShowDialog();
+                comboBox_users.SelectedIndex = -1;
+                updateUsersList();
             }
-            comboBox_users.SelectedIndex = -1;
         }
 
-        
+        private void updateUsersList()
+        {
+            comboBox_users.Items.Clear();
+            ListBoxItem newItem = new ListBoxItem();
+            newItem.Content = "(Create new)";
+            newItem.Uid = "(new)";
+            foreach (MinecraftUser user in MinecraftUserData.users)
+            {
+                ListBoxItem item = new ListBoxItem();
+                item.Content = user.displayname;
+                item.Uid = user.username + ";" + user.password_enc;
+                comboBox_users.Items.Add(item);
+            }
+            comboBox_users.Items.Add(newItem);
+        }
     }
 }

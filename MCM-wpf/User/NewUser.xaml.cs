@@ -47,7 +47,7 @@ namespace MCM.User
             }
             else
             {
-                MinecraftUser usr = new MinecraftUser(tb_username.Text, tb_displayname.Text, tb_password.Text);
+                MinecraftUser usr = new MinecraftUser(tb_username.Text, tb_displayname.Text, tb_password.Password);
                 MinecraftUserData.users.Add(usr);
             }
             updateList();
