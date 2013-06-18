@@ -20,16 +20,10 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <TabControl x:Name="Tabs">
-            <TabItem Header="Main">
+            <TabItem Header="Versions">
                 <Grid Margin="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="212"/>
-                    </Grid.ColumnDefinitions>
-                    <ListBox x:Name="lstBackup" Margin="0" Grid.Column="0">
-                        <Label Content="Backup List"></Label>
+                    <ListBox x:Name="lstBackup" Margin="0">
                     </ListBox>
-                    <Label Content="Backup Info" FontFamily="Consolas" FontSize="14" Height="30" Grid.Column="1" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Console">
