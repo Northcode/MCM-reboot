@@ -15,19 +15,27 @@ namespace MCM.MinecraftFramework
         {
             if (Username != null && Password != null)
             {
-                WebClient wc = new WebClient();
-                string result = wc.DownloadString(String.Format(MinecraftData.MinecraftLoginUrl, Username, Password));
-                if (result == "Bad Login")
+                try
                 {
-                    throw new Exception("Bad Login!");
+                    WebClient wc = new WebClient();
+                    string result = wc.DownloadString(String.Format(MinecraftData.MinecraftLoginUrl, Username, Password));
+                    if (result == "Bad Login")
+                    {
+                        throw new Exception("Bad Login!");
+                    }
+                    string[] arguments = result.Split(':');
+
+                    SessionInfo si = new SessionInfo();
+                    si.username = Username;
+                    si.sessionid = arguments[3];
+
+                    return si;
                 }
-                string[] arguments = result.Split(':');
-
-                SessionInfo si = new SessionInfo();
-                si.username = Username;
-                si.sessionid = arguments[3];
-
-                return si;
+                catch (Exception ex)
+                {
+                    App.Log("An error occured while loging in to minecraft: " + ex.ToString());
+                    throw ex;
+                }
             }
             else
             {
