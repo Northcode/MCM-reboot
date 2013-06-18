@@ -70,9 +70,8 @@ namespace MCM.MinecraftFramework
             processArguments.Append(mainClass + " ");
 
             MinecraftData.currentSession = SessionInfo.Connect(Username, Password);
-            processArguments.Append(MinecraftData.currentSession.username + " " + MinecraftData.currentSession.sessionid + " ");
-            processArguments.Append("--gameDir \"" + MinecraftData.AppdataPath + "\" ");
-            processArguments.Append("--assetsDir " + MinecraftData.AssetsPath);
+            string ArgumentsString = MinecraftArguments.Replace("${auth_player_name}", MinecraftData.currentSession.username).Replace("${auth_session}", MinecraftData.currentSession.sessionid).Replace("${game_directory}", "\"" + MinecraftData.AppdataPath + "\"").Replace("${game_assets}", "\"" + MinecraftData.AssetsPath + "\"");
+            processArguments.Append(ArgumentsString);
             return processArguments.ToString();
         }
 

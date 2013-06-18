@@ -93,6 +93,7 @@ namespace MCM
             {
                 mainWindow.Dispatcher.Invoke((Action)(() => {
                     mainWindow.txtLog.Text += Line + "\n";
+                    mainWindow.txtLog.ScrollToEnd();
                 }));
             }
         }
@@ -114,8 +115,11 @@ namespace MCM
                 });
                 string uname = user.username;
                 string passw = MinecraftUser.decryptPwd(user.password_enc);
-                version.DownloadJar();
-                version.Libraries.ForEach(l => l.Extract(false));
+                if (!File.Exists(version.BinaryPath))
+                {
+                    version.DownloadJar();
+                }
+                version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.Extract(false); } });
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
                 App.Log("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;
