@@ -23,9 +23,9 @@
         <Label Content="Login-Name:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="93" Height="26"/>
         <Label Content="Displayname:" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" Width="93" Height="26"/>
         <Label Content="Password:" HorizontalAlignment="Left" Margin="10,72,0,0" VerticalAlignment="Top" Width="93" Height="26"/>
-        <TextBox x:Name="tb_username" HorizontalAlignment="Left" Height="26" Margin="108,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_displayname" HorizontalAlignment="Left" Height="26" Margin="108,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="tb_password" HorizontalAlignment="Left" Height="26" Margin="108,72,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="tb_username" HorizontalAlignment="Left" Height="26" Margin="108,10,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="tb_displayname" HorizontalAlignment="Left" Height="26" Margin="108,41,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="120"/>
+        <PasswordBox x:Name="tb_password" HorizontalAlignment="Left" Height="26" Margin="108,72,0,0" VerticalAlignment="Top" Width="120"/>
         <Button Content="Add" HorizontalAlignment="Left" Margin="108,103,0,0" VerticalAlignment="Top" Width="120" Height="25" Click="Button_Click"/>
     </Grid>
 </Controls:MetroWindow>
