@@ -13,11 +13,27 @@ namespace MCM.MinecraftFramework
         public string Key { get; set; }
         public ReleaseType Type { get; set; }
 
-        public string Url
+        public string JsonUrl
         {
             get
             {
-                return "https://s3.amazonaws.com/Minecraft.Download/versions/" + Key + "/" + Key + ".json";
+                return BaseUrl + ".json";
+            }
+        }
+
+        public string JarUrl
+        {
+            get
+            {
+                return BaseUrl + ".jar";
+            }
+        }
+
+        public string BaseUrl
+        {
+            get
+            {
+                return "https://s3.amazonaws.com/Minecraft.Download/versions/" + Key + "/" + Key;
             }
         }
 
@@ -29,13 +45,21 @@ namespace MCM.MinecraftFramework
             }
         }
 
+        public string LocalPath
+        {
+            get
+            {
+                return MinecraftData.VersionsPath + "\\" + Key;
+            }
+        }
+
         public void DownloadVersionInfo()
         {
             try
             {
                 App.Log("Downloading json for minecraftversion: " + Key);
                 WebClient wc = new WebClient();
-                string data = wc.DownloadString(Url);
+                string data = wc.DownloadString(JsonUrl);
                 var fi = new FileInfo(JsonPath);
                 if (!Directory.Exists(fi.DirectoryName))
                 {

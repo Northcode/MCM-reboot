@@ -87,6 +87,7 @@
     <Compile Include="MinecraftFramework\MinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\ProcessArguments.cs" />
     <Compile Include="MinecraftFramework\ReleaseType.cs" />
+    <Compile Include="MinecraftFramework\SessionInfo.cs" />
     <Compile Include="MinecraftFramework\TinyMinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\VersionManager.cs" />
     <Compile Include="News\MojangFeedDisplay.xaml.cs">
