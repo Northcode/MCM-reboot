@@ -105,10 +105,11 @@ namespace MCM
         {
             Process p = new Process();
             p.StartInfo.FileName = "java.exe";
-            MinecraftUser user = new MinecraftUser();
+            MinecraftUser user = mainWindow.getSelectedUser();
             string uname = user.username;
-            string passw = MinecraftUser.encryptPwd(user.password_enc);
+            string passw = MinecraftUser.decryptPwd(user.password_enc);
             p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
+            p.Start();
         }
     }
 }
