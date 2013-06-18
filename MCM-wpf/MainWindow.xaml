@@ -91,9 +91,7 @@
             <Label Content="(bool)" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Left" Width="127" Grid.ColumnSpan="2"></Label>
             <Label Content="(bool)" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" Width="127" Grid.ColumnSpan="2"></Label>
             <Button Content="Start Minecraft" Grid.Column="4" Margin="0,0,10,27" Grid.Row="1" Click="StartMinecraftButton" HorizontalAlignment="Right" Width="115" Height="25" VerticalAlignment="Bottom"/>
-            <ComboBox x:Name="comboBox_users" Grid.Column="4" Margin="0,5,10,0" SelectionChanged="ComboBox_SelectionChanged_1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115">
-                <ListBoxItem Content="(Create new)" Uid="(new)"/>
-            </ComboBox>
+            <ComboBox x:Name="comboBox_users" Grid.Column="4" Margin="0,5,10,0" SelectionChanged="ComboBox_SelectionChanged_1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115" />
         </Grid>
     </Grid>
 </Controls:MetroWindow>

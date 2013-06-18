@@ -11,8 +11,9 @@ namespace MCM.Data
     class MinecraftUserData
     {
         public static List<MinecraftUser> users = new List<MinecraftUser>();
+        private static string userDataSavePath = PathData.AppDataPath + "\\users.xml";
 
-        public static string usersToXml(List<MinecraftUser> users)
+        private static string usersToXml(List<MinecraftUser> users)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -32,7 +33,7 @@ namespace MCM.Data
             return sb.ToString();
         }
 
-        public static List<MinecraftUser> xmlToUsers(FileStream xmlfs)
+        private static List<MinecraftUser> xmlToUsers(FileStream xmlfs)
         {
             List<MinecraftUser> usr = new List<MinecraftUser>();
             XmlReader xmlr = XmlReader.Create(xmlfs);
@@ -66,6 +67,22 @@ namespace MCM.Data
             }
 
             return usr;
+        }
+
+
+        public static void loadUsers()
+        {
+            if (File.Exists(userDataSavePath))
+            {
+                FileStream fs = new FileStream(userDataSavePath, FileMode.Open);
+                users = xmlToUsers(fs);
+                fs.Close();
+            }
+        }
+
+        public static void saveUsers()
+        {
+            File.WriteAllText(userDataSavePath, usersToXml(users));
         }
     }
 }
