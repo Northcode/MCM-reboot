@@ -57,7 +57,7 @@ namespace MCM.Data
                 }
                 else if (xmlr.Name == "password")
                 {
-                    current.password_enc = xmlr.GetAttribute("password");
+                    current.password_enc = xmlr.GetAttribute("value");
                 }
                 else if (xmlr.Name == "User" && xmlr.NodeType == XmlNodeType.EndElement)
                 {
