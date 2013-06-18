@@ -9,20 +9,19 @@ namespace MCM.MinecraftFramework
 {
     public class VersionManager
     {
-        public static List<MinecraftVersion> versions { get; set; }
+        public static List<TinyMinecraftVersion> versions { get; set; }
 
         public static void LoadJson(string json)
         {
+            versions = new List<TinyMinecraftVersion>();
             JObject obj = JObject.Parse(json);
 
             foreach (JObject obj2 in obj["versions"].Children<JObject>())
             {
-                String file = MinecraftData.VersionsPath + "\\" + (string)obj2["id"] + "\\" + (string)obj2["id"] + ".json";
-                if (File.Exists(file))
-                {
-                    MinecraftVersion mcv = MinecraftVersion.fromJson(File.ReadAllText(file));
-                    versions.Add(mcv);
-                }
+                TinyMinecraftVersion mcv = new TinyMinecraftVersion();
+                mcv.Key = (string)obj2["id"];
+                mcv.Type = (ReleaseType)Enum.Parse(typeof(ReleaseType), (string)obj2["type"]);
+                versions.Add(mcv);
             }
         }
     }
