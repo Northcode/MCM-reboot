@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -96,6 +97,12 @@ namespace MCM
         public static void InvokeAction(Action a)
         {
             mainWindow.Dispatcher.Invoke(a);
+        }
+
+        internal static void StartMinecraft(MinecraftVersion version)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = "java.exe";
         }
     }
 }
