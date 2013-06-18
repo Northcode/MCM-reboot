@@ -2,6 +2,7 @@
 using MCM.MinecraftFramework;
 using MCM.News;
 using MCM.Pages;
+using MCM.User;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -80,8 +81,9 @@ namespace MCM
             t.Start();
         }
 
-        public static void ChooseVersion(MinecraftVersion verison, MCVersionPage page)
+        public static void ChooseVersion(MinecraftVersion version, MCVersionPage page)
         {
+            MinecraftData.selectedVersion = version;
         }
 
         public static void Log(string Line)
@@ -103,6 +105,10 @@ namespace MCM
         {
             Process p = new Process();
             p.StartInfo.FileName = "java.exe";
+            MinecraftUser user = new MinecraftUser();
+            string uname = user.username;
+            string passw = MinecraftUser.encryptPwd(user.password_enc);
+            p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
         }
     }
 }
