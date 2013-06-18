@@ -108,7 +108,10 @@ namespace MCM
             {
                 Process p = new Process();
                 p.StartInfo.FileName = "java.exe";
-                MinecraftUser user = mainWindow.getSelectedUser();
+                MinecraftUser user = null;
+                App.InvokeAction(delegate {
+                    user = mainWindow.getSelectedUser();
+                });
                 string uname = user.username;
                 string passw = MinecraftUser.decryptPwd(user.password_enc);
                 version.DownloadJar();
