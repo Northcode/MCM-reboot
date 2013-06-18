@@ -32,19 +32,8 @@ namespace MCM
             // News feed display
             initializeNewsFeed();
             //MessageBox.Show(twitterFeed);
-            //Testing mcversion stuff
-            MCVersion mrds = new MCVersion() { Major = 1, Minor = 5, Revision = 2, IsSnapshot = false, Name = "Redstone Update!" };
-            lstBackup.Items.Add(new Label() { Content = mrds.Name + " - " + mrds.ToString() });
-            MCVersion sncht = new MCVersion() { Name = "Horses snaphot!" , IsSnapshot = true, SnapshotYear = 2013, SnapshotWeek = 16, SnapshotWeekVer = 0 };
-            lstBackup.Items.Add(new Label() { Content = sncht.Name + " - " + sncht.ToString() });
-            MCVersion adv = new MCVersion() { Major = 0, Minor = 8, Revision = 0, IsSnapshot = false, Name = "Adventure Update!" };
-            lstBackup.Items.Add(new Label() { Content = adv.Name + " - " + adv.ToString() });
 
-            MinecraftFramework.Library lb = new MinecraftFramework.Library() { IsNative = true, ExtractExclusions = new List<string>(new string[]{"META-INF/"}), Name = "org.lwjgl.lwjgl:lwjgl-platform:2.9.0" };
-
-            lstBackup.Items.Add(new TextBox() { Text = lb.Url, IsReadOnly = true });
-            lstBackup.Items.Add(new TextBox() { Text = lb.Extractpath, IsReadOnly = true });
-
+            
         }
 
         /// <summary>
@@ -52,7 +41,7 @@ namespace MCM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void StartMinecraft(object sender, RoutedEventArgs e)
+        private void StartMinecraftButton(object sender, RoutedEventArgs e)
         {
 
         }
