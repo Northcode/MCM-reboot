@@ -1,6 +1,7 @@
 ﻿using MCM.Data;
 using MCM.MinecraftFramework;
 using MCM.News;
+using MCM.Pages;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -58,13 +59,28 @@ namespace MCM
                         lbl.MouseDoubleClick += (s, e) =>
                         {
                             MinecraftVersion mcversion = ((s as Label).Tag as TinyMinecraftVersion).FullVersion;
-                            MessageBox.Show(mcversion.ToString());
+                            App.InvokeAction(delegate
+                            {
+                                TabItem tp = new TabItem();
+                                tp.Header = mcversion.Key;
+                                MCVersionPage versionPage = new MCVersionPage();
+                                versionPage.VersionNameText.Text = mcversion.Key;
+                                versionPage.VersionInfoText.Text = mcversion.ToString();
+                                versionPage.Version = mcversion;
+                                versionPage.ChooseVersion += ChooseVersion;
+                                tp.Content = versionPage;
+                                mainWindow.Tabs.Items.Insert(1, tp);
+                            });
                         };
                         App.mainWindow.lstBackup.Items.Add(lbl);
                     }
                 });
             });
             t.Start();
+        }
+
+        public static void ChooseVersion(MinecraftVersion verison, MCVersionPage page)
+        {
         }
 
         public static void Log(string Line)
