@@ -97,6 +97,9 @@
     </Compile>
     <Compile Include="News\News.cs" />
     <Compile Include="News\NewsStorage.cs" />
+    <Compile Include="Pages\MCVersionPage.xaml.cs">
+      <DependentUpon>MCVersionPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="User\MinecraftUser.cs" />
     <Compile Include="User\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
@@ -126,6 +129,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="News\MojangFeedItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\MCVersionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
