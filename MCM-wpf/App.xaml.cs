@@ -30,12 +30,15 @@ namespace MCM
         {
             PathData.InitDirectories();
             NewsStorage.InitDirectories();
+            MinecraftUserData.loadUsers();
 
             LoadMinecraftVersions();
 
             mainWindow = new MainWindow();
             App app = new App();
             app.Run(mainWindow);
+
+            MinecraftUserData.saveUsers();
         }
 
         private static void LoadMinecraftVersions()
