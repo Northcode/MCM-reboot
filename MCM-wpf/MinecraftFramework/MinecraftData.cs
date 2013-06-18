@@ -26,6 +26,7 @@ namespace MCM.MinecraftFramework
         public const string MinecraftLoginUrl = "http://login.minecraft.net/?user={0}&password={1}&version=14";
 
         public static SessionInfo currentSession { get; set; }
+        public static MinecraftVersion selectedVersion { get; set; }
 
     }
 }
