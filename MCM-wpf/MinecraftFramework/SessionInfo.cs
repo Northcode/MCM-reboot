@@ -13,18 +13,26 @@ namespace MCM.MinecraftFramework
 
         public static SessionInfo Connect(string Username, string Password)
         {
-            WebClient wc = new WebClient();
-            string result = wc.DownloadString(String.Format(MinecraftData.MinecraftLoginUrl, Username, Password));
-            if (result == "Bad Login")
+            if (Username != null && Password != null)
             {
-                throw new Exception("Bad Login!");
-            }
-            string[] arguments = result.Split(':');
+                WebClient wc = new WebClient();
+                string result = wc.DownloadString(String.Format(MinecraftData.MinecraftLoginUrl, Username, Password));
+                if (result == "Bad Login")
+                {
+                    throw new Exception("Bad Login!");
+                }
+                string[] arguments = result.Split(':');
 
-            SessionInfo si = new SessionInfo();
-            si.username = Username;
-            si.sessionid = arguments[3];
-            return si;
+                SessionInfo si = new SessionInfo();
+                si.username = Username;
+                si.sessionid = arguments[3];
+
+                return si;
+            }
+            else
+            {
+                throw new Exception("Missing login info");
+            }
         }
     }
 }
