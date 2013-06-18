@@ -65,35 +65,45 @@ namespace MCM.MinecraftFramework
         {
             MinecraftVersion version = new MinecraftVersion();
 
-            JObject obj = JObject.Parse(json);
-
-            version.Key = (string)obj["id"];
-            version.Type = (ReleaseType)Enum.Parse(typeof(ReleaseType), (string)obj["type"]);
-            version.Arguments = (ProcessArguments)Enum.Parse(typeof(ProcessArguments), (string)obj["processArguments"]);
-            version.MinecraftArguments = (string)obj["minecraftArguments"];
-            version.minimumLauncherVersion = Convert.ToInt32((string)obj["minimumLauncherVersion"]);
-            version.mainClass = (string)obj["mainClass"];
-            version.Libraries = new List<Library>();
-
-            foreach(JObject obj2 in obj["libraries"].Children<JObject>())
+            try
             {
-                Library lib = new Library();
-                lib.Name = (string)obj2["name"];
-                if (obj2["natives"] == null)
-                    lib.IsNative = false;
-                else
-                    lib.IsNative = true;
-                if (obj2["extract"] != null)
-                {
-                    foreach (JObject obj3 in obj2["extract"]["exclude"].Children<JObject>())
-                    {
-                        lib.ExtractExclusions.Add((string)obj3);
-                    }
-                }
-                version.Libraries.Add(lib);
-            }
 
-            return version;
+                JObject obj = JObject.Parse(json);
+
+                version.Key = (string)obj["id"];
+                version.Type = (ReleaseType)Enum.Parse(typeof(ReleaseType), (string)obj["type"]);
+                version.Arguments = (ProcessArguments)Enum.Parse(typeof(ProcessArguments), (string)obj["processArguments"]);
+                version.MinecraftArguments = (string)obj["minecraftArguments"];
+                version.minimumLauncherVersion = Convert.ToInt32((string)obj["minimumLauncherVersion"]);
+                version.mainClass = (string)obj["mainClass"];
+                version.Libraries = new List<Library>();
+
+                foreach (JObject obj2 in obj["libraries"].Children<JObject>())
+                {
+                    Library lib = new Library();
+                    lib.Name = (string)obj2["name"];
+                    if (obj2["natives"] == null)
+                        lib.IsNative = false;
+                    else
+                        lib.IsNative = true;
+                    if (obj2["extract"] != null)
+                    {
+                        foreach (JObject obj3 in obj2["extract"]["exclude"].Children<JObject>())
+                        {
+                            lib.ExtractExclusions.Add((string)obj3);
+                        }
+                    }
+                    version.Libraries.Add(lib);
+                }
+
+                return version;
+            }
+            catch (Exception ex)
+            {
+                App.Log("An error occured while loading Minecraft version from json");
+                App.Log("Error: " + ex.ToString());
+                return null;
+            }
         }
     }
 }
