@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -103,13 +104,43 @@ namespace MCM
 
         internal static void StartMinecraft(MinecraftVersion version)
         {
-            Process p = new Process();
-            p.StartInfo.FileName = "java.exe";
-            MinecraftUser user = mainWindow.getSelectedUser();
-            string uname = user.username;
-            string passw = MinecraftUser.decryptPwd(user.password_enc);
-            p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
-            p.Start();
+            try
+            {
+                Process p = new Process();
+                p.StartInfo.FileName = "java.exe";
+                MinecraftUser user = mainWindow.getSelectedUser();
+                string uname = user.username;
+                string passw = MinecraftUser.decryptPwd(user.password_enc);
+                version.DownloadJar();
+                version.Libraries.ForEach(l => l.Extract(false));
+                p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
+                App.Log("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
+                p.StartInfo.UseShellExecute = false;
+                p.EnableRaisingEvents = true;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.OutputDataReceived += (s, e) =>
+                {
+                    App.Log(e.Data);
+                };
+                p.ErrorDataReceived += (s, e) =>
+                {
+                    App.Log("Error > " + e.Data);
+                };
+                App.Log("---------------------------- MINECRAFT OUTPUT --------------------------------");
+                p.Start();
+                p.BeginErrorReadLine();
+                p.BeginOutputReadLine();
+                p.Exited += (s, e) =>
+                {
+                    App.Log("------------------------ END OF MINECRAFT OUTPUT ----------------------------");
+                };
+            }
+            catch (Exception ex)
+            {
+                App.Log("An error occured while starting minecraft: " + ex.ToString());
+            }
         }
     }
 }
