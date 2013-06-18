@@ -30,9 +30,8 @@ namespace MCM
 
             NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
-            //webBrowser_launcherFeed_Twitter.Source = new Uri("file:///C:/Users/Jens/Desktop/test.html");
+            webBrowser_launcherFeed_Twitter.Source = new Uri("http://mcm.northcode.no/resources/twitter_mojang.html");
 
-            //webBrowser_launcherFeed_Mojang.NavigateToString(parseMojang());
             Task t = new Task(ParseMojangFeed);
             t.Start();
         }
