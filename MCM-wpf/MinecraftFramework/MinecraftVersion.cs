@@ -64,9 +64,9 @@ namespace MCM.MinecraftFramework
         {
             StringBuilder processArguments = new StringBuilder();
             processArguments.Append("-Xmx"); processArguments.Append(MinecraftData.MinecraftRAM); processArguments.Append(" ");
-            processArguments.Append("-Djava.library.path=\""); processArguments.Append(MinecraftData.NativesPath); processArguments.Append("\" ");
-            processArguments.Append("-cp "); Libraries.ForEach(l => { processArguments.Append("\"" + l.Extractpath + "\";"); });
-            processArguments.Append("\"" + BinaryPath + "\"; ");
+            processArguments.Append("\"-Djava.library.path="); processArguments.Append(MinecraftData.NativesPath); processArguments.Append("\" ");
+            processArguments.Append("-cp \""); Libraries.ForEach(l => { if (!l.IsNative) { processArguments.Append(l.Extractpath + ";"); } });
+            processArguments.Append(BinaryPath + "\"; ");
             processArguments.Append(mainClass + " ");
 
             MinecraftData.currentSession = SessionInfo.Connect(Username, Password);
@@ -124,7 +124,10 @@ namespace MCM.MinecraftFramework
                     if (obj2["natives"] == null)
                         lib.IsNative = false;
                     else
+                    {
                         lib.IsNative = true;
+                        lib.ExtractExclusions = new List<string>();
+                    }
                     if (obj2["extract"] != null)
                     {
                         foreach (JObject obj3 in obj2["extract"]["exclude"].Children<JObject>())

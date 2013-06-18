@@ -39,40 +39,56 @@ namespace MCM.MinecraftFramework
             }
         }
 
-        public void Extract()
+        public void Extract(bool async)
         {
             WebClient wc = new WebClient();
             wc.DownloadDataCompleted += wc_DownloadDataCompleted;
             App.Log("Starting download of: " + Name + " from: " + Url);
-            wc.DownloadDataAsync(new Uri(Url));
+            if (async)
+            {
+                wc.DownloadDataAsync(new Uri(Url));
+            }
+            else
+            {
+                byte[] data = wc.DownloadData(new Uri(Url));
+                Extract_(data);
+            }
         }
 
         void wc_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
             App.Log("Download of: " + Name + " Complete!");
             if(!e.Cancelled) {
-                byte[] fileData = e.Result;
-                if (IsNative)
+                Extract_(e.Result);
+            }
+            App.Log("Exctraction of: " + Name + " Complete!\n");
+        }
+
+        private void Extract_(byte[] fileData)
+        {
+            if (IsNative)
+            {
+                MemoryStream zipstream = new MemoryStream(fileData);
+                ZipArchive zipArchive = new ZipArchive(zipstream, ZipArchiveMode.Read);
+                App.Log("Opened liberary: " + Name);
+                foreach (ZipArchiveEntry fileEntry in zipArchive.Entries)
                 {
-                    MemoryStream zipstream = new MemoryStream(fileData);
-                    ZipArchive zipArchive = new ZipArchive(zipstream, ZipArchiveMode.Read);
-                    App.Log("Opened liberary: " + Name);
-                    foreach (ZipArchiveEntry fileEntry in zipArchive.Entries)
+                    App.Log("Found file: " + fileEntry.FullName);
+                    if (!ExtractExclusions.All(s => fileEntry.FullName.Contains(s)))
                     {
-                        App.Log("Found file: " + fileEntry.FullName);
-                        if (!ExtractExclusions.All(s => fileEntry.FullName.Contains(s)))
-                        {
-                            File.WriteAllBytes(MinecraftData.NativesPath + "\\" + fileEntry.FullName, StreamHelper.StreamToByteArray(fileEntry.Open()));
-                            App.Log("Wrote file to: " + MinecraftData.NativesPath + "\\" + fileEntry.FullName);
-                        }
-                        else
-                        {
-                            App.Log("Exluded file");
-                        }
+                        File.WriteAllBytes(MinecraftData.NativesPath + "\\" + fileEntry.FullName, StreamHelper.StreamToByteArray(fileEntry.Open()));
+                        App.Log("Wrote file to: " + MinecraftData.NativesPath + "\\" + fileEntry.FullName);
+                    }
+                    else
+                    {
+                        App.Log("Exluded file");
                     }
                 }
             }
-            App.Log("Exctraction of: " + Name + " Complete!\n");
+            else
+            {
+                File.WriteAllBytes(Extractpath, fileData);
+            }
         }
     }
 }
