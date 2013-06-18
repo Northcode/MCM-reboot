@@ -8,6 +8,7 @@ namespace MCM.MinecraftFramework
     public enum ProcessArguments
     {
         legacy,
-        username_session_version
+        username_session_version,
+        username_session
     }
 }
