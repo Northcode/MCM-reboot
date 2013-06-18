@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MCM.User
 {
-    class MinecraftUser
+    public class MinecraftUser
     {
         public string username { get; set; }
         public string displayname { get; set; }

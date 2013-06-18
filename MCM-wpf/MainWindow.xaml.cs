@@ -46,7 +46,7 @@ namespace MCM
         {
             if (lstBackup.SelectedItem != null)
             {
-                App.StartMinecraft((lstBackup.SelectedItem as Label).Tag as MinecraftFramework.MinecraftVersion);
+                App.StartMinecraft(((lstBackup.SelectedItem as Label).Tag as MinecraftFramework.TinyMinecraftVersion).FullVersion);
             }
         }
 
@@ -82,7 +82,7 @@ namespace MCM
             comboBox_users.Items.Add(newItem);
         }
 
-        private MinecraftUser getSelectedUser()
+        public MinecraftUser getSelectedUser()
         {
             if (comboBox_users.SelectedIndex == -1)
                 throw new Exception("No user selected");
