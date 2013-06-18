@@ -81,5 +81,19 @@ namespace MCM
             }
             comboBox_users.Items.Add(newItem);
         }
+
+        private MinecraftUser getSelectedUser()
+        {
+            if (comboBox_users.SelectedIndex == -1)
+                throw new Exception("No user selected");
+            foreach (MinecraftUser user in MinecraftUserData.users)
+            {
+                if (user.username + ";" + user.password_enc == ((ListBoxItem)comboBox_users.SelectedItem).Uid)
+                {
+                    return user;
+                }
+            }
+            throw new Exception("Specified user not found!");
+        }
     }
 }
