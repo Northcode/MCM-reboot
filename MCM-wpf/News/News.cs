@@ -123,10 +123,10 @@ namespace MCM
                 SyndicationFeed feed = SyndicationFeed.Load(rssr);
 
                 App.InvokeAction(delegate { App.mainWindow.lstMojangFeed.Items.Clear(); });
-                App.Log("Loaded items: ");
+                //App.Log("Loaded items: ");
                 foreach (SyndicationItem item in feed.Items.Take(15))
                 {
-                    App.Log(item.Id);
+                    //App.Log(item.Id);
                     MojangFeedItem feeditem = null;
                     App.InvokeAction(delegate
                     {
