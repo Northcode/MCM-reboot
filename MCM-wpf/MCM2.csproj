@@ -106,6 +106,7 @@
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings\Settings.cs" />
+    <Compile Include="TextBoxBehaviour.cs" />
     <Compile Include="User\MinecraftUser.cs" />
     <Compile Include="User\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
@@ -167,6 +168,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="minecraft notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FileStructure.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
