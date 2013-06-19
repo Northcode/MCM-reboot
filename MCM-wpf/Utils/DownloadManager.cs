@@ -25,7 +25,12 @@ namespace MCM.Utils
 
         public static void DownloadAll()
         {
-            downloads.ForEach(d => { d.DoDownload(); });
+            downloads.ForEach(d => {
+                App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = downloads.Count + " left"; });
+                d.DoDownload();
+                d.WaitForComplete();
+            });
+            App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = ""; });
         }
 
         public static Download GetDownload(string Key)

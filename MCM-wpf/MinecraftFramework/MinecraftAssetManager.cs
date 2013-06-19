@@ -60,6 +60,7 @@ namespace MCM.MinecraftFramework
                 finally
                 {
                     sr.Close();
+                    DownloadAssets();
                 }
             };
             dl.DoDownload();
@@ -68,6 +69,7 @@ namespace MCM.MinecraftFramework
         internal static void DownloadAssets()
         {
             assets.ForEach(a => { a.ScheduleDownload(); });
+            DownloadManager.DownloadAll();
         }
     }
 }
