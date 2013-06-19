@@ -26,7 +26,7 @@ namespace MCM.MinecraftFramework
                     string[] arguments = result.Split(':');
 
                     SessionInfo si = new SessionInfo();
-                    si.username = Username;
+                    si.username = arguments[2];
                     si.sessionid = arguments[3];
 
                     return si;
