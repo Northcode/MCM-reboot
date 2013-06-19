@@ -1,0 +1,34 @@
+﻿File Structure of %appdata%\.mcm2\
+
+ - rss
+ - users
+ - versions
+   - { all downloaded versions }
+ - libraries
+   - { all minecraft libraries }
+ - assets
+   - { minecraft assets }
+ - instances
+   - { all minecraft instances }
+   - example instance
+    - instance.json (contains information about the instance)
+    - saves
+	 - { all minecraft saves }
+	- texturepacks
+	 - { all texturepacks }
+	- mods
+	 - { all mods }
+ - resources
+   - saves
+     - { all backupped minecraft saves }
+	 - example save
+	  - { subdirectory with different versions }
+	  - example version
+	   - [mcsave dir]
+	   - version.json (contains info about the version)
+   - texturepacks
+     - { all backupped texturepacks }
+   - mods
+     - { all backupped mods }
+   - ...
+     - { all backupped ... }
