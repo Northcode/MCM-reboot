@@ -104,6 +104,7 @@
     <Compile Include="Settings\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="User\MinecraftUser.cs" />
     <Compile Include="User\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
