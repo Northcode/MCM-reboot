@@ -62,10 +62,12 @@
                 <Grid>
                     <TabControl>
                         <TabItem Header="Launcher">
-                            <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" ScrollViewer.CanContentScroll="True" />
+                                <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" ScrollViewer.CanContentScroll="True" />
                         </TabItem>
                         <TabItem Header="Minecraft">
-                            <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" ScrollViewer.CanContentScroll="True" />
+                            <ScrollViewer>
+                                <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" ScrollViewer.CanContentScroll="True" />
+                            </ScrollViewer>
                         </TabItem>
                     </TabControl>
                 </Grid>
