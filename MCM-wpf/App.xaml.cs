@@ -23,6 +23,7 @@ namespace MCM
     public partial class App : Application
     {
         public static MainWindow mainWindow;
+        public static MinecraftStatus mcStatus = new MinecraftStatus();
 
         App()
         {
@@ -98,6 +99,18 @@ namespace MCM
             }
         }
 
+        public static void LogMinecraft(string Line)
+        {
+            if (mainWindow != null)
+            {
+                mainWindow.Dispatcher.Invoke((Action)(() =>
+                {
+                    mainWindow.mcLog.Text += Line + "\n";
+                    mainWindow.mcLog.ScrollToEnd();
+                }));
+            }
+        }
+
         public static void InvokeAction(Action a)
         {
             mainWindow.Dispatcher.Invoke(a);
@@ -121,7 +134,7 @@ namespace MCM
                 }
                 version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.Extract(false); } });
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
-                App.Log("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
+                App.LogMinecraft("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;
                 p.EnableRaisingEvents = true;
                 p.StartInfo.CreateNoWindow = true;
@@ -129,24 +142,24 @@ namespace MCM
                 p.StartInfo.RedirectStandardOutput = true;
                 p.OutputDataReceived += (s, e) =>
                 {
-                    App.Log(e.Data);
+                    App.LogMinecraft(e.Data);
                 };
                 p.ErrorDataReceived += (s, e) =>
                 {
-                    App.Log("Error > " + e.Data);
+                    App.LogMinecraft("Error > " + e.Data);
                 };
-                App.Log("---------------------------- MINECRAFT OUTPUT --------------------------------");
+                App.LogMinecraft("---------------------------- MINECRAFT OUTPUT --------------------------------");
                 p.Start();
                 p.BeginErrorReadLine();
                 p.BeginOutputReadLine();
                 p.Exited += (s, e) =>
                 {
-                    App.Log("------------------------ END OF MINECRAFT OUTPUT ----------------------------");
+                    App.LogMinecraft("------------------------ END OF MINECRAFT OUTPUT ----------------------------");
                 };
             }
             catch (Exception ex)
             {
-                App.Log("An error occured while starting minecraft: " + ex.ToString());
+                App.LogMinecraft("An error occured while starting minecraft: " + ex.ToString());
             }
         }
     }

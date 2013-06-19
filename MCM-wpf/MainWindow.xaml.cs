@@ -30,11 +30,10 @@ namespace MCM
         {
             InitializeComponent();
 
+            updateStatus(null,null);
             // News feed display
             initializeNewsFeed();
             updateUsersList();
-
-            
         }
 
         /// <summary>
@@ -104,6 +103,23 @@ namespace MCM
                 }
             }
             throw new Exception("Specified user not found!");
+        }
+
+        private void updateStatus(object sender, MouseButtonEventArgs e)
+        {
+            label_loginStatus.Content = "Refreshing...";
+            label_multiplayerStatus.Content = "Refreshing...";
+            Thread t = new Thread(updateStatuses);
+            t.Start();
+        }
+
+        private void updateStatuses()
+        {
+            App.mcStatus.refreshStatus();
+            App.InvokeAction(delegate { 
+                label_loginStatus.Content = (App.mcStatus.login ? "Online" : "Offline");
+                label_multiplayerStatus.Content = (App.mcStatus.multiplayer ? "Online" : "Offline");
+            });
         }
     }
 }
