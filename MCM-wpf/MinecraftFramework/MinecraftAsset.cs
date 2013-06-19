@@ -44,7 +44,7 @@ namespace MCM.MinecraftFramework
             {
                 if (!File.Exists(Path))
                 {
-                    Download dl = DownloadManager.ScheduleDownload(Key, Url);
+                    Download dl = DownloadManager.ScheduleDownload(Key, Url, true);
                     dl.Downloaded += (d) =>
                     {
                         byte[] filedata = d.Data;

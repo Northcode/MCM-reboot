@@ -10,10 +10,12 @@ namespace MCM.Utils
     {
         static List<Download> downloads = new List<Download>();
 
-        public static Download ScheduleDownload(string Key, string Url)
+        public static Download ScheduleDownload(string Key, string Url, bool AutoClose)
         {
             Download d = new Download() { Key = Key, Url = Url };
+            d.ShouldContinue = AutoClose;
             d.Downloaded += DownloadComplete;
+            d.onContinue += DownloadContinue;
             downloads.Add(d);
             App.Log("Scheduled download: " + Key + " for download with id: " + (downloads.Count - 1).ToString());
             return d;
@@ -21,15 +23,21 @@ namespace MCM.Utils
 
         static void DownloadComplete(Download sender)
         {
+            if (sender.ShouldContinue)
+                downloads.Remove(sender);
+        }
+
+        static void DownloadContinue(Download sender)
+        {
             downloads.Remove(sender);
         }
 
         public static void DownloadAll()
         {
-            downloads.ForEach(d => {
+            downloads.ForEach(d =>
+            {
                 App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = downloads.Count + " left"; });
                 d.DoDownload();
-                d.WaitForComplete();
             });
             App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = ""; });
         }

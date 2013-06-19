@@ -3,7 +3,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:local="clr-namespace:MCM"
-        Title="MC Manager" Height="482" Width="722" BorderThickness="0" MinHeight="482" MinWidth="722">
+        Title="MC Manager" Height="482" Width="722" BorderThickness="0" MinHeight="482" MinWidth="722" Initialized="MetroWindow_Initialized">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -23,7 +23,14 @@
         <TabControl x:Name="Tabs">
             <TabItem Header="Versions">
                 <Grid Margin="0">
-                    <ListBox x:Name="lstBackup" Margin="0"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button Content="All" Grid.Row="0" Width="100" HorizontalAlignment="Left" Click="Button_Click"/>
+                    <Button Content="Releases" Grid.Row="0" Margin="101,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_1"/>
+                    <Button Content="Snapshots" Grid.Row="0" Margin="202,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_2"/>
+                    <ListBox x:Name="lstBackup" Margin="0" Grid.Row="1"/>
                 </Grid>
             </TabItem>
             <TabItem Header="News Feed">
@@ -86,20 +93,10 @@
                 <RowDefinition Height="18*"/>
                 <RowDefinition Height="8*"/>
             </Grid.RowDefinitions>
-            <Label Content="Type:" Grid.RowSpan="1" Grid.Row="0" HorizontalAlignment="Left" Width="72"/>
-            <ComboBox x:Name="cbxType" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="120" Grid.Row="0" Grid.Column="1" SelectedIndex="0" Height="26">
-                <Label Content="Vanilla" BorderThickness="0"/>
-                <Label Content="Dev Builds" BorderThickness="0"/>
-                <Label Content="Modpack" BorderThickness="0"/>
-            </ComboBox>
-            <Label Content="Version:" Grid.Row="1" HorizontalAlignment="Left" Width="72"/>
-            <ComboBox x:Name="cbxVersion" HorizontalAlignment="Left" Margin="0,5,0,0" VerticalAlignment="Top" Width="120" Grid.Row="1" Grid.Column="1" SelectedIndex="0" Height="26">
-                <Label Content="1.5.2" BorderThickness="0"/>
-            </ComboBox>
-            <Label Content="Login status:" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" Grid.ColumnSpan="1"/>
-            <Label Content="Multiplayer status:" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="1"/>
-            <Label x:Name="label_loginStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Stretch"></Label>
-            <Label x:Name="label_multiplayerStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch"/>
+            <Label Content="Login status:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Grid.ColumnSpan="1"/>
+            <Label Content="Multiplayer status:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="1"/>
+            <Label x:Name="label_loginStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch"></Label>
+            <Label x:Name="label_multiplayerStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch"/>
             <Button x:Name="btn_startMinecraft" Content="Start Minecraft" Grid.Column="5" Margin="0,7,10,0" Grid.Row="1" Click="StartMinecraftButton" HorizontalAlignment="Right" Width="115" Height="25" VerticalAlignment="Top"/>
             <ComboBox x:Name="comboBox_users" Grid.Column="5" Margin="0,5,10,0" SelectionChanged="ComboBox_SelectionChanged_1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115" />
             <ProgressBar x:Name="progressBar_dl" Grid.ColumnSpan="6" Grid.Row="2" Height="Auto" Margin="10,0,0,0"/>
