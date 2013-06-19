@@ -40,38 +40,42 @@ namespace MCM.MinecraftFramework
 
         public void ScheduleDownload()
         {
-            if (!File.Exists(Path))
+            if (!Directory.Exists(Path))
             {
-                Download dl = DownloadManager.ScheduleDownload(Key, Url);
-                dl.Downloaded += (d) =>
+                if (!File.Exists(Path))
                 {
-                    byte[] filedata = d.Data;
-                    using (MD5 hasher = MD5.Create())
+                    Download dl = DownloadManager.ScheduleDownload(Key, Url);
+                    dl.Downloaded += (d) =>
                     {
-                        byte[] downloadedHash = hasher.ComputeHash(filedata);
-                        StringBuilder sb = new StringBuilder();
-                        downloadedHash.ToList().ForEach(b => sb.Append(b.ToString("x2")));
-                        string hashString = sb.ToString();
-
-                        if (hashString == md5)
+                        byte[] filedata = d.Data;
+                        using (MD5 hasher = MD5.Create())
                         {
-                            Directory.CreateDirectory(new FileInfo(Path).DirectoryName); //MAKE SURE DIRECTORIES EXIST BEFORE WRITING!
-                            if (!IsDirectory)
+                            byte[] downloadedHash = hasher.ComputeHash(filedata);
+                            StringBuilder sb = new StringBuilder();
+                            downloadedHash.ToList().ForEach(b => sb.Append(b.ToString("x2")));
+                            string hashString = sb.ToString();
+
+                            if (hashString == md5)
                             {
-                                File.WriteAllBytes(Path, filedata);
+                                Directory.CreateDirectory(new FileInfo(Path).DirectoryName); //MAKE SURE DIRECTORIES EXIST BEFORE WRITING!
+                                if (!IsDirectory)
+                                {
+                                    File.WriteAllBytes(Path, filedata);
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("MD5 hashes do not match for MinecraftAsset: " + Key + " stored md5: " + md5 + " downloaded md5: " + hashString);
                             }
                         }
-                        else
-                        {
-                            throw new Exception("MD5 hashes do not match for MinecraftAsset: " + Key + " stored md5: " + md5 + " downloaded md5: " + hashString);
-                        }
-                    }
-                };
+                    };
+                }
+                else
+                {
+                    //App.Log("Asset: " + Key + " allready exists, skipping");
+                }
             }
-            else
-            {
-                App.Log("Asset: " + Key + " allready exists, skipping");
-            }
+            
         }
 
         void filedownloader_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)

@@ -121,5 +121,10 @@ namespace MCM
                 label_multiplayerStatus.Content = (App.mcStatus.multiplayer ? "Online" : "Offline");
             });
         }
+
+        public void updateProgressBar(int i)
+        {
+            progressBar_dl.Value = i;
+        }
     }
 }
