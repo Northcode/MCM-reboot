@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Windows;
@@ -102,12 +103,13 @@ namespace MCM
         {
             try
             {
-                Download dl = DownloadManager.ScheduleDownload("Mojang Feed", "https://www.mojang.com/feed/");
+                Download dl = DownloadManager.ScheduleDownload("Mojang Feed", "https://www.mojang.com/feed/",true);
                 dl.Downloaded += d =>
                 {
                     File.WriteAllBytes(NewsStorage.MojangFeedPath, d.Data);
                     ParseMojangXml(NewsStorage.MojangFeedPath);
                 };
+                dl.DoDownload();
             }
             catch (Exception ex)
             {

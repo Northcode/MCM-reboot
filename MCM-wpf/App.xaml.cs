@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,27 +39,27 @@ namespace MCM
             NewsStorage.InitDirectories();
             MinecraftUserData.loadUsers();
 
-            Task t = new Task(delegate
-            {
-                MinecraftAssetManager.LoadAssets();
-            });
-
-            LoadMinecraftVersions();
-            t.Start();
-
-            mainWindow = new MainWindow();
             App app = new App();
+            mainWindow = new MainWindow();
+
+
+            ScheduleMinecraftVersionJsonDownload();
+
+            MinecraftAssetManager.LoadAssets();
+
+            DownloadManager.DownloadAll();
+
             app.Run(mainWindow);
 
             MinecraftUserData.saveUsers();
         }
 
-        private static void LoadMinecraftVersions()
+        private static void ScheduleMinecraftVersionJsonDownload()
         {
-            Task t = new Task(delegate
+            Download dl = DownloadManager.ScheduleDownload("Minecraft Version Json", MinecraftData.VersionsUrl,true);
+            dl.Downloaded += (d) =>
             {
-                WebClient wc = new WebClient();
-                string json = wc.DownloadString(MinecraftData.VersionsUrl);
+                string json = Encoding.ASCII.GetString(d.Data);
                 VersionManager.LoadJson(json);
                 App.InvokeAction(delegate
                 {
@@ -86,8 +87,7 @@ namespace MCM
                         App.mainWindow.lstBackup.Items.Add(lbl);
                     }
                 });
-            });
-            t.Start();
+            };
         }
 
         public static void ChooseVersion(MinecraftVersion version, MCVersionPage page)
@@ -118,13 +118,8 @@ namespace MCM
 
         public static void InvokeAction(Action a)
         {
-            try
-            {
+            if(mainWindow != null) {
                 mainWindow.Dispatcher.Invoke(a);
-            }
-            catch (NullReferenceException e)
-            {
-                // The window hasn't opened yet
             }
         }
 
@@ -132,7 +127,7 @@ namespace MCM
         {
             try
             {
-                App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = false; });
+                //This causes freeze: App.InvokeAction(delegate { App.mainWindow.IsEnabled = false; });
                 App.Log("Waiting for downloads to finish...");
                 DownloadManager.WaitForAll();
                 App.Log("Downloads should be finished!");
@@ -151,9 +146,10 @@ namespace MCM
                 }
                 version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(); } });
                 DownloadManager.DownloadAll();
+                App.Log("Waiting for minecraft download...");
                 DownloadManager.WaitForAll();
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
-                App.LogMinecraft("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
+                App.Log("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;
                 p.EnableRaisingEvents = true;
                 p.StartInfo.CreateNoWindow = true;
@@ -167,19 +163,13 @@ namespace MCM
                 {
                     App.LogMinecraft("Error > " + e.Data);
                 };
-                App.LogMinecraft("---------------------------- MINECRAFT OUTPUT --------------------------------");
                 p.Start();
                 p.BeginErrorReadLine();
                 p.BeginOutputReadLine();
-                p.Exited += (s, e) =>
-                {
-                    App.LogMinecraft("------------------------ END OF MINECRAFT OUTPUT ----------------------------");
-                };
-                App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = true; });
             }
             catch (Exception ex)
             {
-                App.LogMinecraft("An error occured while starting minecraft: " + ex.ToString());
+                App.Log("An error occured while starting minecraft: " + ex.ToString());
             }
         }
     }
