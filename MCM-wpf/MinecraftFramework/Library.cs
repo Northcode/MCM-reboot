@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace MCM.MinecraftFramework
@@ -39,33 +40,15 @@ namespace MCM.MinecraftFramework
             }
         }
 
-        public void Extract(bool async)
+        public void ScheduleExtract()
         {
-            WebClient wc = new WebClient();
-            wc.DownloadDataCompleted += wc_DownloadDataCompleted;
-            App.Log("Starting download of: " + Name + " from: " + Url);
-            if (async)
-            {
-                wc.DownloadDataAsync(new Uri(Url));
-            }
-            else
-            {
-                byte[] data = wc.DownloadData(new Uri(Url));
-                Extract_(data);
-            }
-        }
-
-        void wc_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
-        {
-            App.Log("Download of: " + Name + " Complete!");
-            if(!e.Cancelled) {
-                Extract_(e.Result);
-            }
-            App.Log("Exctraction of: " + Name + " Complete!\n");
+            Download dl = DownloadManager.ScheduleDownload(Name, Url);
+            dl.Downloaded += (d) => { Extract_(d.Data); };
         }
 
         private void Extract_(byte[] fileData)
         {
+            Directory.CreateDirectory(new FileInfo(Extractpath).DirectoryName);
             if (IsNative)
             {
                 MemoryStream zipstream = new MemoryStream(fileData);
@@ -74,8 +57,9 @@ namespace MCM.MinecraftFramework
                 foreach (ZipArchiveEntry fileEntry in zipArchive.Entries)
                 {
                     App.Log("Found file: " + fileEntry.FullName);
-                    if (!ExtractExclusions.All(s => fileEntry.FullName.Contains(s)))
+                    if (!fileEntry.FullName.Contains("META-INF") && ((!ExtractExclusions.All(s => fileEntry.FullName.Contains(s))) || ExtractExclusions.Count == 0))
                     {
+                        new FileInfo(MinecraftData.NativesPath + "\\" + fileEntry.FullName).Directory.Create(); //make sure directory exists!
                         File.WriteAllBytes(MinecraftData.NativesPath + "\\" + fileEntry.FullName, StreamHelper.StreamToByteArray(fileEntry.Open()));
                         App.Log("Wrote file to: " + MinecraftData.NativesPath + "\\" + fileEntry.FullName);
                     }

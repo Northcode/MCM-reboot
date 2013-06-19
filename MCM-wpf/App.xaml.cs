@@ -3,6 +3,7 @@ using MCM.MinecraftFramework;
 using MCM.News;
 using MCM.Pages;
 using MCM.User;
+using MCM.Utils;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -37,7 +38,15 @@ namespace MCM
             NewsStorage.InitDirectories();
             MinecraftUserData.loadUsers();
 
+            Task t = new Task(delegate
+            {
+                MinecraftAssetManager.LoadAssets();
+                MinecraftAssetManager.DownloadAssets();
+                DownloadManager.DownloadAll();
+            });
+
             LoadMinecraftVersions();
+            t.Start();
 
             mainWindow = new MainWindow();
             App app = new App();
@@ -120,7 +129,11 @@ namespace MCM
         {
             try
             {
+                App.Log("Waiting for downloads to finish...");
+                DownloadManager.WaitForAll();
+                App.Log("Downloads should be finished!");
                 Process p = new Process();
+                MinecraftData.AppdataPath = MinecraftData.VersionsPath + "\\" + version.Key + "\\minecraft";
                 p.StartInfo.FileName = "java.exe";
                 MinecraftUser user = null;
                 App.InvokeAction(delegate {
@@ -130,9 +143,10 @@ namespace MCM
                 string passw = MinecraftUser.decryptPwd(user.password_enc);
                 if (!File.Exists(version.BinaryPath))
                 {
-                    version.DownloadJar();
+                    version.SchuduleJarDownload();
                 }
-                version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.Extract(false); } });
+                version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(); } });
+                DownloadManager.DownloadAll();
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
                 App.LogMinecraft("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;
