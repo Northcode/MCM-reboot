@@ -41,8 +41,6 @@ namespace MCM
             Task t = new Task(delegate
             {
                 MinecraftAssetManager.LoadAssets();
-                MinecraftAssetManager.DownloadAssets();
-                DownloadManager.DownloadAll();
             });
 
             LoadMinecraftVersions();
@@ -103,7 +101,6 @@ namespace MCM
             {
                 mainWindow.Dispatcher.Invoke((Action)(() => {
                     mainWindow.txtLog.Text += Line + "\n";
-                    mainWindow.txtLog.ScrollToEnd();
                 }));
             }
         }
@@ -115,14 +112,20 @@ namespace MCM
                 mainWindow.Dispatcher.Invoke((Action)(() =>
                 {
                     mainWindow.mcLog.Text += Line + "\n";
-                    mainWindow.mcLog.ScrollToEnd();
                 }));
             }
         }
 
         public static void InvokeAction(Action a)
         {
-            mainWindow.Dispatcher.Invoke(a);
+            try
+            {
+                mainWindow.Dispatcher.Invoke(a);
+            }
+            catch (NullReferenceException e)
+            {
+                // The window hasn't opened yet
+            }
         }
 
         internal static void StartMinecraft(MinecraftVersion version)
