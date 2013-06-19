@@ -4,20 +4,16 @@
  - users
  - versions
    - { all downloaded versions }
- - libraries
-   - { all minecraft libraries }
+     - instance
+       - libraries
+         - { version spesific liberaries }
+       - saves
+       - screenshots
+       - texturepacks
+       - mods
+       - ...
  - assets
    - { minecraft assets }
- - instances
-   - { all minecraft instances }
-   - example instance
-    - instance.json (contains information about the instance)
-    - saves
-	 - { all minecraft saves }
-	- texturepacks
-	 - { all texturepacks }
-	- mods
-	 - { all mods }
  - resources
    - saves
      - { all backupped minecraft saves }
