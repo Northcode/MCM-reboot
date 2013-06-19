@@ -20,12 +20,44 @@ namespace MCM.Utils
         public void DoDownload()
         {
             WebClient wc = new WebClient();
+            wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
+            wc.DownloadDataCompleted += new DownloadDataCompletedEventHandler(wc_DownloadDataCompleted);
             App.Log("Download: " + Key + " started!");
-            byte[] data = wc.DownloadData(Url);
-            Data = data;
+            wc.DownloadDataAsync(new Uri(Url));
+        }
+
+        void wc_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            Data = e.Result;
             Complete = true;
+            App.InvokeAction(delegate
+            {
+                App.mainWindow.progressBar_dl.IsIndeterminate = false;
+                App.mainWindow.progressBar_dl.Value = 0; 
+            });
             App.Log("Download: " + Key + " Complete!");
             Downloaded(this);
+        }
+
+        private void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            int i;
+            if (e.ProgressPercentage == 0)
+            {
+                App.InvokeAction(delegate { App.mainWindow.progressBar_dl.IsIndeterminate = true; });
+            }
+            else
+            {
+                App.InvokeAction(delegate
+                {
+                    if (App.mainWindow.progressBar_dl.Value < e.ProgressPercentage)
+                    // Check if another download is already running so the bar doesn't spaz out
+                    {
+                        App.mainWindow.progressBar_dl.IsIndeterminate = false;
+                        App.mainWindow.progressBar_dl.Value = e.ProgressPercentage;
+                    }
+                });
+            }
         }
 
         public void WaitForComplete()
