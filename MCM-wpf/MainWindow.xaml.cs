@@ -30,11 +30,10 @@ namespace MCM
         {
             InitializeComponent();
 
+            updateStatus(null,null);
             // News feed display
             initializeNewsFeed();
             updateUsersList();
-
-            
         }
 
         /// <summary>
@@ -44,7 +43,20 @@ namespace MCM
         /// <param name="e"></param>
         private void StartMinecraftButton(object sender, RoutedEventArgs e)
         {
-
+            if (lstBackup.SelectedItem != null)
+            {
+                Task t = new Task(delegate
+                {
+                    MinecraftFramework.MinecraftVersion v = null;
+                    App.InvokeAction(delegate
+                    {
+                        v = ((lstBackup.SelectedItem as Label).Tag as MinecraftFramework.TinyMinecraftVersion).FullVersion;
+                    });
+                    App.StartMinecraft(v);
+                    
+                });
+                t.Start();
+            }
         }
 
         private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -77,6 +89,37 @@ namespace MCM
                 comboBox_users.Items.Add(item);
             }
             comboBox_users.Items.Add(newItem);
+        }
+
+        public MinecraftUser getSelectedUser()
+        {
+            if (comboBox_users.SelectedIndex == -1)
+                throw new Exception("No user selected");
+            foreach (MinecraftUser user in MinecraftUserData.users)
+            {
+                if (user.username + ";" + user.password_enc == ((ListBoxItem)comboBox_users.SelectedItem).Uid)
+                {
+                    return user;
+                }
+            }
+            throw new Exception("Specified user not found!");
+        }
+
+        private void updateStatus(object sender, MouseButtonEventArgs e)
+        {
+            label_loginStatus.Content = "Refreshing...";
+            label_multiplayerStatus.Content = "Refreshing...";
+            Thread t = new Thread(updateStatuses);
+            t.Start();
+        }
+
+        private void updateStatuses()
+        {
+            App.mcStatus.refreshStatus();
+            App.InvokeAction(delegate { 
+                label_loginStatus.Content = (App.mcStatus.login ? "Online" : "Offline");
+                label_multiplayerStatus.Content = (App.mcStatus.multiplayer ? "Online" : "Offline");
+            });
         }
     }
 }

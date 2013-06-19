@@ -2,8 +2,11 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MCM.MinecraftFramework
 {
@@ -49,6 +52,29 @@ namespace MCM.MinecraftFramework
             }
         }
 
+        public string BinaryPath
+        {
+            get
+            {
+                return LocalPath + "\\" + Key + ".jar";
+            }
+        }
+
+        public string GetStartArguments(string Username, string Password)
+        {
+            StringBuilder processArguments = new StringBuilder();
+            processArguments.Append("-Xmx"); processArguments.Append(MinecraftData.MinecraftRAM); processArguments.Append(" ");
+            processArguments.Append("\"-Djava.library.path="); processArguments.Append(MinecraftData.NativesPath); processArguments.Append("\" ");
+            processArguments.Append("-cp \""); Libraries.ForEach(l => { if (!l.IsNative) { processArguments.Append(l.Extractpath + ";"); } });
+            processArguments.Append(BinaryPath + "\"; ");
+            processArguments.Append(mainClass + " ");
+
+            MinecraftData.currentSession = SessionInfo.Connect(Username, Password);
+            string ArgumentsString = MinecraftArguments.Replace("${auth_player_name}", MinecraftData.currentSession.username).Replace("${auth_session}", MinecraftData.currentSession.sessionid).Replace("${game_directory}", "\"" + MinecraftData.AppdataPath + "\"").Replace("${game_assets}", "\"" + MinecraftData.AssetsPath + "\"");
+            processArguments.Append(ArgumentsString);
+            return processArguments.ToString();
+        }
+
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -59,6 +85,18 @@ namespace MCM.MinecraftFramework
             sb.AppendLine("mainClass: "+ mainClass);
             sb.AppendLine("Lib count: " + Libraries.Count);
             return sb.ToString();
+        }
+
+        public void DownloadJar()
+        {
+            Task t = new Task(delegate {
+                WebClient wc = new WebClient();
+                App.Log("Downloading minecraft binary for: " + Key);
+                byte[] data = wc.DownloadData(JarUrl);
+                File.WriteAllBytes(BinaryPath, data);
+                App.Log("Saved minecraft binary " + Key + " to: " + BinaryPath);
+            });
+            t.Start();
         }
 
         public static MinecraftVersion fromJson(string json)
@@ -85,7 +123,10 @@ namespace MCM.MinecraftFramework
                     if (obj2["natives"] == null)
                         lib.IsNative = false;
                     else
+                    {
                         lib.IsNative = true;
+                        lib.ExtractExclusions = new List<string>();
+                    }
                     if (obj2["extract"] != null)
                     {
                         foreach (JObject obj3 in obj2["extract"]["exclude"].Children<JObject>())

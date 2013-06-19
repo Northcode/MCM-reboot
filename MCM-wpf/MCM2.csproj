@@ -84,9 +84,11 @@
     <Compile Include="MinecraftFramework\MinecraftAsset.cs" />
     <Compile Include="MinecraftFramework\MinecraftAssetManager.cs" />
     <Compile Include="MinecraftFramework\MinecraftData.cs" />
+    <Compile Include="MinecraftFramework\MinecraftStatus.cs" />
     <Compile Include="MinecraftFramework\MinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\ProcessArguments.cs" />
     <Compile Include="MinecraftFramework\ReleaseType.cs" />
+    <Compile Include="MinecraftFramework\SessionInfo.cs" />
     <Compile Include="MinecraftFramework\TinyMinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\VersionManager.cs" />
     <Compile Include="News\MojangFeedDisplay.xaml.cs">
@@ -100,10 +102,16 @@
     <Compile Include="Pages\MCVersionPage.xaml.cs">
       <DependentUpon>MCVersionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\Setting.xaml.cs">
+      <DependentUpon>Setting.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="User\MinecraftUser.cs" />
     <Compile Include="User\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Download.cs" />
+    <Compile Include="Utils\DownloadManager.cs" />
     <Compile Include="Utils\StreamHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -133,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MCVersionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Setting.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

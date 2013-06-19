@@ -2,10 +2,13 @@
 using MCM.MinecraftFramework;
 using MCM.News;
 using MCM.Pages;
+using MCM.User;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -20,6 +23,7 @@ namespace MCM
     public partial class App : Application
     {
         public static MainWindow mainWindow;
+        public static MinecraftStatus mcStatus = new MinecraftStatus();
 
         App()
         {
@@ -79,8 +83,9 @@ namespace MCM
             t.Start();
         }
 
-        public static void ChooseVersion(MinecraftVersion verison, MCVersionPage page)
+        public static void ChooseVersion(MinecraftVersion version, MCVersionPage page)
         {
+            MinecraftData.selectedVersion = version;
         }
 
         public static void Log(string Line)
@@ -89,6 +94,19 @@ namespace MCM
             {
                 mainWindow.Dispatcher.Invoke((Action)(() => {
                     mainWindow.txtLog.Text += Line + "\n";
+                    mainWindow.txtLog.ScrollToEnd();
+                }));
+            }
+        }
+
+        public static void LogMinecraft(string Line)
+        {
+            if (mainWindow != null)
+            {
+                mainWindow.Dispatcher.Invoke((Action)(() =>
+                {
+                    mainWindow.mcLog.Text += Line + "\n";
+                    mainWindow.mcLog.ScrollToEnd();
                 }));
             }
         }
@@ -96,6 +114,53 @@ namespace MCM
         public static void InvokeAction(Action a)
         {
             mainWindow.Dispatcher.Invoke(a);
+        }
+
+        internal static void StartMinecraft(MinecraftVersion version)
+        {
+            try
+            {
+                Process p = new Process();
+                p.StartInfo.FileName = "java.exe";
+                MinecraftUser user = null;
+                App.InvokeAction(delegate {
+                    user = mainWindow.getSelectedUser();
+                });
+                string uname = user.username;
+                string passw = MinecraftUser.decryptPwd(user.password_enc);
+                if (!File.Exists(version.BinaryPath))
+                {
+                    version.DownloadJar();
+                }
+                version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.Extract(false); } });
+                p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
+                App.LogMinecraft("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
+                p.StartInfo.UseShellExecute = false;
+                p.EnableRaisingEvents = true;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.OutputDataReceived += (s, e) =>
+                {
+                    App.LogMinecraft(e.Data);
+                };
+                p.ErrorDataReceived += (s, e) =>
+                {
+                    App.LogMinecraft("Error > " + e.Data);
+                };
+                App.LogMinecraft("---------------------------- MINECRAFT OUTPUT --------------------------------");
+                p.Start();
+                p.BeginErrorReadLine();
+                p.BeginOutputReadLine();
+                p.Exited += (s, e) =>
+                {
+                    App.LogMinecraft("------------------------ END OF MINECRAFT OUTPUT ----------------------------");
+                };
+            }
+            catch (Exception ex)
+            {
+                App.LogMinecraft("An error occured while starting minecraft: " + ex.ToString());
+            }
         }
     }
 }
