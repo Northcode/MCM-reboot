@@ -29,6 +29,7 @@ namespace MCM.Utils
             catch (Exception e)
             {
                 App.Log("Error while downloading " + Key + ": " + e.ToString());
+                Complete = true;
             }
         }
 

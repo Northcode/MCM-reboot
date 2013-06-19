@@ -132,6 +132,7 @@ namespace MCM
         {
             try
             {
+                App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = false; });
                 App.Log("Waiting for downloads to finish...");
                 DownloadManager.WaitForAll();
                 App.Log("Downloads should be finished!");
@@ -150,6 +151,7 @@ namespace MCM
                 }
                 version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(); } });
                 DownloadManager.DownloadAll();
+                DownloadManager.WaitForAll();
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
                 App.LogMinecraft("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;
@@ -173,6 +175,7 @@ namespace MCM
                 {
                     App.LogMinecraft("------------------------ END OF MINECRAFT OUTPUT ----------------------------");
                 };
+                App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = true; });
             }
             catch (Exception ex)
             {
