@@ -46,7 +46,17 @@ namespace MCM
         {
             if (lstBackup.SelectedItem != null)
             {
-                App.StartMinecraft(((lstBackup.SelectedItem as Label).Tag as MinecraftFramework.TinyMinecraftVersion).FullVersion);
+                Task t = new Task(delegate
+                {
+                    MinecraftFramework.MinecraftVersion v = null;
+                    App.InvokeAction(delegate
+                    {
+                        v = ((lstBackup.SelectedItem as Label).Tag as MinecraftFramework.TinyMinecraftVersion).FullVersion;
+                    });
+                    App.StartMinecraft(v);
+                    
+                });
+                t.Start();
             }
         }
 
