@@ -109,6 +109,8 @@
     <Compile Include="User\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Download.cs" />
+    <Compile Include="Utils\DownloadManager.cs" />
     <Compile Include="Utils\StreamHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
