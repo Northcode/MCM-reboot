@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace MCM.Utils
 {
@@ -44,7 +45,10 @@ namespace MCM.Utils
 
         internal static void WaitForAll()
         {
-            downloads.ForEach(d => { d.WaitForComplete(); });
+            while (downloads.Count > 0)
+            {
+                Thread.Sleep(100);
+            }
         }
     }
 }

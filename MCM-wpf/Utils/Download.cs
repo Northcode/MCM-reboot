@@ -20,23 +20,36 @@ namespace MCM.Utils
         public void DoDownload()
         {
             WebClient wc = new WebClient();
-            wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
-            wc.DownloadDataCompleted += new DownloadDataCompletedEventHandler(wc_DownloadDataCompleted);
-            App.Log("Download: " + Key + " started!");
-            wc.DownloadDataAsync(new Uri(Url));
+            try
+            {
+                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
+                wc.DownloadDataCompleted += new DownloadDataCompletedEventHandler(wc_DownloadDataCompleted);
+                wc.DownloadDataAsync(new Uri(Url));
+            }
+            catch (Exception e)
+            {
+                App.Log("Error while downloading " + Key + ": " + e.ToString());
+            }
         }
 
         void wc_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
         {
-            Data = e.Result;
-            Complete = true;
-            App.InvokeAction(delegate
+            try
             {
-                App.mainWindow.progressBar_dl.IsIndeterminate = false;
-                App.mainWindow.progressBar_dl.Value = 0; 
-            });
-            App.Log("Download: " + Key + " Complete!");
-            Downloaded(this);
+                Data = e.Result;
+                Complete = true;
+                App.InvokeAction(delegate
+                {
+                    App.mainWindow.progressBar_dl.IsIndeterminate = false;
+                    App.mainWindow.progressBar_dl.Value = 0;
+                });
+                App.Log("Download: " + Key + " Complete!");
+                Downloaded(this);
+            }
+            catch (Exception ex)
+            {
+                App.Log("Error while downloading " + Key + ": " + ex.ToString());
+            }
         }
 
         private void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)

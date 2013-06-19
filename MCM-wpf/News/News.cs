@@ -1,4 +1,5 @@
 ﻿using MCM.News;
+using MCM.Utils;
 using System;
 using System.IO;
 using System.Linq;
@@ -101,12 +102,12 @@ namespace MCM
         {
             try
             {
-                WebClient wc = new WebClient();
-                App.Log("Downloading new feed from: https://mojang.com/feed/ to: " + NewsStorage.MojangFeedPath);
-                byte[] data = wc.DownloadData("https://mojang.com/feed/");
-                File.WriteAllBytes(NewsStorage.MojangFeedPath, data);
-                App.Log("Download complete!");
-                ParseMojangXml(NewsStorage.MojangFeedPath);
+                Download dl = DownloadManager.ScheduleDownload("Mojang Feed", "https://www.mojang.com/feed/");
+                dl.Downloaded += d =>
+                {
+                    File.WriteAllBytes(NewsStorage.MojangFeedPath, d.Data);
+                    ParseMojangXml(NewsStorage.MojangFeedPath);
+                };
             }
             catch (Exception ex)
             {
