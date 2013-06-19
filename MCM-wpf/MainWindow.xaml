@@ -60,7 +60,7 @@
             </TabItem>
             <TabItem Header="Console">
                 <Grid>
-                    <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True"/>
+                    <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" ScrollViewer.CanContentScroll="True" />
                 </Grid>
             </TabItem>
         </TabControl>
