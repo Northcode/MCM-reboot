@@ -60,7 +60,14 @@
             </TabItem>
             <TabItem Header="Console">
                 <Grid>
-                    <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" ScrollViewer.CanContentScroll="True" />
+                    <TabControl>
+                        <TabItem Header="Launcher">
+                            <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" ScrollViewer.CanContentScroll="True" />
+                        </TabItem>
+                        <TabItem Header="Minecraft">
+                            <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" ScrollViewer.CanContentScroll="True" />
+                        </TabItem>
+                    </TabControl>
                 </Grid>
             </TabItem>
         </TabControl>
@@ -89,8 +96,8 @@
             </ComboBox>
             <Label Content="Login status:" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Stretch" Grid.ColumnSpan="1"/>
             <Label Content="Multiplayer status:" Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="1"></Label>
-            <Label Content="(bool)" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Stretch"></Label>
-            <Label Content="(bool)" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch"></Label>
+            <Label x:Name="label_loginStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Stretch"></Label>
+            <Label x:Name="label_multiplayerStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch"></Label>
             <Button Content="Start Minecraft" Grid.Column="5" Margin="0,0,10,27" Grid.Row="1" Click="StartMinecraftButton" HorizontalAlignment="Right" Width="115" Height="25" VerticalAlignment="Bottom"/>
             <ComboBox x:Name="comboBox_users" Grid.Column="5" Margin="0,5,10,0" SelectionChanged="ComboBox_SelectionChanged_1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115" />
         </Grid>
