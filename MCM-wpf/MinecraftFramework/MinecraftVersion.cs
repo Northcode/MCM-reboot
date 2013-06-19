@@ -1,4 +1,5 @@
 ﻿using MCM.BackupFramework;
+using MCM.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -87,16 +88,14 @@ namespace MCM.MinecraftFramework
             return sb.ToString();
         }
 
-        public void DownloadJar()
+        public void SchuduleJarDownload()
         {
-            Task t = new Task(delegate {
-                WebClient wc = new WebClient();
-                App.Log("Downloading minecraft binary for: " + Key);
-                byte[] data = wc.DownloadData(JarUrl);
-                File.WriteAllBytes(BinaryPath, data);
-                App.Log("Saved minecraft binary " + Key + " to: " + BinaryPath);
-            });
-            t.Start();
+            Download dl = DownloadManager.ScheduleDownload(Key, JarUrl);
+            dl.Downloaded += (d) => {
+                new FileInfo(LocalPath).Directory.Create();
+                File.WriteAllBytes(LocalPath + "\\" + Key + ".jar", d.Data);
+
+            };
         }
 
         public static MinecraftVersion fromJson(string json)
