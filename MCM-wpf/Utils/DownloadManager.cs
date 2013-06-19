@@ -36,5 +36,10 @@ namespace MCM.Utils
             else
                 throw new Exception("Download: " + Key + " not found in DownloadManger");
         }
+
+        internal static void WaitForAll()
+        {
+            downloads.ForEach(d => { d.WaitForComplete(); });
+        }
     }
 }
