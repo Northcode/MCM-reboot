@@ -25,7 +25,7 @@ namespace MCM.Utils
 
         public static void DownloadAll()
         {
-            downloads.ForEach(d => { d.Download(); });
+            downloads.ForEach(d => { d.DoDownload(); });
         }
 
         public static Download GetDownload(string Key)
