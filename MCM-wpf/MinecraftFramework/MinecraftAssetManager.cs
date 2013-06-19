@@ -14,7 +14,7 @@ namespace MCM.MinecraftFramework
 
         public static void LoadAssets()
         {
-            Download dl = DownloadManager.ScheduleDownload("Assets XML", MinecraftData.AssetsUrl);
+            Download dl = DownloadManager.ScheduleDownload("Assets XML", MinecraftData.AssetsUrl, true);
             string xml = "";
             dl.Downloaded += (d) =>
             {
@@ -52,24 +52,23 @@ namespace MCM.MinecraftFramework
                             assets.Add(current);
                         }
                     }
+                    ScheduleAssetDownloads();
                 }
                 catch (Exception ex)
                 {
                     App.Log("An error occured while parsing assets xml: " + ex.ToString());
+                    throw ex;
                 }
                 finally
                 {
                     sr.Close();
-                    DownloadAssets();
                 }
             };
-            dl.DoDownload();
         }
 
-        internal static void DownloadAssets()
+        internal static void ScheduleAssetDownloads()
         {
             assets.ForEach(a => { a.ScheduleDownload(); });
-            DownloadManager.DownloadAll();
         }
     }
 }
