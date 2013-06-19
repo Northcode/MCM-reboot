@@ -17,7 +17,7 @@ namespace MCM.Utils
 
         public Action<Download> Downloaded;
 
-        public void Download()
+        public void DoDownload()
         {
             WebClient wc = new WebClient();
             App.Log("Download: " + Key + " started!");
