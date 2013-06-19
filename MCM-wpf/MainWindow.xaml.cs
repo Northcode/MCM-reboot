@@ -61,13 +61,11 @@ namespace MCM
 
         private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            App.Log("SelC");
             if (comboBox_users.SelectedIndex == -1)
                 return;
             if (((ListBoxItem)comboBox_users.SelectedItem).Uid == "(new)")
             {
                 
-                App.Log("new");
                 NewUser nu = new NewUser();
                 nu.ShowDialog();
                 comboBox_users.SelectedIndex = -1;
