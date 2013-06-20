@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace MCM.Settings
 {
     /// <summary>
-    /// Interaction logic for Setting.xaml
+    /// Interaction logic for EditSetting.xaml
     /// </summary>
-    public partial class Setting : UserControl
+    public partial class EditSetting : MetroWindow
     {
-        public Setting()
+        public EditSetting()
         {
             InitializeComponent();
         }
