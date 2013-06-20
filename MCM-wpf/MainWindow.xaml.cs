@@ -20,6 +20,7 @@ using MCM.User;
 using MCM.Data;
 using MCM.Utils;
 using MCM.MinecraftFramework;
+using MCM.Settings;
 
 namespace MCM
 {

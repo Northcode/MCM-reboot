@@ -102,10 +102,14 @@
     <Compile Include="Pages\MCVersionPage.xaml.cs">
       <DependentUpon>MCVersionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Setting.xaml.cs">
-      <DependentUpon>Setting.xaml</DependentUpon>
+    <Compile Include="Settings\EditSetting.xaml.cs">
+      <DependentUpon>EditSetting.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\Settings.cs" />
+    <Compile Include="Settings\Setting.cs" />
+    <Compile Include="Settings\SettingItem.xaml.cs">
+      <DependentUpon>SettingItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="TextBoxBehaviour.cs" />
     <Compile Include="User\MinecraftUser.cs" />
     <Compile Include="User\NewUser.xaml.cs">
@@ -145,7 +149,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Setting.xaml">
+    <Page Include="Settings\EditSetting.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\SettingItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
