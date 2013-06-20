@@ -16,6 +16,8 @@ namespace MCM.Utils
         public byte[] Data { get; private set; }
 
         public Action<Download> Downloaded;
+        public bool ShouldContinue { get; set; }
+        public Action<Download> onContinue;
 
         public void DoDownload()
         {
@@ -31,6 +33,11 @@ namespace MCM.Utils
                 App.Log("Error while downloading " + Key + ": " + e.ToString());
                 Complete = true;
             }
+        }
+
+        public void Continue()
+        {
+            onContinue(this);
         }
 
         void wc_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
@@ -55,22 +62,29 @@ namespace MCM.Utils
 
         private void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            int i;
-            if (e.ProgressPercentage == 0)
+            try
             {
-                App.InvokeAction(delegate { App.mainWindow.progressBar_dl.IsIndeterminate = true; });
-            }
-            else
-            {
-                App.InvokeAction(delegate
+                int i;
+                if (e.ProgressPercentage == 0)
                 {
-                    if (App.mainWindow.progressBar_dl.Value < e.ProgressPercentage)
-                    // Check if another download is already running so the bar doesn't spaz out
+                    App.InvokeAction(delegate { App.mainWindow.progressBar_dl.IsIndeterminate = true; });
+                }
+                else
+                {
+                    App.InvokeAction(delegate
                     {
-                        App.mainWindow.progressBar_dl.IsIndeterminate = false;
-                        App.mainWindow.progressBar_dl.Value = e.ProgressPercentage;
-                    }
-                });
+                        if (App.mainWindow.progressBar_dl.Value < e.ProgressPercentage)
+                        // Check if another download is already running so the bar doesn't spaz out
+                        {
+                            App.mainWindow.progressBar_dl.IsIndeterminate = false;
+                            App.mainWindow.progressBar_dl.Value = e.ProgressPercentage;
+                        }
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Log("Error while downloading " + Key + ": " + ex.ToString());
             }
         }
 

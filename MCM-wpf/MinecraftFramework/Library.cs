@@ -42,8 +42,11 @@ namespace MCM.MinecraftFramework
 
         public void ScheduleExtract()
         {
-            Download dl = DownloadManager.ScheduleDownload(Name, Url);
-            dl.Downloaded += (d) => { Extract_(d.Data); };
+            if (!File.Exists(Extractpath))
+            {
+                Download dl = DownloadManager.ScheduleDownload(Name, Url, false);
+                dl.Downloaded += (d) => { Extract_(d.Data); d.Continue(); };
+            }
         }
 
         private void Extract_(byte[] fileData)
@@ -69,10 +72,7 @@ namespace MCM.MinecraftFramework
                     }
                 }
             }
-            else
-            {
-                File.WriteAllBytes(Extractpath, fileData);
-            }
+            File.WriteAllBytes(Extractpath, fileData); //Do this anyway so we know if it is downloaded
         }
     }
 }
