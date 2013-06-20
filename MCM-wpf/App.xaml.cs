@@ -2,8 +2,10 @@
 using MCM.MinecraftFramework;
 using MCM.News;
 using MCM.Pages;
+using MCM.Settings;
 using MCM.User;
 using MCM.Utils;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,6 +14,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,11 +40,15 @@ namespace MCM
         {
             PathData.InitDirectories();
             NewsStorage.InitDirectories();
+            SettingsManager.Load();
             MinecraftUserData.loadUsers();
+
+            SettingsManager.AddDefault("javapath", "java", "java.exe");
 
             App app = new App();
             mainWindow = new MainWindow();
 
+            SettingsManager.LoadList();
 
             ScheduleMinecraftVersionJsonDownload();
 
@@ -49,9 +56,12 @@ namespace MCM
 
             DownloadManager.DownloadAll();
 
+            App.Log("Java version: " + GetJavaVersionInformation());
+
             app.Run(mainWindow);
 
             MinecraftUserData.saveUsers();
+            SettingsManager.Save();
         }
 
         private static void ScheduleMinecraftVersionJsonDownload()
@@ -123,6 +133,47 @@ namespace MCM
             }
         }
 
+        public static bool IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static string GetJavaInstallationPath()
+        {
+            string javaKey = "SOFTWARE\\JavaSoft\\Java Runtime Environment";
+            using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey(javaKey))
+            {
+                String currentVersion = baseKey.GetValue("CurrentVersion").ToString();
+                using (var homeKey = baseKey.OpenSubKey(currentVersion))
+                    return homeKey.GetValue("JavaHome").ToString();
+            }
+        }
+
+        public static string GetJavaVersionInformation()
+        {
+            try
+            {
+                System.Diagnostics.ProcessStartInfo procStartInfo =
+                    new System.Diagnostics.ProcessStartInfo("java", "-version ");
+
+                procStartInfo.RedirectStandardOutput = true;
+                procStartInfo.RedirectStandardError = true;
+                procStartInfo.UseShellExecute = false;
+                procStartInfo.CreateNoWindow = true;
+                System.Diagnostics.Process proc = new Process();
+                proc.StartInfo = procStartInfo;
+                proc.Start();
+                return proc.StandardError.ReadToEnd();
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         internal static void StartMinecraft(MinecraftVersion version)
         {
             try
@@ -133,7 +184,12 @@ namespace MCM
                 App.Log("Downloads should be finished!");
                 Process p = new Process();
                 MinecraftData.AppdataPath = MinecraftData.VersionsPath + "\\" + version.Key + "\\minecraft";
-                p.StartInfo.FileName = "java.exe";
+                string java = "C:\\Program Files\\Java\\jre7\\bin\\java.exe";
+                if (IsAdministrator())
+                {
+                    java = GetJavaInstallationPath() + "\\bin\\java.exe";
+                }
+                p.StartInfo.FileName = java;
                 MinecraftUser user = null;
                 App.InvokeAction(delegate {
                     user = mainWindow.getSelectedUser();
@@ -149,7 +205,7 @@ namespace MCM
                 App.Log("Waiting for minecraft download...");
                 DownloadManager.WaitForAll();
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
-                App.Log("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
+                App.Log("Starting Minecraft with arguments: " + p.StartInfo.FileName + " " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;
                 p.EnableRaisingEvents = true;
                 p.StartInfo.CreateNoWindow = true;

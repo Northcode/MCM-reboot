@@ -13,6 +13,8 @@ namespace MCM.Data
         public static string OldAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.mcm";
         public static string DocumentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MC Manager";
 
+        public static string SettingsPath { get { return AppDataPath + "\\settings.xml"; } }
+
         public static void InitDirectories()
         {
             Directory.CreateDirectory(AppDataPath);
