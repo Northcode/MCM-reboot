@@ -18,6 +18,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MCM.User;
 using MCM.Data;
+using MCM.Utils;
+using MCM.MinecraftFramework;
+using MCM.Settings;
 
 namespace MCM
 {
@@ -34,6 +37,7 @@ namespace MCM
             // News feed display
             initializeNewsFeed();
             updateUsersList();
+
         }
 
         /// <summary>
@@ -65,7 +69,6 @@ namespace MCM
                 return;
             if (((ListBoxItem)comboBox_users.SelectedItem).Uid == "(new)")
             {
-                
                 NewUser nu = new NewUser();
                 nu.ShowDialog();
                 comboBox_users.SelectedIndex = -1;
@@ -123,6 +126,35 @@ namespace MCM
         public void updateProgressBar(int i)
         {
             progressBar_dl.Value = i;
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void MetroWindow_Initialized(object sender, EventArgs e)
+        {
+        }
+
+        private void cbxType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            lstBackup.Items.Filter = null;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.snapshot; };
         }
     }
 }

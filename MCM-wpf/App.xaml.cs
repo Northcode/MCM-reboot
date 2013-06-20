@@ -2,8 +2,10 @@
 using MCM.MinecraftFramework;
 using MCM.News;
 using MCM.Pages;
+using MCM.Settings;
 using MCM.User;
 using MCM.Utils;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,6 +14,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,29 +40,36 @@ namespace MCM
         {
             PathData.InitDirectories();
             NewsStorage.InitDirectories();
+            SettingsManager.Load();
             MinecraftUserData.loadUsers();
 
-            Task t = new Task(delegate
-            {
-                MinecraftAssetManager.LoadAssets();
-            });
+            SettingsManager.AddDefault("javapath", "java", "java.exe");
 
-            LoadMinecraftVersions();
-            t.Start();
-
-            mainWindow = new MainWindow();
             App app = new App();
+            mainWindow = new MainWindow();
+
+            SettingsManager.LoadList();
+
+            ScheduleMinecraftVersionJsonDownload();
+
+            MinecraftAssetManager.LoadAssets();
+
+            DownloadManager.DownloadAll();
+
+            App.Log("Java version: " + GetJavaVersionInformation());
+
             app.Run(mainWindow);
 
             MinecraftUserData.saveUsers();
+            SettingsManager.Save();
         }
 
-        private static void LoadMinecraftVersions()
+        private static void ScheduleMinecraftVersionJsonDownload()
         {
-            Task t = new Task(delegate
+            Download dl = DownloadManager.ScheduleDownload("Minecraft Version Json", MinecraftData.VersionsUrl,true);
+            dl.Downloaded += (d) =>
             {
-                WebClient wc = new WebClient();
-                string json = wc.DownloadString(MinecraftData.VersionsUrl);
+                string json = Encoding.ASCII.GetString(d.Data);
                 VersionManager.LoadJson(json);
                 App.InvokeAction(delegate
                 {
@@ -86,8 +97,7 @@ namespace MCM
                         App.mainWindow.lstBackup.Items.Add(lbl);
                     }
                 });
-            });
-            t.Start();
+            };
         }
 
         public static void ChooseVersion(MinecraftVersion version, MCVersionPage page)
@@ -118,13 +128,49 @@ namespace MCM
 
         public static void InvokeAction(Action a)
         {
-            try
-            {
+            if(mainWindow != null) {
                 mainWindow.Dispatcher.Invoke(a);
             }
-            catch (NullReferenceException e)
+        }
+
+        public static bool IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static string GetJavaInstallationPath()
+        {
+            string javaKey = "SOFTWARE\\JavaSoft\\Java Runtime Environment";
+            using (var baseKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey(javaKey))
             {
-                // The window hasn't opened yet
+                String currentVersion = baseKey.GetValue("CurrentVersion").ToString();
+                using (var homeKey = baseKey.OpenSubKey(currentVersion))
+                    return homeKey.GetValue("JavaHome").ToString();
+            }
+        }
+
+        public static string GetJavaVersionInformation()
+        {
+            try
+            {
+                System.Diagnostics.ProcessStartInfo procStartInfo =
+                    new System.Diagnostics.ProcessStartInfo("java", "-version ");
+
+                procStartInfo.RedirectStandardOutput = true;
+                procStartInfo.RedirectStandardError = true;
+                procStartInfo.UseShellExecute = false;
+                procStartInfo.CreateNoWindow = true;
+                System.Diagnostics.Process proc = new Process();
+                proc.StartInfo = procStartInfo;
+                proc.Start();
+                return proc.StandardError.ReadToEnd();
+
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
@@ -132,13 +178,18 @@ namespace MCM
         {
             try
             {
-                App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = false; });
+                //This causes freeze: App.InvokeAction(delegate { App.mainWindow.IsEnabled = false; });
                 App.Log("Waiting for downloads to finish...");
                 DownloadManager.WaitForAll();
                 App.Log("Downloads should be finished!");
                 Process p = new Process();
                 MinecraftData.AppdataPath = MinecraftData.VersionsPath + "\\" + version.Key + "\\minecraft";
-                p.StartInfo.FileName = "java.exe";
+                string java = "C:\\Program Files\\Java\\jre7\\bin\\java.exe";
+                if (IsAdministrator())
+                {
+                    java = GetJavaInstallationPath() + "\\bin\\java.exe";
+                }
+                p.StartInfo.FileName = java;
                 MinecraftUser user = null;
                 App.InvokeAction(delegate {
                     user = mainWindow.getSelectedUser();
@@ -151,9 +202,10 @@ namespace MCM
                 }
                 version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(); } });
                 DownloadManager.DownloadAll();
+                App.Log("Waiting for minecraft download...");
                 DownloadManager.WaitForAll();
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
-                App.LogMinecraft("Starting Minecraft with arguments: " + p.StartInfo.Arguments);
+                App.Log("Starting Minecraft with arguments: " + p.StartInfo.FileName + " " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;
                 p.EnableRaisingEvents = true;
                 p.StartInfo.CreateNoWindow = true;
@@ -167,19 +219,13 @@ namespace MCM
                 {
                     App.LogMinecraft("Error > " + e.Data);
                 };
-                App.LogMinecraft("---------------------------- MINECRAFT OUTPUT --------------------------------");
                 p.Start();
                 p.BeginErrorReadLine();
                 p.BeginOutputReadLine();
-                p.Exited += (s, e) =>
-                {
-                    App.LogMinecraft("------------------------ END OF MINECRAFT OUTPUT ----------------------------");
-                };
-                App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = true; });
             }
             catch (Exception ex)
             {
-                App.LogMinecraft("An error occured while starting minecraft: " + ex.ToString());
+                App.Log("An error occured while starting minecraft: " + ex.ToString());
             }
         }
     }
