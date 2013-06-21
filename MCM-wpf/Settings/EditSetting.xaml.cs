@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,16 @@ namespace MCM.Settings
         public EditSetting()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog fd = new OpenFileDialog();
+            fd.Filter = "Any File|*.*";
+            fd.Multiselect = false;
+            fd.Title = "Import file path";
+            fd.ShowDialog();
+            this.SettingValue.Text = fd.FileName;
         }
     }
 }

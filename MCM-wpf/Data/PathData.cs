@@ -14,11 +14,13 @@ namespace MCM.Data
         public static string DocumentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MC Manager";
 
         public static string SettingsPath { get { return AppDataPath + "\\settings.xml"; } }
+        public static string InstacesPath {get { return DocumentPath + "\\instaces"; }}
 
         public static void InitDirectories()
         {
             Directory.CreateDirectory(AppDataPath);
             Directory.CreateDirectory(DocumentPath);
+            Directory.CreateDirectory(InstacesPath);
         }
     }
 }
