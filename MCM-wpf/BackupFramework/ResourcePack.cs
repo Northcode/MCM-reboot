@@ -4,14 +4,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Ionic.Zip;
+using System.Windows.Forms;
 
-namespace MCM.MinecraftFramework
+namespace MCM.BackupFramework
 {
-    class ResourcePack
+    public class ResourcePack
     {
         public string name { get; set; }
         public ResourceInfo packInfo { get; set; }
         public string path { get; set; }
+
+        public ResourcePack(string path)
+        {
+            this.path = path;
+            this.name = Path.GetFileNameWithoutExtension(path);
+            this.packInfo.parseJsonFromZip(path);
+        }
 
         public void getPath()
         {
@@ -20,14 +29,25 @@ namespace MCM.MinecraftFramework
 
         public void getPath(string packDir)
         {
-
+            throw new NotImplementedException();
         }
     }
 
-    class ResourceInfo
+    public class ResourceInfo
     {
         public int packFormat { get; set; }
         public string desc { get; set; }
+
+        public void parseJsonFromZip(string path)
+        {
+            Stream s = Stream.Null;
+            using (ZipFile zip = ZipFile.Read(path))
+            {
+                ZipEntry e = zip["pack.mcmeta"];
+                e.Extract(s);
+            }
+            MessageBox.Show(s.ToString());
+        }
 
         public void parseJson(string json)
         {

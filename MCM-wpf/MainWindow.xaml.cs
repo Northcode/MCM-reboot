@@ -39,6 +39,15 @@ namespace MCM
             initializeNewsFeed();
             updateUsersList();
 
+            System.Timers.Timer t = new System.Timers.Timer(200);
+            t.Elapsed += timerTick;
+            t.Start();
+
+        }
+
+        void timerTick(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            updateDownloadConsole();
         }
 
         /// <summary>
@@ -103,6 +112,22 @@ namespace MCM
                 nu.ShowDialog();
                 comboBox_users.SelectedIndex = -1;
                 updateUsersList();
+            }
+        }
+
+
+        private void updateDownloadConsole()
+        {
+            listBox_downloadManager.Items.Clear();
+            List<Download> dls = DownloadManager.getAllDownloads();
+            foreach (Download dl in dls)
+            {
+                DownloadControl control = new DownloadControl(dl.Key, dl.Url);
+                if (dl.ShouldContinue)
+                {
+                    control.status = "downloading...";
+                }
+                listBox_downloadManager.Items.Add(control);
             }
         }
 

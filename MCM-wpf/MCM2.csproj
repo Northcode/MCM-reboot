@@ -39,6 +39,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="Ionic.Zip">
+      <HintPath>Libraries\Ionic.Zip.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\MCM-reboot\packages\MahApps.Metro.0.10.1.1\lib\net40\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -82,7 +85,6 @@
     <Compile Include="BackupFramework\InstanceManager.cs" />
     <Compile Include="Data\MinecraftUserData.cs" />
     <Compile Include="Data\PathData.cs" />
-    <Compile Include="Instances\MinecraftInstance.cs" />
     <Compile Include="MinecraftFramework\Library.cs" />
     <Compile Include="MinecraftFramework\MinecraftAsset.cs" />
     <Compile Include="MinecraftFramework\MinecraftAssetManager.cs" />
@@ -91,7 +93,7 @@
     <Compile Include="MinecraftFramework\MinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\ProcessArguments.cs" />
     <Compile Include="MinecraftFramework\ReleaseType.cs" />
-    <Compile Include="MinecraftFramework\ResourcePack.cs" />
+    <Compile Include="BackupFramework\ResourcePack.cs" />
     <Compile Include="MinecraftFramework\SessionInfo.cs" />
     <Compile Include="MinecraftFramework\TinyMinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\VersionManager.cs" />
@@ -119,7 +121,11 @@
     <Compile Include="User\NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\CopyDirectory.cs" />
     <Compile Include="Utils\Download.cs" />
+    <Compile Include="Utils\DownloadControl.xaml.cs">
+      <DependentUpon>DownloadControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\DownloadManager.cs" />
     <Compile Include="Utils\StreamHelper.cs" />
     <Page Include="MainWindow.xaml">
@@ -162,6 +168,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="User\NewUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utils\DownloadControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
