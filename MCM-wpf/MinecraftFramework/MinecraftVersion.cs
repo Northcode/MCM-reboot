@@ -64,7 +64,7 @@ namespace MCM.MinecraftFramework
         public string GetStartArguments(string Username, string Password)
         {
             StringBuilder processArguments = new StringBuilder();
-            processArguments.Append("-Xmx"); processArguments.Append(MinecraftData.MinecraftRAM); processArguments.Append(" ");
+            processArguments.Append("-Xmx"); processArguments.Append(Settings.SettingsManager.GetSetting("MinecraftRAM").data.ToString()); processArguments.Append(" ");
             processArguments.Append("\"-Djava.library.path="); processArguments.Append(MinecraftData.NativesPath); processArguments.Append("\" ");
             processArguments.Append("-cp \""); Libraries.ForEach(l => { if (!l.IsNative) { processArguments.Append(l.Extractpath + ";"); } });
             processArguments.Append(BinaryPath + "\"; ");

@@ -64,7 +64,6 @@ namespace MCM.Utils
         {
             try
             {
-                int i;
                 if (e.ProgressPercentage == 0)
                 {
                     App.InvokeAction(delegate { App.mainWindow.progressBar_dl.IsIndeterminate = true; });

@@ -33,6 +33,9 @@
                     <ListBox x:Name="lstBackup" Margin="0" Grid.Row="1"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Instaces">
+                
+            </TabItem>
             <TabItem Header="News Feed">
                 <TabControl Margin="0">
                     <TabItem Header="Launcher Feed">
