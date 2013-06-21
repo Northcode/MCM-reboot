@@ -78,6 +78,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="BackupFramework\Instance.cs" />
+    <Compile Include="BackupFramework\InstanceManager.cs" />
     <Compile Include="Data\MinecraftUserData.cs" />
     <Compile Include="Data\PathData.cs" />
     <Compile Include="Instances\MinecraftInstance.cs" />

@@ -44,6 +44,7 @@ namespace MCM
             MinecraftUserData.loadUsers();
 
             SettingsManager.AddDefault("javapath", "java", "java.exe");
+            SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
 
             App app = new App();
             mainWindow = new MainWindow();
@@ -184,11 +185,7 @@ namespace MCM
                 App.Log("Downloads should be finished!");
                 Process p = new Process();
                 MinecraftData.AppdataPath = MinecraftData.VersionsPath + "\\" + version.Key + "\\minecraft";
-                string java = "C:\\Program Files\\Java\\jre7\\bin\\java.exe";
-                if (IsAdministrator())
-                {
-                    java = GetJavaInstallationPath() + "\\bin\\java.exe";
-                }
+                string java = SettingsManager.GetSetting("javapath").data.ToString();
                 p.StartInfo.FileName = java;
                 MinecraftUser user = null;
                 App.InvokeAction(delegate {

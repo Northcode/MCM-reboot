@@ -24,12 +24,17 @@ namespace MCM.Utils
         static void DownloadComplete(Download sender)
         {
             if (sender.ShouldContinue)
-                downloads.Remove(sender);
+                DownloadContinue(sender);
         }
 
         static void DownloadContinue(Download sender)
         {
             downloads.Remove(sender);
+            App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = downloads.Count + " left"; });
+            if (downloads.Count == 0)
+            {
+                App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = ""; });
+            }
         }
 
         public static void DownloadAll()
@@ -39,7 +44,6 @@ namespace MCM.Utils
                 App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = downloads.Count + " left"; });
                 d.DoDownload();
             });
-            App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = ""; });
         }
 
         public static Download GetDownload(string Key)
