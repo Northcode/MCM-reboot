@@ -18,21 +18,42 @@ namespace MCM.BackupFramework
         {
             get
             {
-                return PathData.InstacesPath + "\\" + Name;
+                return PathData.InstacesPath + "\\" + this.Name;
             }
         }
 
-        public string[] ResourcePacks
+        public List<ResourcePack> ResourcePacks
         {
             get
             {
-                if (Directory.Exists(Path + "\\texturepacks"))
+                if (Directory.Exists(this.Path + "\\resourcepacks"))
                 {
-                    return GetSubFilesAsStringArray(Path + "\\texturepacks");
+                    List<ResourcePack> packs = new List<ResourcePack>();
+                    foreach (string file in Directory.GetFiles(this.Path + "\\resourcepacks"))
+                    {
+                        FileInfo finfo = new FileInfo(file);
+                        if (finfo.Extension == ".zip")
+                        {
+                            ResourcePack pack = new ResourcePack(file);
+                            packs.Add(pack);
+                        }
+                    }
+                    return packs;
                 }
-                else if (Directory.Exists(Path + "\\resourcepacks"))
+                else
                 {
-                    return GetSubFilesAsStringArray(Path + "\\resourcepacks");
+                    return new List<ResourcePack>();
+                }
+            }
+        }
+
+        public string[] texturePacks
+        {
+            get
+            {
+                if (Directory.Exists(this.Path + "\\texturepacks"))
+                {
+                    return GetSubFilesAsStringArray(this.Path + "\\texturepacks");
                 }
                 else
                 {
@@ -45,9 +66,9 @@ namespace MCM.BackupFramework
         {
             get
             {
-                if (Directory.Exists(Path + "\\saves"))
+                if (Directory.Exists(this.Path + "\\saves"))
                 {
-                    return GetSubDirectoriesAsStringArray(Path + "\\saves");
+                    return GetSubDirectoriesAsStringArray(this.Path + "\\saves");
                 }
                 else
                 {

@@ -21,6 +21,20 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <TabControl x:Name="Tabs">
+            <TabItem Header="Instances">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="113*"/>
+                        <ColumnDefinition Width="63*"/>
+                    </Grid.ColumnDefinitions>
+                    <TreeView x:Name="treeView_instances" BorderThickness="0">
+                        <TreeViewItem Header="Test1">
+                            <TreeViewItem Header="SubTest1"/>
+                        </TreeViewItem>
+                    </TreeView>
+                    <ListBox Grid.Column="1"/>
+                </Grid>
+            </TabItem>
             <TabItem Header="Versions">
                 <Grid Margin="0">
                     <Grid.RowDefinitions>
@@ -33,14 +47,11 @@
                     <ListBox x:Name="lstBackup" Margin="0" Grid.Row="1"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="Instaces">
-                
-            </TabItem>
             <TabItem Header="News Feed">
                 <TabControl Margin="0">
                     <TabItem Header="Launcher Feed">
                         <Grid Margin="0">
-                            <WebBrowser x:Name="webBrowser_launcherFeed" Margin="0" Navigating="BlockWebbrowser"/>
+                            <WebBrowser x:Name="webBrowser_launcherFeed" Navigating="webBrowser_Navigating" Margin="0"/>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Mojang">
@@ -57,7 +68,7 @@
                                 <ColumnDefinition Width="694"/>
                             </Grid.ColumnDefinitions>
                             <ListBox Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,564,0"/>
-                            <WebBrowser x:Name="webBrowser_launcherFeed_Twitter" Margin="10,0,0,0" Navigating="BlockWebbrowser"/>
+                            <WebBrowser x:Name="webBrowser_launcherFeed_Twitter" Margin="10,0,0,0" Navigating="webBrowser_Navigating"/>
                         </Grid>
                     </TabItem>
                 </TabControl>
@@ -65,7 +76,7 @@
             <TabItem Header="Settings">
                 <Grid>
                     <ListBox x:Name="lstSettings" x:FieldModifier="public">
-                        
+
                     </ListBox>
                 </Grid>
             </TabItem>
@@ -85,17 +96,22 @@
                         <TabItem Header="Minecraft">
                             <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" VerticalScrollBarVisibility="Visible" local:TextBoxBehaviour.ScrollOnTextChanged="True"/>
                         </TabItem>
+                        <TabItem Header="Download Manager">
+                            <ListBox x:Name="listBox_downloadManager">
+
+                            </ListBox>
+                        </TabItem>
                     </TabControl>
                 </Grid>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="1" Margin="0,7,10,7">
+        <Grid Grid.Row="1" Margin="0,7">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="95"/>
-                <ColumnDefinition Width="137"/>
+                <ColumnDefinition Width="114"/>
+                <ColumnDefinition Width="118"/>
                 <ColumnDefinition Width="106"/>
                 <ColumnDefinition Width="101"/>
-                <ColumnDefinition Width="136*"/>
+                <ColumnDefinition/>
                 <ColumnDefinition Width="130"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -109,8 +125,8 @@
             <Label x:Name="label_multiplayerStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch"/>
             <Button x:Name="btn_startMinecraft" Content="Start Minecraft" Grid.Column="5" Margin="0,7,10,0" Grid.Row="1" Click="StartMinecraftButton" HorizontalAlignment="Right" Width="115" Height="25" VerticalAlignment="Top"/>
             <ComboBox x:Name="comboBox_users" Grid.Column="5" Margin="0,5,10,0" SelectionChanged="ComboBox_SelectionChanged_1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115" />
-            <ProgressBar x:Name="progressBar_dl" Grid.ColumnSpan="6" Grid.Row="2" Height="Auto" Margin="10,0,0,0"/>
-            <Label x:Name="label_dlCount" Content="" Grid.Column="3" HorizontalAlignment="Left" Margin="29,33,0,-2" Grid.Row="1" VerticalAlignment="Top" FontSize="9" Width="62" Height="21" Grid.RowSpan="2"/>
+            <ProgressBar x:Name="progressBar_dl" Grid.ColumnSpan="6" Grid.Row="2" Height="Auto" Background="Transparent"/>
+            <Label x:Name="label_dlCount" Content="" Grid.Column="3" Margin="29,33,10,-2" Grid.Row="1" VerticalAlignment="Top" FontSize="9" Height="21" Grid.RowSpan="2"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>

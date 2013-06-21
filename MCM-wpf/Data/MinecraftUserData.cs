@@ -11,7 +11,7 @@ namespace MCM.Data
     class MinecraftUserData
     {
         public static List<MinecraftUser> users = new List<MinecraftUser>();
-        private static string userDataSavePath = PathData.AppDataPath + "\\users\\";
+        private static string userDataSavePath = PathData.DataPath + "\\users\\";
 
         public static void loadUsers()
         {
