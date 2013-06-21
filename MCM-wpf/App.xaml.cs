@@ -1,4 +1,5 @@
-﻿using MCM.Data;
+﻿using Ionic.Zip;
+using MCM.Data;
 using MCM.MinecraftFramework;
 using MCM.News;
 using MCM.Pages;
@@ -38,6 +39,7 @@ namespace MCM
         [STAThread]
         static void Main()
         {
+
             PathData.InitDirectories();
             NewsStorage.InitDirectories();
             SettingsManager.Load();
