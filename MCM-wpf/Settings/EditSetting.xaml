@@ -21,7 +21,7 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="SettingName" x:FieldModifier="public" Content="SETTING NAME" Margin="5" Grid.Row="0"/>
+        <Label x:Name="SettingName" x:FieldModifier="public" Content="SETTING NAME" Margin="5,5,5,0" Grid.Row="0"/>
         <TextBox x:Name="SettingValue" x:FieldModifier="public" Text="SETTING NAME" Margin="5" Grid.Row="1"/>
         <Button x:Name="SettingSave" x:FieldModifier="public" Content="Save" Width="60" Margin="5" HorizontalAlignment="Right" Grid.Row="2"/>
     </Grid>

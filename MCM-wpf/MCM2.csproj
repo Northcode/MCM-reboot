@@ -80,6 +80,7 @@
     </Page>
     <Compile Include="Data\MinecraftUserData.cs" />
     <Compile Include="Data\PathData.cs" />
+    <Compile Include="Instances\MinecraftInstance.cs" />
     <Compile Include="MinecraftFramework\Library.cs" />
     <Compile Include="MinecraftFramework\MinecraftAsset.cs" />
     <Compile Include="MinecraftFramework\MinecraftAssetManager.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="MinecraftFramework\MinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\ProcessArguments.cs" />
     <Compile Include="MinecraftFramework\ReleaseType.cs" />
+    <Compile Include="MinecraftFramework\ResourcePack.cs" />
     <Compile Include="MinecraftFramework\SessionInfo.cs" />
     <Compile Include="MinecraftFramework\TinyMinecraftVersion.cs" />
     <Compile Include="MinecraftFramework\VersionManager.cs" />
