@@ -50,6 +50,9 @@
                     <ListBox x:Name="lstBackup" Margin="0" Grid.Row="1"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Instaces">
+                
+            </TabItem>
             <TabItem Header="News Feed">
                 <TabControl Margin="0">
                     <TabItem Header="Launcher Feed">
@@ -87,7 +90,14 @@
                 <Grid>
                     <TabControl>
                         <TabItem Header="Launcher">
-                            <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True"  VerticalScrollBarVisibility="Visible" local:TextBoxBehaviour.ScrollOnTextChanged="True"/>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="40"/>
+                                </Grid.RowDefinitions>
+                                <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True"  VerticalScrollBarVisibility="Visible" local:TextBoxBehaviour.ScrollOnTextChanged="True" Grid.Row="0"/>
+                                <Button Content="Download All Scheduled downloads" Grid.Row="1" Click="Button_Click_3" />
+                            </Grid>
                         </TabItem>
                         <TabItem Header="Minecraft">
                             <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" VerticalScrollBarVisibility="Visible" local:TextBoxBehaviour.ScrollOnTextChanged="True"/>

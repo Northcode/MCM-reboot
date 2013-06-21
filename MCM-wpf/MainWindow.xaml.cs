@@ -186,5 +186,10 @@ namespace MCM
         {
             lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.snapshot; };
         }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            DownloadManager.DownloadAll();
+        }
     }
 }

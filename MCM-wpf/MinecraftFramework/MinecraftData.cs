@@ -19,8 +19,6 @@ namespace MCM.MinecraftFramework
         public const string LibraryUrl = "https://s3.amazonaws.com/Minecraft.Download/libraries/";
         public const string VersionsUrl = "http://s3.amazonaws.com/Minecraft.Download/versions/versions.json";
 
-        public static string MinecraftRAM = "1G";
-
         /// <summary>
         /// USE STRING.FORMAT! {0} is username, {1} is password!
         /// </summary>
