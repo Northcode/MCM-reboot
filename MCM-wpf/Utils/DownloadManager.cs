@@ -21,6 +21,11 @@ namespace MCM.Utils
             return d;
         }
 
+        public static List<Download> getAllDownloads()
+        {
+            return downloads;
+        }
+
         static void DownloadComplete(Download sender)
         {
             if (sender.ShouldContinue)
