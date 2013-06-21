@@ -27,9 +27,15 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
+<<<<<<< HEAD
         <Label x:Name="SettingName" x:FieldModifier="public" Content="SETTING NAME" Margin="5" Grid.Row="0" Grid.ColumnSpan="4"/>
         <TextBox x:Name="SettingValue" x:FieldModifier="public" Text="SETTING NAME" Margin="5" Grid.Row="1" Grid.ColumnSpan="4"/>
         <Button x:Name="SettingSave" x:FieldModifier="public" Content="Save" Margin="5"  Grid.Row="2" Grid.Column="3"/>
         <Button Content="Browse From File" Margin="5" Grid.Row="2" Grid.Column="2" Click="Button_Click"/>
+=======
+        <Label x:Name="SettingName" x:FieldModifier="public" Content="SETTING NAME" Margin="5,5,5,0" Grid.Row="0"/>
+        <TextBox x:Name="SettingValue" x:FieldModifier="public" Text="SETTING NAME" Margin="5" Grid.Row="1"/>
+        <Button x:Name="SettingSave" x:FieldModifier="public" Content="Save" Width="60" Margin="5" HorizontalAlignment="Right" Grid.Row="2"/>
+>>>>>>> 9da41f3c3ca6ca34ab3b82757248cf2dd3fc5914
     </Grid>
 </Controls:MetroWindow>

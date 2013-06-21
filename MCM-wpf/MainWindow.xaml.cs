@@ -21,6 +21,7 @@ using MCM.Data;
 using MCM.Utils;
 using MCM.MinecraftFramework;
 using MCM.Settings;
+using System.Diagnostics;
 
 namespace MCM
 {
@@ -63,6 +64,35 @@ namespace MCM
             }
         }
 
+        /// <summary>
+        /// Make the webbrowser navigate to the link but in the default webbrowser.
+        /// <value name="webBrowser_willNavigate">The count of the webbrowsers. Update this if you add/remove a webbrowser with this void with this event handler</value>
+        /// <param name="sender">The webbrowser that fired the event</param>
+        /// </summary>
+        private static int webBrowser_willNavigate = 0;
+        private void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (webBrowser_willNavigate != 2)
+            {
+                webBrowser_willNavigate++;
+                return;
+            }
+
+            e.Cancel = true;
+
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = e.Uri.ToString()
+            };
+
+            Process.Start(startInfo);
+        }
+
+        /// <summary>
+        /// Check if the NewUser dialog has to be opened
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             if (comboBox_users.SelectedIndex == -1)

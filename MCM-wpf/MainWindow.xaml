@@ -21,6 +21,23 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <TabControl x:Name="Tabs">
+            <TabItem Header="Instances">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="113*"/>
+                        <ColumnDefinition Width="63*"/>
+                    </Grid.ColumnDefinitions>
+                    <TreeView x:Name="treeView_instances">
+                        <TreeViewItem Header="Test1">
+                            <TreeViewItem Header="SubTest1"/>
+                        </TreeViewItem>
+                    </TreeView>
+                    <ListBox Grid.Column="1"/>
+
+
+
+                </Grid>
+            </TabItem>
             <TabItem Header="Versions">
                 <Grid Margin="0">
                     <Grid.RowDefinitions>
@@ -40,7 +57,7 @@
                 <TabControl Margin="0">
                     <TabItem Header="Launcher Feed">
                         <Grid Margin="0">
-                            <WebBrowser x:Name="webBrowser_launcherFeed" Margin="0" Navigating="BlockWebbrowser"/>
+                            <WebBrowser x:Name="webBrowser_launcherFeed" Navigating="webBrowser_Navigating" Margin="0"/>
                         </Grid>
                     </TabItem>
                     <TabItem Header="Mojang">
@@ -57,7 +74,7 @@
                                 <ColumnDefinition Width="694"/>
                             </Grid.ColumnDefinitions>
                             <ListBox Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,564,0"/>
-                            <WebBrowser x:Name="webBrowser_launcherFeed_Twitter" Margin="10,0,0,0" Navigating="BlockWebbrowser"/>
+                            <WebBrowser x:Name="webBrowser_launcherFeed_Twitter" Margin="10,0,0,0" Navigating="webBrowser_Navigating"/>
                         </Grid>
                     </TabItem>
                 </TabControl>
@@ -65,7 +82,7 @@
             <TabItem Header="Settings">
                 <Grid>
                     <ListBox x:Name="lstSettings" x:FieldModifier="public">
-                        
+
                     </ListBox>
                 </Grid>
             </TabItem>
@@ -91,11 +108,11 @@
         </TabControl>
         <Grid Grid.Row="1" Margin="0,7,10,7">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="95"/>
-                <ColumnDefinition Width="137"/>
+                <ColumnDefinition Width="114"/>
+                <ColumnDefinition Width="118"/>
                 <ColumnDefinition Width="106"/>
                 <ColumnDefinition Width="101"/>
-                <ColumnDefinition Width="136*"/>
+                <ColumnDefinition/>
                 <ColumnDefinition Width="130"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
