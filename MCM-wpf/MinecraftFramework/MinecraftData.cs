@@ -11,9 +11,9 @@ namespace MCM.MinecraftFramework
         public static string AppdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.minecraft";
         public static string LibraryPath { get { return AppdataPath + "\\libraries"; } }
         public static string BinPath { get { return AppdataPath + "\\bin"; } }
-        public static string AssetsPath { get { return PathData.AppDataPath + "\\assets"; } }
+        public static string AssetsPath { get { return PathData.DataPath + "\\assets"; } }
         public static string NativesPath { get { return BinPath + "\\natives"; } }
-        public static string VersionsPath { get { return Data.PathData.AppDataPath + "\\versions"; } }
+        public static string VersionsPath { get { return Data.PathData.DataPath + "\\versions"; } }
 
         public const string AssetsUrl = "https://s3.amazonaws.com/Minecraft.Resources/";
         public const string LibraryUrl = "https://s3.amazonaws.com/Minecraft.Download/libraries/";

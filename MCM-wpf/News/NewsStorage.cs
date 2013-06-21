@@ -9,7 +9,7 @@ namespace MCM.News
 {
     public static class NewsStorage
     {
-        public static string NewsPath = PathData.AppDataPath + "\\rss";
+        public static string NewsPath = PathData.DataPath + "\\rss";
         public static string MojangFeedPath = NewsPath + "\\mojang.xml";
 
         public static void InitDirectories()
