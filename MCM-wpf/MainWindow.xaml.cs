@@ -178,6 +178,16 @@ namespace MCM
             });
         }
 
+        public void updateInstances()
+        {
+            treeView_instances.Items.Clear();
+
+            foreach (Instance i in InstanceManager.instances)
+            {
+                treeView_instances.Items.Add(i.GetTreeViewNode());
+            }
+        }
+
         public void updateProgressBar(int i)
         {
             progressBar_dl.Value = i;
