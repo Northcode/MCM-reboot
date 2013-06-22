@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace MCM.BackupFramework
 {
@@ -75,6 +76,55 @@ namespace MCM.BackupFramework
                     return new string[0];
                 }
             }
+        }
+
+        public TreeNode GetTreeViewNode()
+        {
+            TreeNode node = new TreeNode();
+            node.Text = this.Name;
+
+            // Minecraft version
+            TreeNode mcVer = new TreeNode("Minecraft version");
+            node.Nodes.Add(mcVer);
+
+            // Modpack
+            TreeNode modPack = new TreeNode("Mods");
+            foreach (Mod mod in this.mods.Mods)
+            {
+                TreeNode thisMod = new TreeNode(mod.Name);
+                thisMod.Tag = mod;
+                modPack.Nodes.Add(thisMod);
+            }
+            node.Nodes.Add(modPack);
+
+            // ResourcePacks
+            TreeNode resPack = new TreeNode("Resource Packs");
+            foreach (ResourcePack pack in this.ResourcePacks)
+            {
+                TreeNode thisPack = new TreeNode(pack.name);
+                thisPack.ToolTipText = pack.packInfo.desc;
+                thisPack.Tag = pack;
+                resPack.Nodes.Add(thisPack);
+            }
+            node.Nodes.Add(resPack);
+
+            // Texturepacks
+            TreeNode texturePack = new TreeNode("Texture Packs");
+            foreach (string pack in this.texturePacks)
+            {
+                texturePack.Nodes.Add(pack);
+            }
+            node.Nodes.Add(texturePack);
+
+            // World Saves
+            TreeNode worldSave = new TreeNode("World Saves");
+            foreach (string save in this.Saves)
+            {
+                worldSave.Nodes.Add(save);
+            }
+            node.Nodes.Add(worldSave);
+
+            return node;
         }
 
         private string[] GetSubFilesAsStringArray(string path)
