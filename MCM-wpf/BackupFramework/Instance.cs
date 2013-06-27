@@ -1,5 +1,6 @@
 ﻿using MCM.Data;
 using MCM.MinecraftFramework;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,7 @@ namespace MCM.BackupFramework
     public class Instance
     {
         public string Name { get; set; }
+        public string Description { get; set; }
         public MinecraftVersion Version { get; set; }
         public ModPack mods { get; set; }
 
@@ -19,7 +21,7 @@ namespace MCM.BackupFramework
         {
             get
             {
-                return PathData.InstacesPath + "\\" + this.Name;
+                return PathData.InstancesPath + "\\" + this.Name;
             }
         }
 
@@ -137,5 +139,13 @@ namespace MCM.BackupFramework
             return new DirectoryInfo(path).GetFiles().ToList().ConvertAll<string>((f) => { return f.FullName; }).ToArray();
         }
 
+        public JObject ToJson()
+        {
+            JObject obj = new JObject();
+            obj["name"] = this.Name;
+            obj["desc"] = this.Description;
+
+            return obj;
+        }
     }
 }

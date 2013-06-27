@@ -1,4 +1,5 @@
 ﻿using Ionic.Zip;
+using MCM.BackupFramework;
 using MCM.Data;
 using MCM.MinecraftFramework;
 using MCM.News;
@@ -44,6 +45,7 @@ namespace MCM
             NewsStorage.InitDirectories();
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
+            InstanceManager.LoadInstances();
 
             SettingsManager.AddDefault("javapath", "java", "java.exe");
             SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
@@ -63,6 +65,7 @@ namespace MCM
 
             app.Run(mainWindow);
 
+            InstanceManager.SaveInstances();
             MinecraftUserData.saveUsers();
             SettingsManager.Save();
         }
