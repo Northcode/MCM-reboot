@@ -39,10 +39,6 @@ namespace MCM
             initializeNewsFeed();
             updateUsersList();
 
-            System.Timers.Timer t = new System.Timers.Timer(200);
-            t.Elapsed += timerTick;
-            t.Start();
-
         }
 
         void timerTick(object sender, System.Timers.ElapsedEventArgs e)
@@ -118,7 +114,7 @@ namespace MCM
 
         private void updateDownloadConsole()
         {
-            listBox_downloadManager.Items.Clear();
+            App.InvokeAction(delegate { listBox_downloadManager.Items.Clear();
             List<Download> dls = DownloadManager.getAllDownloads();
             foreach (Download dl in dls)
             {
@@ -129,6 +125,7 @@ namespace MCM
                 }
                 listBox_downloadManager.Items.Add(control);
             }
+            });
         }
 
         private void updateUsersList()

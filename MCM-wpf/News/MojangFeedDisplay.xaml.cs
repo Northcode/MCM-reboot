@@ -28,6 +28,7 @@ namespace MCM.News
         private static bool webBrowser_willNavigate;
         private void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
         {
+            /*
             if (!webBrowser_willNavigate)
             {
                 webBrowser_willNavigate = true;
@@ -42,6 +43,7 @@ namespace MCM.News
             };
 
             Process.Start(startInfo);
+            */
         }
     }
 }
