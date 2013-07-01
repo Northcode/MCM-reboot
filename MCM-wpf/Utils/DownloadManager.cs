@@ -10,15 +10,21 @@ namespace MCM.Utils
     {
         public static List<Download> downloads = new List<Download>();
 
-        public static Download ScheduleDownload(string Key, string Url, bool AutoClose)
+        public static Download ScheduleDownload(string Key, string Url, bool AutoClose, bool MCRequire)
         {
             Download d = new Download() { Key = Key, Url = Url };
             d.ShouldContinue = AutoClose;
+            d.MCRequire = MCRequire;
             d.Downloaded += DownloadComplete;
             d.onContinue += DownloadContinue;
             downloads.Add(d);
             App.Log("Scheduled download: " + Key + " for download with id: " + (downloads.Count - 1).ToString());
             return d;
+        }
+
+        public static Download ScheduleDownload(string Key, string Url, bool AutoClose)
+        {
+            return ScheduleDownload(Key, Url, AutoClose, false);
         }
 
         public static List<Download> getAllDownloads()
@@ -64,6 +70,22 @@ namespace MCM.Utils
         {
             while (downloads.Count > 0)
             {
+                Thread.Sleep(100);
+            }
+        }
+
+        internal static void WaitForAllMCRequire()
+        {
+            while (true)
+            {
+                bool tmp = true;
+                foreach (Download dl in DownloadManager.downloads)
+                {
+                    if (dl.MCRequire)
+                        tmp = false;
+                }
+                if (tmp)
+                    break;
                 Thread.Sleep(100);
             }
         }

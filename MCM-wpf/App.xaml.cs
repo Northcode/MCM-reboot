@@ -186,7 +186,7 @@ namespace MCM
             {
                 //This causes freeze: App.InvokeAction(delegate { App.mainWindow.IsEnabled = false; });
                 App.Log("Waiting for downloads to finish...");
-                DownloadManager.WaitForAll();
+                DownloadManager.WaitForAllMCRequire();
                 App.Log("Downloads should be finished!");
                 Process p = new Process();
                 MinecraftData.AppdataPath = MinecraftData.VersionsPath + "\\" + version.Key + "\\minecraft";
@@ -200,12 +200,12 @@ namespace MCM
                 string passw = MinecraftUser.decryptPwd(user.password_enc);
                 if (!File.Exists(version.BinaryPath))
                 {
-                    version.SchuduleJarDownload();
+                    version.ScheduleJarDownload();
                 }
                 version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(); } });
                 DownloadManager.DownloadAll();
                 App.Log("Waiting for minecraft download...");
-                DownloadManager.WaitForAll();
+                DownloadManager.WaitForAllMCRequire();
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
                 App.Log("Starting Minecraft with arguments: " + p.StartInfo.FileName + " " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;

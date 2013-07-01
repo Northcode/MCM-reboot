@@ -88,9 +88,9 @@ namespace MCM.MinecraftFramework
             return sb.ToString();
         }
 
-        public void SchuduleJarDownload()
+        public void ScheduleJarDownload()
         {
-            Download dl = DownloadManager.ScheduleDownload(Key, JarUrl, false);
+            Download dl = DownloadManager.ScheduleDownload(Key, JarUrl, false,true);
             dl.Downloaded += (d) => {
                 new FileInfo(LocalPath).Directory.Create();
                 File.WriteAllBytes(LocalPath + "\\" + Key + ".jar", d.Data);

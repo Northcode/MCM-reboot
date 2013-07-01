@@ -12,6 +12,7 @@ namespace MCM.Utils
         public string Url { get; set; }
         public string Key { get; set; }
 
+        public bool MCRequire { get; set; }
         public bool Complete { get; private set; }
         public byte[] Data { get; private set; }
 
