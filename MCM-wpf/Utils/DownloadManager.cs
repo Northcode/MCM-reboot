@@ -8,7 +8,7 @@ namespace MCM.Utils
 {
     public static class DownloadManager
     {
-        static List<Download> downloads = new List<Download>();
+        public static List<Download> downloads = new List<Download>();
 
         public static Download ScheduleDownload(string Key, string Url, bool AutoClose)
         {

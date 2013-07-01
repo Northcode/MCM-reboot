@@ -145,5 +145,11 @@ namespace MCM.MinecraftFramework
                 return null;
             }
         }
+
+        public string GetDescription()
+        {
+            return
+                "Version: " + this.Key;
+        }
     }
 }

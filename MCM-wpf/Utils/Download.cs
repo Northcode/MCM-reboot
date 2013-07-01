@@ -31,7 +31,7 @@ namespace MCM.Utils
             catch (Exception e)
             {
                 App.Log("Error while downloading " + Key + ": " + e.ToString());
-                Complete = true;
+                Downloaded(this);
             }
         }
 
@@ -57,6 +57,7 @@ namespace MCM.Utils
             catch (Exception ex)
             {
                 App.Log("Error while downloading " + Key + ": " + ex.ToString());
+                Downloaded(this);
             }
         }
 
