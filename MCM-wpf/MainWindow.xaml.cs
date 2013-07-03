@@ -280,6 +280,10 @@ namespace MCM
                     listBox_instanceInfo.Items.Add(tb);
                     listBox_instanceInfo.Items.Add(bt);
                 }
+                else if ((item.Header as String).Contains("Mods"))
+                {
+                    Button bt = new Button();
+                }
             }
         }
 
