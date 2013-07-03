@@ -120,36 +120,18 @@ namespace MCM
         private static int olddl;
         private void updateDownloadConsole()
         {
-<<<<<<< HEAD
-            List<Download> dls = DownloadManager.downloads;
-            //if (dls.Count != olddl)
-            //{
-                olddl = dls.Count;
-                listBox_downloadManager.Items.Clear();
-                foreach (Download dl in dls)
-=======
             App.InvokeAction(delegate { listBox_downloadManager.Items.Clear();
             List<Download> dls = DownloadManager.getAllDownloads();
             foreach (Download dl in dls)
             {
                 DownloadControl control = new DownloadControl(dl.Key, dl.Url);
                 if (dl.ShouldContinue)
->>>>>>> dev-Andreas
                 {
-                    DownloadControl control = new DownloadControl(dl.Key, dl.Url);
-                    if (dl.ShouldContinue)
-                    {
-                        control.status = "downloading...";
-                    }
-                    listBox_downloadManager.Items.Add(control);
+                    control.status = "downloading...";
                 }
-<<<<<<< HEAD
-            //}
-=======
                 listBox_downloadManager.Items.Add(control);
             }
             });
->>>>>>> dev-Andreas
         }
 
         private void updateUsersList()
