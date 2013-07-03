@@ -38,6 +38,7 @@ namespace MCM
             // News feed display
             initializeNewsFeed();
             updateUsersList();
+            updateInstances();
 
             System.Timers.Timer t = new System.Timers.Timer(200);
             t.Elapsed += timerTick;
@@ -47,7 +48,10 @@ namespace MCM
 
         void timerTick(object sender, System.Timers.ElapsedEventArgs e)
         {
-            updateDownloadConsole();
+            App.InvokeAction(delegate
+            {
+                updateDownloadConsole();
+            });
         }
 
         /// <summary>
@@ -115,20 +119,26 @@ namespace MCM
             }
         }
 
+        #region UpdateStuff
 
+        private static int olddl;
         private void updateDownloadConsole()
         {
-            listBox_downloadManager.Items.Clear();
-            List<Download> dls = DownloadManager.getAllDownloads();
-            foreach (Download dl in dls)
-            {
-                DownloadControl control = new DownloadControl(dl.Key, dl.Url);
-                if (dl.ShouldContinue)
+            List<Download> dls = DownloadManager.downloads;
+            //if (dls.Count != olddl)
+            //{
+                olddl = dls.Count;
+                listBox_downloadManager.Items.Clear();
+                foreach (Download dl in dls)
                 {
-                    control.status = "downloading...";
+                    DownloadControl control = new DownloadControl(dl.Key, dl.Url);
+                    if (dl.ShouldContinue)
+                    {
+                        control.status = "downloading...";
+                    }
+                    listBox_downloadManager.Items.Add(control);
                 }
-                listBox_downloadManager.Items.Add(control);
-            }
+            //}
         }
 
         private void updateUsersList()
@@ -145,20 +155,6 @@ namespace MCM
                 comboBox_users.Items.Add(item);
             }
             comboBox_users.Items.Add(newItem);
-        }
-
-        public MinecraftUser getSelectedUser()
-        {
-            if (comboBox_users.SelectedIndex == -1)
-                throw new Exception("No user selected");
-            foreach (MinecraftUser user in MinecraftUserData.users)
-            {
-                if (user.username + ";" + user.password_enc == ((ListBoxItem)comboBox_users.SelectedItem).Uid)
-                {
-                    return user;
-                }
-            }
-            throw new Exception("Specified user not found!");
         }
 
         private void updateStatus(object sender, MouseButtonEventArgs e)
@@ -184,13 +180,41 @@ namespace MCM
 
             foreach (Instance i in InstanceManager.instances)
             {
-                treeView_instances.Items.Add(i.GetTreeViewNode());
+                treeView_instances.Items.Add(i.GetTreeViewItem());
             }
         }
 
         public void updateProgressBar(int i)
         {
             progressBar_dl.Value = i;
+        }
+
+        #endregion
+
+
+        public MinecraftUser getSelectedUser()
+        {
+            if (comboBox_users.SelectedIndex == -1)
+                throw new Exception("No user selected");
+            foreach (MinecraftUser user in MinecraftUserData.users)
+            {
+                if (user.username + ";" + user.password_enc == ((ListBoxItem)comboBox_users.SelectedItem).Uid)
+                {
+                    return user;
+                }
+            }
+            throw new Exception("Specified user not found!");
+        }
+
+        public Instance getSelectedInstance()
+        {
+            TreeViewItem item = (treeView_instances.SelectedItem as TreeViewItem);
+            while (item.Parent.GetType() != typeof(TreeView))
+            {
+                item = (item.Parent as TreeViewItem);
+            }
+
+            return (item.Tag as Instance);
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
@@ -225,6 +249,62 @@ namespace MCM
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
             DownloadManager.DownloadAll();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            StringPrompt sp = new StringPrompt("New Instance", "Name:");
+            if (sp.ShowDialog() == true)
+            {
+                Instance i = new Instance(sp.theString);
+                InstanceManager.instances.Add(i);
+
+                updateInstances();
+            }
+
+        }
+
+        private void treeView_instances_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            listBox_instanceInfo.Items.Clear();
+            TreeViewItem item = treeView_instances.SelectedItem as TreeViewItem;
+            if (item != null)
+            {
+                if ((item.Header as String).Contains("Minecraft version "))
+                {
+                    Label tb = new Label();
+                    tb.Content = (item.Tag != null ? (item.Tag as MinecraftVersion).GetDescription() : "no version");
+                    Button bt = new Button();
+                    bt.Content = "Change version";
+                    bt.Click += bt_Click;
+                    listBox_instanceInfo.Items.Add(tb);
+                    listBox_instanceInfo.Items.Add(bt);
+                }
+                else if ((item.Header as String).Contains("Mods"))
+                {
+                    Button bt = new Button();
+                }
+            }
+        }
+
+        void bt_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeMCVersion cmv = new ChangeMCVersion();
+            if (cmv.ShowDialog() == true)
+            {
+                Instance instance = getSelectedInstance();
+                for (int i = 0; i < InstanceManager.instances.Count; i++)
+                {
+                    if (InstanceManager.instances[i] == instance)
+                    {
+                        InstanceManager.instances[i].Version = cmv.version.FullVersion;
+                        (treeView_instances.SelectedItem as TreeViewItem).Header = "Minecraft version " + cmv.version.Key;
+                        (treeView_instances.SelectedItem as TreeViewItem).Tag = cmv.version.FullVersion;
+                        treeView_instances_SelectedItemChanged(null, null);
+                        break;
+                    }
+                }
+            }
         }
     }
 }
