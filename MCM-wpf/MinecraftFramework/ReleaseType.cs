@@ -8,6 +8,7 @@ namespace MCM.MinecraftFramework
     public enum ReleaseType
     {
         release,
-        snapshot
+        snapshot,
+        modified
     }
 }
