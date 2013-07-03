@@ -40,10 +40,6 @@ namespace MCM
             updateUsersList();
             updateInstances();
 
-            System.Timers.Timer t = new System.Timers.Timer(200);
-            t.Elapsed += timerTick;
-            t.Start();
-
         }
 
         void timerTick(object sender, System.Timers.ElapsedEventArgs e)
@@ -124,12 +120,21 @@ namespace MCM
         private static int olddl;
         private void updateDownloadConsole()
         {
+<<<<<<< HEAD
             List<Download> dls = DownloadManager.downloads;
             //if (dls.Count != olddl)
             //{
                 olddl = dls.Count;
                 listBox_downloadManager.Items.Clear();
                 foreach (Download dl in dls)
+=======
+            App.InvokeAction(delegate { listBox_downloadManager.Items.Clear();
+            List<Download> dls = DownloadManager.getAllDownloads();
+            foreach (Download dl in dls)
+            {
+                DownloadControl control = new DownloadControl(dl.Key, dl.Url);
+                if (dl.ShouldContinue)
+>>>>>>> dev-Andreas
                 {
                     DownloadControl control = new DownloadControl(dl.Key, dl.Url);
                     if (dl.ShouldContinue)
@@ -138,7 +143,13 @@ namespace MCM
                     }
                     listBox_downloadManager.Items.Add(control);
                 }
+<<<<<<< HEAD
             //}
+=======
+                listBox_downloadManager.Items.Add(control);
+            }
+            });
+>>>>>>> dev-Andreas
         }
 
         private void updateUsersList()
