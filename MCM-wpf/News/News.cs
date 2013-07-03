@@ -106,8 +106,15 @@ namespace MCM
                 Download dl = DownloadManager.ScheduleDownload("Mojang Feed", "https://www.mojang.com/feed/",true);
                 dl.Downloaded += d =>
                 {
-                    File.WriteAllBytes(NewsStorage.MojangFeedPath, d.Data);
-                    ParseMojangXml(NewsStorage.MojangFeedPath);
+                    try
+                    {
+                        File.WriteAllBytes(NewsStorage.MojangFeedPath, d.Data);
+                        ParseMojangXml(NewsStorage.MojangFeedPath);
+                    }
+                    catch
+                    {
+
+                    }
                 };
                 dl.DoDownload();
             }
@@ -127,7 +134,7 @@ namespace MCM
 
                 App.InvokeAction(delegate { App.mainWindow.lstMojangFeed.Items.Clear(); });
                 //App.Log("Loaded items: ");
-                foreach (SyndicationItem item in feed.Items.Take(15))
+                foreach (SyndicationItem item in feed.Items.Take(30))
                 {
                     //App.Log(item.Id);
                     MojangFeedItem feeditem = null;
@@ -137,7 +144,7 @@ namespace MCM
                         feeditem.TitleText.Content = item.Title.Text;
                         XElement x = item.ElementExtensions.First(p => p.OuterName == "encoded").GetObject<XElement>();
                         feeditem.Data = x.Value;
-                        feeditem.DateText.Text = item.PublishDate.ToString();
+                        feeditem.DateText.Text = item.PublishDate.ToString("d");
                     });
                     App.InvokeAction(delegate
                     {

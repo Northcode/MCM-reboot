@@ -12,6 +12,7 @@ namespace MCM.Utils
         public string Url { get; set; }
         public string Key { get; set; }
 
+        public bool MCRequire { get; set; }
         public bool Complete { get; private set; }
         public byte[] Data { get; private set; }
 
@@ -31,7 +32,7 @@ namespace MCM.Utils
             catch (Exception e)
             {
                 App.Log("Error while downloading " + Key + ": " + e.ToString());
-                Complete = true;
+                Downloaded(this);
             }
         }
 
@@ -57,6 +58,7 @@ namespace MCM.Utils
             catch (Exception ex)
             {
                 App.Log("Error while downloading " + Key + ": " + ex.ToString());
+                Downloaded(this);
             }
         }
 
