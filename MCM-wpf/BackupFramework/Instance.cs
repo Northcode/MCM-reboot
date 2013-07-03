@@ -1,10 +1,12 @@
 ﻿using MCM.Data;
 using MCM.MinecraftFramework;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace MCM.BackupFramework
@@ -12,14 +14,34 @@ namespace MCM.BackupFramework
     public class Instance
     {
         public string Name { get; set; }
+        public string Description { get; set; }
         public MinecraftVersion Version { get; set; }
         public ModPack mods { get; set; }
+
+        private string ResourcePackDir { get { return this.Path + "\\resourcepacks"; } }
+        private string TexturePackDir { get { return this.Path + "\\texturepacks"; } }
+        private string SavesDir { get { return this.Path + "\\saves"; } }
+
+        public Instance(string Name)
+        {
+            this.Name = Name;
+            if (!Directory.Exists(this.Path))
+                this.Create();
+        }
+
+        public void Create()
+        {
+            Directory.CreateDirectory(this.Path);
+            Directory.CreateDirectory(this.ResourcePackDir);
+            Directory.CreateDirectory(this.TexturePackDir);
+            Directory.CreateDirectory(this.SavesDir);
+        }
 
         public string Path
         {
             get
             {
-                return PathData.InstacesPath + "\\" + this.Name;
+                return PathData.InstancesPath + "\\" + this.Name;
             }
         }
 
@@ -27,10 +49,10 @@ namespace MCM.BackupFramework
         {
             get
             {
-                if (Directory.Exists(this.Path + "\\resourcepacks"))
+                if (Directory.Exists(this.ResourcePackDir))
                 {
                     List<ResourcePack> packs = new List<ResourcePack>();
-                    foreach (string file in Directory.GetFiles(this.Path + "\\resourcepacks"))
+                    foreach (string file in Directory.GetFiles(this.ResourcePackDir))
                     {
                         FileInfo finfo = new FileInfo(file);
                         if (finfo.Extension == ".zip")
@@ -52,9 +74,9 @@ namespace MCM.BackupFramework
         {
             get
             {
-                if (Directory.Exists(this.Path + "\\texturepacks"))
+                if (Directory.Exists(this.TexturePackDir))
                 {
-                    return GetSubFilesAsStringArray(this.Path + "\\texturepacks");
+                    return GetSubFilesAsStringArray(this.TexturePackDir);
                 }
                 else
                 {
@@ -67,9 +89,9 @@ namespace MCM.BackupFramework
         {
             get
             {
-                if (Directory.Exists(this.Path + "\\saves"))
+                if (Directory.Exists(this.SavesDir))
                 {
-                    return GetSubDirectoriesAsStringArray(this.Path + "\\saves");
+                    return GetSubDirectoriesAsStringArray(this.SavesDir);
                 }
                 else
                 {
@@ -78,52 +100,70 @@ namespace MCM.BackupFramework
             }
         }
 
-        public TreeNode GetTreeViewNode()
+        public TreeViewItem GetTreeViewItem()
         {
-            TreeNode node = new TreeNode();
-            node.Text = this.Name;
+            TreeViewItem node = new TreeViewItem();
+            node.Header = this.Name;
+            node.Tag = this;
 
             // Minecraft version
-            TreeNode mcVer = new TreeNode("Minecraft version");
-            node.Nodes.Add(mcVer);
+            TreeViewItem mcVer = new TreeViewItem();
+            mcVer.Header = "Minecraft version " + ((this.Version == null) ? "" : this.Version.Key);
+            mcVer.Tag = this.Version;
+            node.Items.Add(mcVer);
 
             // Modpack
-            TreeNode modPack = new TreeNode("Mods");
-            foreach (Mod mod in this.mods.Mods)
+            TreeViewItem modPack = new TreeViewItem();
+            modPack.Header = "Mods";
+            if (this.mods != null)
             {
-                TreeNode thisMod = new TreeNode(mod.Name);
-                thisMod.Tag = mod;
-                modPack.Nodes.Add(thisMod);
+                foreach (Mod mod in this.mods.Mods)
+                {
+                    TreeViewItem thisMod = new TreeViewItem();
+                    thisMod.Header = mod.Name;
+                    thisMod.Tag = mod;
+                    modPack.Items.Add(thisMod);
+                }
             }
-            node.Nodes.Add(modPack);
+            node.Items.Add(modPack);
 
             // ResourcePacks
-            TreeNode resPack = new TreeNode("Resource Packs");
+            TreeViewItem resPack = new TreeViewItem();
+            resPack.Header = "Resource Packs";
             foreach (ResourcePack pack in this.ResourcePacks)
             {
-                TreeNode thisPack = new TreeNode(pack.name);
-                thisPack.ToolTipText = pack.packInfo.desc;
+                TreeViewItem thisPack = new TreeViewItem();
+                thisPack.Header = pack.name;
+                thisPack.ToolTip = pack.packInfo.desc;
                 thisPack.Tag = pack;
-                resPack.Nodes.Add(thisPack);
+                resPack.Items.Add(thisPack);
             }
-            node.Nodes.Add(resPack);
+            node.Items.Add(resPack);
 
             // Texturepacks
-            TreeNode texturePack = new TreeNode("Texture Packs");
+            TreeViewItem texturePack = new TreeViewItem();
+            texturePack.Header = "Texture Packs";
             foreach (string pack in this.texturePacks)
             {
-                texturePack.Nodes.Add(pack);
+                TreeViewItem thisPack = new TreeViewItem();
+                thisPack.Header = pack;
+                texturePack.Items.Add(thisPack);
             }
-            node.Nodes.Add(texturePack);
+            node.Items.Add(texturePack);
 
             // World Saves
-            TreeNode worldSave = new TreeNode("World Saves");
+            TreeViewItem worldSave = new TreeViewItem();
+            worldSave.Header = "World Saves";
             foreach (string save in this.Saves)
             {
-                worldSave.Nodes.Add(save);
+                TreeViewItem thisSave = new TreeViewItem();
+                thisSave.Header = System.IO.Path.GetFileName(save);
+                thisSave.Tag = save;
+                worldSave.Items.Add(thisSave);
             }
-            node.Nodes.Add(worldSave);
+            node.Items.Add(worldSave);
 
+            node.ExpandSubtree();
             return node;
         }
 
@@ -134,8 +174,16 @@ namespace MCM.BackupFramework
 
         private string[] GetSubDirectoriesAsStringArray(string path)
         {
-            return new DirectoryInfo(path).GetFiles().ToList().ConvertAll<string>((f) => { return f.FullName; }).ToArray();
+            return new DirectoryInfo(path).GetDirectories().ToList().ConvertAll<string>((f) => { return f.FullName; }).ToArray();
         }
 
+        public JObject ToJson()
+        {
+            JObject obj = new JObject();
+            obj["name"] = this.Name;
+            obj["desc"] = this.Description;
+
+            return obj;
+        }
     }
 }
