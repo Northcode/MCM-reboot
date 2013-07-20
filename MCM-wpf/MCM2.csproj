@@ -111,6 +111,7 @@
     <Compile Include="Utils\ChangeMCVersion.xaml.cs">
       <DependentUpon>ChangeMCVersion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Crypto.cs" />
     <Compile Include="Utils\DownloadPackage.cs" />
     <Compile Include="Utils\StringPrompt.xaml.cs">
       <DependentUpon>StringPrompt.xaml</DependentUpon>

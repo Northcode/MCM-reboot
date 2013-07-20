@@ -206,7 +206,7 @@ namespace MCM
                     user = mainWindow.getSelectedUser();
                 });
                 string uname = user.username;
-                string passw = MinecraftUser.decryptPwd(user.password_enc);
+                string passw = MinecraftUser.decryptPwd(user.password);
                 if (!File.Exists(version.BinaryPath))
                 {
                     version.ScheduleJarDownload();

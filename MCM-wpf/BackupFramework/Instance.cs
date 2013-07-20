@@ -141,6 +141,7 @@ namespace MCM.BackupFramework
             };
             node.Items.Add(mcVer);
 
+            /*
             // Modpack
             TreeViewItem modPack = new TreeViewItem();
             modPack.Header = "Mods";
@@ -195,7 +196,7 @@ namespace MCM.BackupFramework
                 worldSave.Items.Add(thisSave);
             }
             node.Items.Add(worldSave);
-
+            */
             node.ExpandSubtree();
             return node;
         }
