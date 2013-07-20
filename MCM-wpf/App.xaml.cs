@@ -40,12 +40,11 @@ namespace MCM
         static void Main()
         {
 
+            DownloadManager.hasInternet = DownloadManager.CheckForInternetConnection();
             PathData.InitDirectories();
             NewsStorage.InitDirectories();
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
-            InstanceManager.LoadInstances();
-            DownloadManager.hasInternet = DownloadManager.CheckForInternetConnection();
 
             SettingsManager.AddDefault("javapath", "java", "java.exe");
             SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
@@ -56,6 +55,7 @@ namespace MCM
             SettingsManager.LoadList();
 
             ScheduleMinecraftVersionJsonDownload();
+            
 
             MinecraftAssetManager.LoadAssets();
 
@@ -102,6 +102,7 @@ namespace MCM
                         App.mainWindow.lstBackup.Items.Add(lbl);
                     }
                 });
+                InstanceManager.LoadInstances();
             };
         }
 
