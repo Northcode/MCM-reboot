@@ -11,28 +11,40 @@ namespace MCM.Utils
     {
         public string Url { get; set; }
         public string Key { get; set; }
-
         public bool MCRequire { get; set; }
-        public bool Complete { get; private set; }
-        public byte[] Data { get; private set; }
+
+        public bool Complete { get; protected set; }
+        public byte[] Data { get; protected set; }
 
         public Action<Download> Downloaded;
         public bool ShouldContinue { get; set; }
+        public bool Continued { get; protected set; }
         public Action<Download> onContinue;
 
-        public void DoDownload()
+        public Action<int> ProgressUpdated = delegate { };
+
+        public virtual void DoDownload()
         {
-            WebClient wc = new WebClient();
-            try
+            Continued = false;
+            this.onContinue += delegate { this.Continued = true; };
+            if (DownloadManager.hasInternet)
             {
-                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
-                wc.DownloadDataCompleted += new DownloadDataCompletedEventHandler(wc_DownloadDataCompleted);
-                wc.DownloadDataAsync(new Uri(Url));
+                WebClient wc = new WebClient();
+                try
+                {
+                    wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
+                    wc.DownloadDataCompleted += new DownloadDataCompletedEventHandler(wc_DownloadDataCompleted);
+                    wc.DownloadDataAsync(new Uri(Url));
+                }
+                catch (Exception e)
+                {
+                    App.Log("Error while downloading " + Key + ": " + e.ToString());
+                    Downloaded(this);
+                }
             }
-            catch (Exception e)
+            else
             {
-                App.Log("Error while downloading " + Key + ": " + e.ToString());
-                Downloaded(this);
+                throw new Exception("No internet Connection");
             }
         }
 
@@ -45,8 +57,8 @@ namespace MCM.Utils
         {
             try
             {
-                Data = e.Result;
-                Complete = true;
+                this.Data = e.Result;
+                this.Complete = true;
                 App.InvokeAction(delegate
                 {
                     App.mainWindow.progressBar_dl.IsIndeterminate = false;
@@ -79,6 +91,7 @@ namespace MCM.Utils
                         {
                             App.mainWindow.progressBar_dl.IsIndeterminate = false;
                             App.mainWindow.progressBar_dl.Value = e.ProgressPercentage;
+                            ProgressUpdated(e.ProgressPercentage);
                         }
                     });
                 }
@@ -91,7 +104,7 @@ namespace MCM.Utils
 
         public void WaitForComplete()
         {
-            while (!Complete)
+            while (!Complete || (ShouldContinue ? !Continued : true))
             {
                 Thread.Sleep(100);
             }

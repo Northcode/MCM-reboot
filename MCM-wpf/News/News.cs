@@ -103,7 +103,7 @@ namespace MCM
         {
             try
             {
-                Download dl = DownloadManager.ScheduleDownload("Mojang Feed", "https://www.mojang.com/feed/",true);
+                Download dl = DownloadManager.ScheduleDownload("Mojang Feed", "https://www.mojang.com/feed/",false);
                 dl.Downloaded += d =>
                 {
                     try
@@ -153,7 +153,7 @@ namespace MCM
                     });
                 }
                 rssr.Close();
-                App.Log("Load of feed: " + Path + " complete!");
+                //App.Log("Load of feed: " + Path + " complete!");
             }
             catch (Exception ex)
             {

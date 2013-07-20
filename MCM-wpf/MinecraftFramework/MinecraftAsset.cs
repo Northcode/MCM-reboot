@@ -38,44 +38,40 @@ namespace MCM.MinecraftFramework
             }
         }
 
-        public void ScheduleDownload()
+        public void StoreAsset(Download d)
         {
-            if (!Directory.Exists(Path))
+            byte[] filedata = d.Data;
+            using (MD5 hasher = MD5.Create())
             {
-                if (!File.Exists(Path))
-                {
-                    Download dl = DownloadManager.ScheduleDownload(Key, Url, true);
-                    dl.Downloaded += (d) =>
-                    {
-                        byte[] filedata = d.Data;
-                        using (MD5 hasher = MD5.Create())
-                        {
-                            byte[] downloadedHash = hasher.ComputeHash(filedata);
-                            StringBuilder sb = new StringBuilder();
-                            downloadedHash.ToList().ForEach(b => sb.Append(b.ToString("x2")));
-                            string hashString = sb.ToString();
+                byte[] downloadedHash = hasher.ComputeHash(filedata);
+                StringBuilder sb = new StringBuilder();
+                downloadedHash.ToList().ForEach(b => sb.Append(b.ToString("x2")));
+                string hashString = sb.ToString();
 
-                            if (hashString == md5)
-                            {
-                                Directory.CreateDirectory(new FileInfo(Path).DirectoryName); //MAKE SURE DIRECTORIES EXIST BEFORE WRITING!
-                                if (!IsDirectory)
-                                {
-                                    File.WriteAllBytes(Path, filedata);
-                                }
-                            }
-                            else
-                            {
-                                throw new Exception("MD5 hashes do not match for MinecraftAsset: " + Key + " stored md5: " + md5 + " downloaded md5: " + hashString);
-                            }
-                        }
-                    };
+                if (hashString == md5)
+                {
+                    Directory.CreateDirectory(new FileInfo(Path).DirectoryName); //MAKE SURE DIRECTORIES EXIST BEFORE WRITING!
+                    if (!IsDirectory)
+                    {
+                        File.WriteAllBytes(Path, filedata);
+                    }
                 }
                 else
                 {
-                    //App.Log("Asset: " + Key + " allready exists, skipping");
+                    throw new Exception("MD5 hashes do not match for MinecraftAsset: " + Key + " stored md5: " + md5 + " downloaded md5: " + hashString);
                 }
             }
-            
+        }
+
+        public bool NeedsDownload()
+        {
+            if (!Directory.Exists(Path) && !File.Exists(Path))
+                return true;
+            else
+            {
+                return false;
+                //App.Log("Asset: " + Key + " allready exists, skipping");
+            }
         }
 
         void filedownloader_DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
