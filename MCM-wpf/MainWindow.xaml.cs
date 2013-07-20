@@ -40,13 +40,9 @@ namespace MCM
             updateUsersList();
             updateInstances();
 
-<<<<<<< HEAD
-=======
             //System.Timers.Timer t = new System.Timers.Timer(200);
             //t.Elapsed += timerTick;
             //t.Start();
-
->>>>>>> dev-Jens
         }
 
         void timerTick(object sender, System.Timers.ElapsedEventArgs e)
@@ -124,26 +120,6 @@ namespace MCM
 
         #region UpdateStuff
 
-<<<<<<< HEAD
-        private static int olddl;
-        private void updateDownloadConsole()
-        {
-            App.InvokeAction(delegate { listBox_downloadManager.Items.Clear();
-            List<Download> dls = DownloadManager.getAllDownloads();
-            foreach (Download dl in dls)
-            {
-                DownloadControl control = new DownloadControl(dl.Key, dl.Url);
-                if (dl.ShouldContinue)
-                {
-                    control.status = "downloading...";
-                }
-                listBox_downloadManager.Items.Add(control);
-            }
-            });
-        }
-
-=======
->>>>>>> dev-Jens
         private void updateUsersList()
         {
             comboBox_users.Items.Clear();
@@ -158,6 +134,10 @@ namespace MCM
                 comboBox_users.Items.Add(item);
             }
             comboBox_users.Items.Add(newItem);
+            if (MinecraftUserData.users.Count > 0)
+            {
+                comboBox_users.SelectedIndex = 0;
+            }
         }
 
         private void updateStatus(object sender, MouseButtonEventArgs e)
