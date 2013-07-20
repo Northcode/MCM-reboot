@@ -9,7 +9,7 @@ namespace MCM.PluginAPI
 {
     public class PluginManager
     {
-        static List<IPlugin> plugins;
+        static List<IPlugin> plugins = new List<IPlugin>();
 
         public static void LoadPlugin(string Dll)
         {
