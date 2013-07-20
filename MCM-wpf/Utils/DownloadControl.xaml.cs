@@ -19,20 +19,10 @@ namespace MCM.Utils
     /// </summary>
     public partial class DownloadControl : UserControl
     {
-        public string status
-        {
-            set
-            {
-                label_status.Content = value;
-            }
-        }
 
         public DownloadControl(string name, string source)
         {
             InitializeComponent();
-            label_name.Content = name;
-            label_source.Content = source;
-            label_status.Content = "queued";
         }
     }
 }

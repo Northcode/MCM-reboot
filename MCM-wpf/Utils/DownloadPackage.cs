@@ -5,20 +5,16 @@ using System.Text;
 
 namespace MCM.Utils
 {
-    public class DownloadPackage
+    public class DownloadPackage : Download
     {
-        public string name;
-        public string desc;
         private List<Download> files = new List<Download>();
-        public bool MCRequire;
-        public bool downloaded;
 
-        public Action<DownloadPackage> Downloaded;
         public Action<Download> finishedFile;
 
-        public DownloadPackage(string name, string desc, bool MCRequire)
+        public DownloadPackage(string name, bool MCRequire)
         {
-            this.name = name; this.desc = desc; this.MCRequire = MCRequire;
+            this.Key = name; this.MCRequire = MCRequire;
+            finishedFile = delegate { };
         }
 
         public Download GetDownload(string Key)
@@ -51,15 +47,19 @@ namespace MCM.Utils
             finishedFile(obj);
         }
 
-        public void Download()
+        public override void DoDownload()
         {
-            foreach (Download dl in files)
+            if (files.Count > 0)
             {
+                var dl = files.First();
+                dl.onContinue += delegate
+                {
+                    files.Remove(dl);
+                };
                 dl.DoDownload();
                 dl.WaitForComplete();
+                DoDownload();
             }
-            downloaded = true;
-            Downloaded(this);
         }
 
         public List<Download> getDownloads()
@@ -67,15 +67,18 @@ namespace MCM.Utils
             return files;
         }
 
-        public int GetUnfinished()
-        {
-            int i = 0;
-            foreach (Download dl in files)
-            {
-                if (!dl.Complete)
-                    i++;
-            }
-            return i;
-        }
+        //public int IncompleteCount
+        //{
+        //    get
+        //    {
+        //        int i = 0;
+        //        foreach (Download dl in files)
+        //        {
+        //            if (!dl.Complete)
+        //                i++;
+        //        }
+        //        return i;
+        //    }
+        //}
     }
 }

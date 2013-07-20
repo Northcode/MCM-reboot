@@ -121,7 +121,6 @@ namespace MCM
 
         #region UpdateStuff
 
-        private static int olddl;
         private void updateDownloadConsole()
         {
             /*List<Download> dls = DownloadManager.packages;

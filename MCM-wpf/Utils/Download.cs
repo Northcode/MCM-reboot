@@ -13,15 +13,18 @@ namespace MCM.Utils
         public string Key { get; set; }
         public bool MCRequire { get; set; }
 
-        public bool Complete { get; private set; }
-        public byte[] Data { get; private set; }
+        public bool Complete { get; protected set; }
+        public byte[] Data { get; protected set; }
 
         public Action<Download> Downloaded;
         public bool ShouldContinue { get; set; }
+        public bool Continued { get; protected set; }
         public Action<Download> onContinue;
 
-        public void DoDownload()
+        public virtual void DoDownload()
         {
+            Continued = false;
+            this.onContinue += delegate { this.Continued = true; };
             if (DownloadManager.hasInternet)
             {
                 WebClient wc = new WebClient();
@@ -98,7 +101,7 @@ namespace MCM.Utils
 
         public void WaitForComplete()
         {
-            while (!Complete)
+            while (!Complete || (ShouldContinue ? !Continued : true))
             {
                 Thread.Sleep(100);
             }

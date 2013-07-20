@@ -10,29 +10,23 @@ namespace MCM.Utils
 {
     public static class DownloadManager
     {
-        private static List<DownloadPackage> packages = new List<DownloadPackage>();
         private static List<Download> downloads = new List<Download>();
+
         public static bool hasInternet;
         private static bool isDownloading;
 
-        public static List<Download> getAllDownloads()
-        {
-            List<Download> dlp = new List<Download>();
-            foreach (DownloadPackage dlp_ in packages)
-            {
-                foreach (Download dl in dlp_.getDownloads())
-                {
-                    dlp.Add(dl);
-                }
-            }
-            return dlp;
-        }
-
-        public static void ScheduleDownloadPackage(DownloadPackage dp)
-        {
-            packages.Add(dp);
-            Download();
-        }
+        //public static List<Download> getAllDownloads()
+        //{
+        //    List<Download> dlp = new List<Download>();
+        //    foreach (DownloadPackage dlp_ in downloads)
+        //    {
+        //        foreach (Download dl in dlp_.getDownloads())
+        //        {
+        //            dlp.Add(dl);
+        //        }
+        //    }
+        //    return dlp;
+        //}
 
         public static void ScheduleDownload(Download dl)
         {
@@ -57,67 +51,50 @@ namespace MCM.Utils
         {
             if (!isDownloading)
             {
-                int i = 0;
-                foreach (DownloadPackage pck in packages)
-                {
-                    if (!pck.downloaded)
-                    {
-                        i = i + pck.GetUnfinished();
-                        isDownloading = true;
-                        pck.Downloaded += (dp) =>
-                        {
-                            isDownloading = false;
-                            Download();
-                        };
-                        pck.Download();
-                    }
-                }
-
                 foreach (Download dl in downloads)
                 {
                     if (!dl.Complete)
                     {
-                        i++;
                         isDownloading = true;
-                        dl.Downloaded += (dp) =>
+                        dl.Downloaded += delegate
                         {
                             isDownloading = false;
+                            if(!dl.ShouldContinue)
+                                downloads.Remove(dl);
+                            updateDownloadLabel("");
                             Download();
                         };
+                        dl.onContinue += delegate
+                        {
+                            downloads.Remove(dl);
+                        };
+                        updateDownloadLabel(dl.Key);
                         dl.DoDownload();
+                        break;
                     }
                 }
-                App.InvokeAction(delegate
-                {
-                    App.mainWindow.label_dlCount.Content = i.ToString();
-                });
             }
-            
         }
 
-        /*public static Download GetDownload(string Key)
+        private static void updateDownloadLabel(string text)
         {
-            Download d = packages.Find(dl => dl.Key == Key);
-            if (d != null)
-                return d;
-            else
-                throw new Exception("Download: " + Key + " not found in DownloadManger");
-        }*/
+            App.InvokeAction(delegate
+            {
+                App.mainWindow.label_dlCount.Content = text;
+            });
+        }
 
         internal static void WaitForAllMCRequire()
         {
-            while (true)
+            while (downloads.All(dl => dl.MCRequire && !dl.Complete && !dl.Continued && (dl is DownloadPackage ? (dl as DownloadPackage).getDownloads().Count > 0 : true)) && downloads.Count > 0)
             {
-                bool tmp = true;
-                foreach (DownloadPackage dlp in DownloadManager.packages)
-                {
-                    if (dlp.MCRequire && !dlp.downloaded)
-                        tmp = false;
-                }
-                if (tmp)
-                    break;
                 Thread.Sleep(100);
             }
+
+            //while (downloads.Any(dl => dl.MCRequire))
+            //{
+            //    Thread.Sleep(200);
+            //}
         }
 
         public static bool CheckForInternetConnection()

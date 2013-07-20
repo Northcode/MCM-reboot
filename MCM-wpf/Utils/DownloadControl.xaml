@@ -3,16 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" Height="36" Background="White">
+             mc:Ignorable="d" Height="36" Background="White" Width="500
+             ">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="135*"/>
-            <ColumnDefinition Width="265*"/>
-            <ColumnDefinition Width="123*"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="label_name" Content="Label"/>
-        <Label x:Name="label_source" Content="Label" Grid.Column="1"/>
-        <Label x:Name="label_status" Content="Label" Grid.Column="2"/>
-
+        <Label x:Name="label_name" x:FieldModifier="public" Content="Label" Grid.Column="0"/>
+        <ProgressBar x:Name="prgs" x:FieldModifier="public" Value="50" Grid.Column="1" Margin="5"></ProgressBar>
     </Grid>
 </UserControl>

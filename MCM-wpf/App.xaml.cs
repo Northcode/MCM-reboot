@@ -63,6 +63,7 @@ namespace MCM
 
             app.Run(mainWindow);
 
+            AppendLogFile();
             InstanceManager.SaveInstances();
             MinecraftUserData.saveUsers();
             SettingsManager.Save();
@@ -114,9 +115,19 @@ namespace MCM
             if (mainWindow != null)
             {
                 mainWindow.Dispatcher.Invoke((Action)(() => {
+                    if (mainWindow.txtLog.LineCount > 500)
+                    {
+                        AppendLogFile();
+                    }
                     mainWindow.txtLog.Text += Line + "\n";
                 }));
             }
+        }
+
+        private static void AppendLogFile()
+        {
+            File.AppendAllText(PathData.LogFilePath, mainWindow.txtLog.Text);
+            mainWindow.txtLog.Clear();
         }
 
         public static void LogMinecraft(string Line)
@@ -182,7 +193,7 @@ namespace MCM
         {
             try
             {
-                //This causes freeze: App.InvokeAction(delegate { App.mainWindow.IsEnabled = false; });
+                App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = false; });
                 App.Log("Waiting for downloads to finish...");
                 DownloadManager.WaitForAllMCRequire();
                 App.Log("Downloads should be finished!");
@@ -200,8 +211,11 @@ namespace MCM
                 {
                     version.ScheduleJarDownload();
                 }
-                version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(); } });
-                //DownloadManager.DownloadAll();
+                DownloadPackage dp = new DownloadPackage("Libraries", true);
+                dp.ShouldContinue = true;
+                version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(dp); } });
+                DownloadManager.ScheduleDownload(dp);
+
                 App.Log("Waiting for minecraft download...");
                 DownloadManager.WaitForAllMCRequire();
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
@@ -218,6 +232,10 @@ namespace MCM
                 p.ErrorDataReceived += (s, e) =>
                 {
                     App.LogMinecraft("Error > " + e.Data);
+                };
+                p.Exited += (s, e) =>
+                {
+                    App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = true; });
                 };
                 p.Start();
                 p.BeginErrorReadLine();

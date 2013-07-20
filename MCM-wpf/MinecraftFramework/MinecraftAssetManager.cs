@@ -15,7 +15,7 @@ namespace MCM.MinecraftFramework
 
         public static void LoadAssets()
         {
-            DownloadPackage dlp = new DownloadPackage("Assets XML","Minecraft Assets", true);
+            DownloadPackage dlp = new DownloadPackage("Assets XML", true);
             dlp.ScheduleDownload("Assets XML", MinecraftData.AssetsUrl);
             string xml = "";
             dlp.Downloaded += delegate
@@ -71,7 +71,7 @@ namespace MCM.MinecraftFramework
 
         internal static void ScheduleAssetDownloads()
         {
-            DownloadPackage dlp = new DownloadPackage("Assets", "Minecraft Assets/Resources", true);
+            DownloadPackage dlp = new DownloadPackage("Assets", true);
             List<MinecraftAsset> needDl = new List<MinecraftAsset>();
             assets.ForEach(a => {
                 if (a.NeedsDownload())
