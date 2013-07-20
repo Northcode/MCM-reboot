@@ -1,92 +1,115 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
+using MCM;
 
 namespace MCM.Utils
 {
     public static class DownloadManager
     {
-        public static List<Download> downloads = new List<Download>();
+        private static List<Download> downloads = new List<Download>();
 
-        public static Download ScheduleDownload(string Key, string Url, bool AutoClose, bool MCRequire)
+        public static bool hasInternet;
+        private static bool isDownloading;
+
+        //public static List<Download> getAllDownloads()
+        //{
+        //    List<Download> dlp = new List<Download>();
+        //    foreach (DownloadPackage dlp_ in downloads)
+        //    {
+        //        foreach (Download dl in dlp_.getDownloads())
+        //        {
+        //            dlp.Add(dl);
+        //        }
+        //    }
+        //    return dlp;
+        //}
+
+        public static void ScheduleDownload(Download dl)
         {
-            Download d = new Download() { Key = Key, Url = Url };
-            d.ShouldContinue = AutoClose;
-            d.MCRequire = MCRequire;
-            d.Downloaded += DownloadComplete;
-            d.onContinue += DownloadContinue;
-            downloads.Add(d);
-            App.Log("Scheduled download: " + Key + " for download with id: " + (downloads.Count - 1).ToString());
-            return d;
+            downloads.Add(dl);
+            App.InvokeAction(delegate { DownloadControl dc = new DownloadControl(dl); App.mainWindow.listBox_downloadManager.Items.Add(dc); });
+            Download();
         }
 
-        public static Download ScheduleDownload(string Key, string Url, bool AutoClose)
+        public static Download ScheduleDownload(string name, string url, bool MCRequire)
         {
-            return ScheduleDownload(Key, Url, AutoClose, false);
+            Download dl = new Download();
+            dl.Key = name;
+            dl.Url = url;
+            dl.MCRequire = MCRequire;
+
+            ScheduleDownload(dl);
+
+            return dl;
         }
 
-        public static List<Download> getAllDownloads()
+        private static void Download()
         {
-            return downloads;
-        }
-
-        static void DownloadComplete(Download sender)
-        {
-            if (sender.ShouldContinue)
-                DownloadContinue(sender);
-        }
-
-        static void DownloadContinue(Download sender)
-        {
-            downloads.Remove(sender);
-            App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = downloads.Count + " left"; });
-            if (downloads.Count == 0)
+            if (!isDownloading)
             {
-                App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = ""; });
+                foreach (Download dl in downloads)
+                {
+                    if (!dl.Complete)
+                    {
+                        isDownloading = true;
+                        dl.Downloaded += delegate
+                        {
+                            isDownloading = false;
+                            if(!dl.ShouldContinue)
+                                downloads.Remove(dl);
+                            updateDownloadLabel("");
+                            Download();
+                        };
+                        dl.onContinue += delegate
+                        {
+                            downloads.Remove(dl);
+                        };
+                        updateDownloadLabel(dl.Key);
+                        dl.DoDownload();
+                        break;
+                    }
+                }
             }
         }
 
-        public static void DownloadAll()
+        private static void updateDownloadLabel(string text)
         {
-            downloads.ForEach(d =>
+            App.InvokeAction(delegate
             {
-                App.InvokeAction(delegate { App.mainWindow.label_dlCount.Content = downloads.Count + " left"; });
-                d.DoDownload();
+                App.mainWindow.label_dlCount.Content = text;
             });
-        }
-
-        public static Download GetDownload(string Key)
-        {
-            Download d = downloads.Find(dl => dl.Key == Key);
-            if (d != null)
-                return d;
-            else
-                throw new Exception("Download: " + Key + " not found in DownloadManger");
-        }
-
-        internal static void WaitForAll()
-        {
-            while (downloads.Count > 0)
-            {
-                Thread.Sleep(100);
-            }
         }
 
         internal static void WaitForAllMCRequire()
         {
-            while (true)
+            while (downloads.All(dl => dl.MCRequire && !dl.Complete && !dl.Continued && (dl is DownloadPackage ? (dl as DownloadPackage).getDownloads().Count > 0 : true)) && downloads.Count > 0)
             {
-                bool tmp = true;
-                foreach (Download dl in DownloadManager.downloads)
-                {
-                    if (dl.MCRequire)
-                        tmp = false;
-                }
-                if (tmp)
-                    break;
                 Thread.Sleep(100);
+            }
+
+            //while (downloads.Any(dl => dl.MCRequire))
+            //{
+            //    Thread.Sleep(200);
+            //}
+        }
+
+        public static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://www.google.com"))
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
     }

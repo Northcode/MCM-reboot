@@ -20,7 +20,8 @@ namespace MCM.User
             this.password_enc = password_enc;
         }
 
-        public string ToString()
+
+        public override string ToString()
         {
             return
                 this.username + Environment.NewLine +

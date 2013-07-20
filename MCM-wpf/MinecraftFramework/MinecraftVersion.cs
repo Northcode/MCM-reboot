@@ -90,11 +90,10 @@ namespace MCM.MinecraftFramework
 
         public void ScheduleJarDownload()
         {
-            Download dl = DownloadManager.ScheduleDownload(Key, JarUrl, false,true);
+            Download dl = DownloadManager.ScheduleDownload(Key, JarUrl,true);
             dl.Downloaded += (d) => {
                 new FileInfo(LocalPath).Directory.Create();
                 File.WriteAllBytes(LocalPath + "\\" + Key + ".jar", d.Data);
-                d.Continue();
             };
         }
 
@@ -133,7 +132,29 @@ namespace MCM.MinecraftFramework
                             lib.ExtractExclusions.Add((string)obj3);
                         }
                     }
-                    version.Libraries.Add(lib);
+                    bool allow = true;
+                    if (obj2["rules"] != null)
+                    {
+                        
+                        foreach (JObject obj3 in obj2["rules"].Children<JObject>())
+                        {
+                            if (obj3["action"].ToString() == "allow" && obj3["os"] != null)
+                            {
+                                if (obj3["os"]["name"].ToString() == "windows")
+                                    allow = true;
+                                else
+                                    allow = false;
+                            }
+                            else if (obj3["action"].ToString() == "disallow" && obj3["os"] != null)
+                            {
+                                if (obj3["os"]["name"].ToString() == "windows")
+                                    allow = false;
+                            }
+                        }
+                    }
+
+                    if(allow)
+                        version.Libraries.Add(lib);
                 }
 
                 return version;
