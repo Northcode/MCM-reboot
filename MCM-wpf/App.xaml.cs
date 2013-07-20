@@ -214,7 +214,8 @@ namespace MCM
                 DownloadPackage dp = new DownloadPackage("Libraries", true);
                 dp.ShouldContinue = true;
                 version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(dp); } });
-                DownloadManager.ScheduleDownload(dp);
+                if(dp.getDownloads().Count > 0)
+                    DownloadManager.ScheduleDownload(dp);
 
                 App.Log("Waiting for minecraft download...");
                 DownloadManager.WaitForAllMCRequire();
