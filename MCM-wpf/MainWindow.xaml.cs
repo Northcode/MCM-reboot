@@ -39,6 +39,21 @@ namespace MCM
             initializeNewsFeed();
             updateUsersList();
             updateInstances();
+<<<<<<< HEAD
+=======
+
+            //System.Timers.Timer t = new System.Timers.Timer(200);
+            //t.Elapsed += timerTick;
+            //t.Start();
+        }
+
+        void timerTick(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            /*App.InvokeAction(delegate
+            {
+                updateDownloadConsole();
+            });*/
+>>>>>>> fcf227dea41fff186f9f505af5375f0c50a18574
         }
 
         /// <summary>
@@ -122,6 +137,10 @@ namespace MCM
                 comboBox_users.Items.Add(item);
             }
             comboBox_users.Items.Add(newItem);
+            if (MinecraftUserData.users.Count > 0)
+            {
+                comboBox_users.SelectedIndex = 0;
+            }
         }
 
         private void updateStatus(object sender, MouseButtonEventArgs e)

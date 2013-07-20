@@ -16,6 +16,6 @@
         </Grid.ColumnDefinitions>
         <Button x:Name="BackButton" x:FieldModifier="public" Grid.Column="0" Grid.Row="0" FontSize="16" Content="&lt;" />
         <TextBlock x:Name="Title_Text" x:FieldModifier="public" Grid.Column="1" Grid.Row="0" FontSize="24" FontFamily="Arial" Margin="15,5,0,0" />
-        <WebBrowser x:Name="web" x:FieldModifier="public" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Navigating="webBrowser_Navigating"></WebBrowser>
+        <WebBrowser x:Name="web" x:FieldModifier="public" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"></WebBrowser>
     </Grid>
 </UserControl>
