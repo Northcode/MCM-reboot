@@ -21,6 +21,8 @@ namespace MCM.Utils
         public bool Continued { get; protected set; }
         public Action<Download> onContinue;
 
+        public Action<int> ProgressUpdated = delegate { };
+
         public virtual void DoDownload()
         {
             Continued = false;
@@ -89,6 +91,7 @@ namespace MCM.Utils
                         {
                             App.mainWindow.progressBar_dl.IsIndeterminate = false;
                             App.mainWindow.progressBar_dl.Value = e.ProgressPercentage;
+                            ProgressUpdated(e.ProgressPercentage);
                         }
                     });
                 }

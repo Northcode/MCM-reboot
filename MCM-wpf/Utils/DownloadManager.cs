@@ -31,6 +31,7 @@ namespace MCM.Utils
         public static void ScheduleDownload(Download dl)
         {
             downloads.Add(dl);
+            App.InvokeAction(delegate { DownloadControl dc = new DownloadControl(dl); App.mainWindow.listBox_downloadManager.Items.Add(dc); });
             Download();
         }
 
@@ -41,8 +42,7 @@ namespace MCM.Utils
             dl.Url = url;
             dl.MCRequire = MCRequire;
 
-            downloads.Add(dl);
-            Download();
+            ScheduleDownload(dl);
 
             return dl;
         }

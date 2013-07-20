@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -8,6 +9,8 @@ namespace MCM.Utils
     public class DownloadPackage : Download
     {
         private List<Download> files = new List<Download>();
+
+        int totalSize = -1;
 
         public Action<Download> finishedFile;
 
@@ -45,22 +48,37 @@ namespace MCM.Utils
         private void DownloadComplete(Download obj)
         {
             finishedFile(obj);
+            ProgressUpdated((int)(((totalSize - (files.Count-1)) / ((float)totalSize)) * 100));
         }
 
         public override void DoDownload()
         {
+            if (totalSize == -1)
+                totalSize = files.Count;
             if (files.Count > 0)
             {
                 var dl = files.First();
-                dl.onContinue += delegate
-                {
-                    files.Remove(dl);
-                };
+                bool tmp = false;
+                if (dl.ShouldContinue)
+                    dl.onContinue += delegate
+                    {
+                        files.Remove(dl);
+                    };
+                else
+                    tmp = true;
                 dl.DoDownload();
                 dl.WaitForComplete();
+                if (tmp) files.Remove(dl);
                 DoDownload();
             }
+
+            if (files.Count == 0)
+            {
+                this.Complete = true;
+                this.Downloaded(this);
+            }
         }
+
 
         public List<Download> getDownloads()
         {

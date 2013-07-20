@@ -93,7 +93,7 @@
                             <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" VerticalScrollBarVisibility="Visible" local:TextBoxBehaviour.ScrollOnTextChanged="True"/>
                         </TabItem>
                         <TabItem Header="Download Manager">
-                            <ListBox x:Name="listBox_downloadManager">
+                            <ListBox x:Name="listBox_downloadManager" x:FieldModifier="public">
 
                             </ListBox>
                         </TabItem>

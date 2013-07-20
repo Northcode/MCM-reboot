@@ -121,25 +121,6 @@ namespace MCM
 
         #region UpdateStuff
 
-        private void updateDownloadConsole()
-        {
-            /*List<Download> dls = DownloadManager.packages;
-            //if (dls.Count != olddl)
-            //{
-                olddl = dls.Count;
-                listBox_downloadManager.Items.Clear();
-                foreach (Download dl in dls)
-                {
-                    DownloadControl control = new DownloadControl(dl.Key, dl.Url);
-                    if (dl.ShouldContinue)
-                    {
-                        control.status = "downloading...";
-                    }
-                    listBox_downloadManager.Items.Add(control);
-                }
-            //}*/
-        }
-
         private void updateUsersList()
         {
             comboBox_users.Items.Clear();
@@ -269,19 +250,20 @@ namespace MCM
             TreeViewItem item = treeView_instances.SelectedItem as TreeViewItem;
             if (item != null)
             {
-                if (item.Tag is MinecraftVersion)
+                if (item.Tag is Instance.InstanceItemType)
                 {
-                    Label tb = new Label();
-                    tb.Content = (item.Tag != null ? (item.Tag as MinecraftVersion).GetDescription() : "no version");
-                    Button bt = new Button();
-                    bt.Content = "Change version";
-                    bt.Click += bt_Click;
-                    listBox_instanceInfo.Items.Add(tb);
-                    listBox_instanceInfo.Items.Add(bt);
+                    switch ((Instance.InstanceItemType)item.Tag)
+                    {
+                        case Instance.InstanceItemType.MinecraftVersion:
+                            
+                            break;
+                        case Instance.InstanceItemType.ModPack:
+                            break;
+                    }
                 }
-                else if ((item.Header as String).Contains("Mods"))
+                else if (item.Tag is Instance)
                 {
-                    Button bt = new Button();
+
                 }
             }
         }
