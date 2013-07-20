@@ -105,6 +105,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PluginAPI\IPlugin.cs" />
+    <Compile Include="PluginAPI\IToolPlugin.cs" />
+    <Compile Include="PluginAPI\PluginManager.cs" />
     <Compile Include="Utils\ChangeMCVersion.xaml.cs">
       <DependentUpon>ChangeMCVersion.xaml</DependentUpon>
     </Compile>
