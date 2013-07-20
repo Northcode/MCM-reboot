@@ -39,22 +39,6 @@ namespace MCM
             initializeNewsFeed();
             updateUsersList();
             updateInstances();
-
-<<<<<<< HEAD
-=======
-            //System.Timers.Timer t = new System.Timers.Timer(200);
-            //t.Elapsed += timerTick;
-            //t.Start();
-
->>>>>>> dev-Jens
-        }
-
-        void timerTick(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            /*App.InvokeAction(delegate
-            {
-                updateDownloadConsole();
-            });*/
         }
 
         /// <summary>
@@ -124,44 +108,6 @@ namespace MCM
 
         #region UpdateStuff
 
-<<<<<<< HEAD
-        private static int olddl;
-        private void updateDownloadConsole()
-        {
-<<<<<<< HEAD
-            List<Download> dls = DownloadManager.downloads;
-            //if (dls.Count != olddl)
-            //{
-                olddl = dls.Count;
-                listBox_downloadManager.Items.Clear();
-                foreach (Download dl in dls)
-=======
-            App.InvokeAction(delegate { listBox_downloadManager.Items.Clear();
-            List<Download> dls = DownloadManager.getAllDownloads();
-            foreach (Download dl in dls)
-            {
-                DownloadControl control = new DownloadControl(dl.Key, dl.Url);
-                if (dl.ShouldContinue)
->>>>>>> dev-Andreas
-                {
-                    DownloadControl control = new DownloadControl(dl.Key, dl.Url);
-                    if (dl.ShouldContinue)
-                    {
-                        control.status = "downloading...";
-                    }
-                    listBox_downloadManager.Items.Add(control);
-                }
-<<<<<<< HEAD
-            //}
-=======
-                listBox_downloadManager.Items.Add(control);
-            }
-            });
->>>>>>> dev-Andreas
-        }
-
-=======
->>>>>>> dev-Jens
         private void updateUsersList()
         {
             comboBox_users.Items.Clear();
