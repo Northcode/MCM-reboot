@@ -44,8 +44,8 @@ namespace MCM.MinecraftFramework
         {
             if (!File.Exists(Extractpath))
             {
-                Download dl = DownloadManager.ScheduleDownload(Name, Url, false);
-                dl.Downloaded += (d) => { Extract_(d.Data); d.Continue(); };
+                Download dl = DownloadManager.ScheduleDownload(Name, Url, true);
+                dl.Downloaded += (d) => { Extract_(d.Data); };
             }
         }
 

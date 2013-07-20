@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 
@@ -14,10 +15,12 @@ namespace MCM.MinecraftFramework
 
         public static void LoadAssets()
         {
-            Download dl = DownloadManager.ScheduleDownload("Assets XML", MinecraftData.AssetsUrl, true);
+            DownloadPackage dlp = new DownloadPackage("Assets XML","Minecraft Assets", true);
+            dlp.ScheduleDownload("Assets XML", MinecraftData.AssetsUrl);
             string xml = "";
-            dl.Downloaded += (d) =>
+            dlp.Downloaded += delegate
             {
+                Download d = dlp.GetDownload("Assets XML");
                 xml = Encoding.ASCII.GetString(d.Data);
 
                 StringReader sr = new StringReader(xml);
@@ -68,7 +71,22 @@ namespace MCM.MinecraftFramework
 
         internal static void ScheduleAssetDownloads()
         {
-            assets.ForEach(a => { a.ScheduleDownload(); });
+            DownloadPackage dlp = new DownloadPackage("Assets", "Minecraft Assets/Resources", true);
+            List<MinecraftAsset> needDl = new List<MinecraftAsset>();
+            assets.ForEach(a => {
+                if (a.NeedsDownload())
+                {
+                    needDl.Add(a);
+                    Download dl = dlp.ScheduleDownload(a.Key, a.Url);
+                    dl.Downloaded += AssetDownloaded;
+                }
+            });
+        }
+
+        private static void AssetDownloaded(Download dl)
+        {
+            MinecraftAsset asset = assets.Find(a => a.Url == dl.Url);
+            asset.StoreAsset(dl);
         }
     }
 }

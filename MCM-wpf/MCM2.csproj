@@ -70,9 +70,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="Ionic.Zip">
-      <HintPath>Libraries\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\MCM-reboot\packages\MahApps.Metro.0.10.1.1\lib\net40\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -111,6 +108,7 @@
     <Compile Include="Utils\ChangeMCVersion.xaml.cs">
       <DependentUpon>ChangeMCVersion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\DownloadPackage.cs" />
     <Compile Include="Utils\StringPrompt.xaml.cs">
       <DependentUpon>StringPrompt.xaml</DependentUpon>
     </Compile>

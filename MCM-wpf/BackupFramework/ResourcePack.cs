@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Ionic.Zip;
 using System.Windows.Forms;
 
 namespace MCM.BackupFramework
@@ -19,7 +18,7 @@ namespace MCM.BackupFramework
         {
             this.path = path;
             this.name = Path.GetFileNameWithoutExtension(path);
-            this.packInfo.parseJsonFromZip(path);
+            //this.packInfo.parseJsonFromZip(path);
         }
 
         public void getPath()
@@ -38,7 +37,7 @@ namespace MCM.BackupFramework
         public int packFormat { get; set; }
         public string desc { get; set; }
 
-        public void parseJsonFromZip(string path)
+        /*public void parseJsonFromZip(string path)
         {
             Stream s = Stream.Null;
             using (ZipFile zip = ZipFile.Read(path))
@@ -47,7 +46,7 @@ namespace MCM.BackupFramework
                 e.Extract(s);
             }
             MessageBox.Show(s.ToString());
-        }
+        }*/
 
         public void parseJson(string json)
         {

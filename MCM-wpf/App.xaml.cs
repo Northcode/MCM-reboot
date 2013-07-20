@@ -1,5 +1,4 @@
-﻿using Ionic.Zip;
-using MCM.BackupFramework;
+﻿using MCM.BackupFramework;
 using MCM.Data;
 using MCM.MinecraftFramework;
 using MCM.News;
@@ -46,6 +45,7 @@ namespace MCM
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
             InstanceManager.LoadInstances();
+            DownloadManager.hasInternet = DownloadManager.CheckForInternetConnection();
 
             SettingsManager.AddDefault("javapath", "java", "java.exe");
             SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
@@ -58,8 +58,6 @@ namespace MCM
             ScheduleMinecraftVersionJsonDownload();
 
             MinecraftAssetManager.LoadAssets();
-
-            DownloadManager.DownloadAll();
 
             App.Log("Java version: " + GetJavaVersionInformation());
 
@@ -203,7 +201,7 @@ namespace MCM
                     version.ScheduleJarDownload();
                 }
                 version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(); } });
-                DownloadManager.DownloadAll();
+                //DownloadManager.DownloadAll();
                 App.Log("Waiting for minecraft download...");
                 DownloadManager.WaitForAllMCRequire();
                 p.StartInfo.Arguments = version.GetStartArguments(uname, passw);

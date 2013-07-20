@@ -40,18 +40,18 @@ namespace MCM
             updateUsersList();
             updateInstances();
 
-            System.Timers.Timer t = new System.Timers.Timer(200);
-            t.Elapsed += timerTick;
-            t.Start();
+            //System.Timers.Timer t = new System.Timers.Timer(200);
+            //t.Elapsed += timerTick;
+            //t.Start();
 
         }
 
         void timerTick(object sender, System.Timers.ElapsedEventArgs e)
         {
-            App.InvokeAction(delegate
+            /*App.InvokeAction(delegate
             {
                 updateDownloadConsole();
-            });
+            });*/
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace MCM
         private static int olddl;
         private void updateDownloadConsole()
         {
-            List<Download> dls = DownloadManager.downloads;
+            /*List<Download> dls = DownloadManager.packages;
             //if (dls.Count != olddl)
             //{
                 olddl = dls.Count;
@@ -138,7 +138,7 @@ namespace MCM
                     }
                     listBox_downloadManager.Items.Add(control);
                 }
-            //}
+            //}*/
         }
 
         private void updateUsersList()
@@ -248,7 +248,7 @@ namespace MCM
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            DownloadManager.DownloadAll();
+            //DownloadManager.DownloadAll();
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -270,7 +270,7 @@ namespace MCM
             TreeViewItem item = treeView_instances.SelectedItem as TreeViewItem;
             if (item != null)
             {
-                if ((item.Header as String).Contains("Minecraft version "))
+                if (item.Tag is MinecraftVersion)
                 {
                     Label tb = new Label();
                     tb.Content = (item.Tag != null ? (item.Tag as MinecraftVersion).GetDescription() : "no version");

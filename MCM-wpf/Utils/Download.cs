@@ -11,8 +11,8 @@ namespace MCM.Utils
     {
         public string Url { get; set; }
         public string Key { get; set; }
-
         public bool MCRequire { get; set; }
+
         public bool Complete { get; private set; }
         public byte[] Data { get; private set; }
 
@@ -22,17 +22,24 @@ namespace MCM.Utils
 
         public void DoDownload()
         {
-            WebClient wc = new WebClient();
-            try
+            if (DownloadManager.hasInternet)
             {
-                wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
-                wc.DownloadDataCompleted += new DownloadDataCompletedEventHandler(wc_DownloadDataCompleted);
-                wc.DownloadDataAsync(new Uri(Url));
+                WebClient wc = new WebClient();
+                try
+                {
+                    wc.DownloadProgressChanged += new DownloadProgressChangedEventHandler(wc_DownloadProgressChanged);
+                    wc.DownloadDataCompleted += new DownloadDataCompletedEventHandler(wc_DownloadDataCompleted);
+                    wc.DownloadDataAsync(new Uri(Url));
+                }
+                catch (Exception e)
+                {
+                    App.Log("Error while downloading " + Key + ": " + e.ToString());
+                    Downloaded(this);
+                }
             }
-            catch (Exception e)
+            else
             {
-                App.Log("Error while downloading " + Key + ": " + e.ToString());
-                Downloaded(this);
+                throw new Exception("No internet Connection");
             }
         }
 
@@ -45,8 +52,8 @@ namespace MCM.Utils
         {
             try
             {
-                Data = e.Result;
-                Complete = true;
+                this.Data = e.Result;
+                this.Complete = true;
                 App.InvokeAction(delegate
                 {
                     App.mainWindow.progressBar_dl.IsIndeterminate = false;

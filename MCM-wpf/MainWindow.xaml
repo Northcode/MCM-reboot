@@ -86,12 +86,7 @@
                     <TabControl>
                         <TabItem Header="Launcher">
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="40"/>
-                                </Grid.RowDefinitions>
                                 <TextBox x:Name="txtLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" local:TextBoxBehaviour.ScrollOnTextChanged="True" Grid.Row="0"/>
-                                <Button Content="Download All Scheduled downloads" Grid.Row="1" Click="Button_Click_3" />
                             </Grid>
                         </TabItem>
                         <TabItem Header="Minecraft">
@@ -110,8 +105,6 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="114"/>
                 <ColumnDefinition Width="118"/>
-                <ColumnDefinition Width="106"/>
-                <ColumnDefinition Width="101"/>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="130"/>
             </Grid.ColumnDefinitions>
@@ -124,10 +117,10 @@
             <Label Content="Multiplayer status:" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" Grid.ColumnSpan="1"/>
             <Label x:Name="label_loginStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch"></Label>
             <Label x:Name="label_multiplayerStatus" MouseDown="updateStatus" Content="(bool)" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Stretch"/>
-            <Button x:Name="btn_startMinecraft" Content="Start Minecraft" Grid.Column="5" Margin="0,7,10,0" Grid.Row="1" Click="StartMinecraftButton" HorizontalAlignment="Right" Width="115" Height="25" VerticalAlignment="Top"/>
-            <ComboBox x:Name="comboBox_users" Grid.Column="5" Margin="0,5,10,0" SelectionChanged="ComboBox_SelectionChanged_1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115" />
-            <ProgressBar x:Name="progressBar_dl" Grid.ColumnSpan="6" Grid.Row="2" Height="Auto" Background="Transparent"/>
-            <Label x:Name="label_dlCount" Content="" Grid.Column="3" Margin="19,31,20,0" Grid.Row="1" VerticalAlignment="Top" FontSize="9" Height="21" Grid.RowSpan="2"/>
+            <Button x:Name="btn_startMinecraft" Content="Start Minecraft" Grid.Column="3" Margin="0,7,10,0" Grid.Row="1" Click="StartMinecraftButton" HorizontalAlignment="Right" Width="115" Height="25" VerticalAlignment="Top"/>
+            <ComboBox x:Name="comboBox_users" Grid.Column="3" Margin="0,5,10,0" SelectionChanged="ComboBox_SelectionChanged_1" Height="26" VerticalAlignment="Top" HorizontalAlignment="Right" Width="115" />
+            <ProgressBar x:Name="progressBar_dl" Grid.ColumnSpan="4" Grid.Row="2" Height="Auto" Background="Transparent"/>
+            <Label x:Name="label_dlCount" Content="" Margin="0,31,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="9" Height="21" Grid.RowSpan="2" Grid.ColumnSpan="4" HorizontalAlignment="Center"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>

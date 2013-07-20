@@ -109,7 +109,7 @@ namespace MCM.BackupFramework
             // Minecraft version
             TreeViewItem mcVer = new TreeViewItem();
             mcVer.Header = "Minecraft version " + ((this.Version == null) ? "" : this.Version.Key);
-            mcVer.Tag = this.Version;
+            mcVer.Tag = "mcver";
             node.Items.Add(mcVer);
 
             // Modpack
