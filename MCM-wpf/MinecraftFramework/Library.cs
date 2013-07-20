@@ -40,12 +40,27 @@ namespace MCM.MinecraftFramework
             }
         }
 
+        public void ScheduleExtract(DownloadPackage pkg)
+        {
+            if (!File.Exists(Extractpath))
+            {
+                Download dl = pkg.ScheduleDownload(this.Name,this.Url);
+                ApplyDlStuff(dl);
+            }
+        }
+
+        private void ApplyDlStuff(Download dl)
+        {
+            dl.ShouldContinue = true;
+            dl.Downloaded += (d) => { Extract_(d.Data); dl.Continue(); };
+        }
+
         public void ScheduleExtract()
         {
             if (!File.Exists(Extractpath))
             {
-                Download dl = DownloadManager.ScheduleDownload(Name, Url, false);
-                dl.Downloaded += (d) => { Extract_(d.Data); d.Continue(); };
+                Download dl = DownloadManager.ScheduleDownload(Name, Url, true);
+                ApplyDlStuff(dl);
             }
         }
 

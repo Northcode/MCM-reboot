@@ -1,5 +1,6 @@
 ﻿using MCM.Data;
 using MCM.MinecraftFramework;
+using MCM.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
-using System.Windows.Forms;
 
 namespace MCM.BackupFramework
 {
@@ -15,12 +15,22 @@ namespace MCM.BackupFramework
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public MinecraftVersion Version { get; set; }
+        public TinyMinecraftVersion Version { get; set; }
         public ModPack mods { get; set; }
 
         private string ResourcePackDir { get { return this.Path + "\\resourcepacks"; } }
         private string TexturePackDir { get { return this.Path + "\\texturepacks"; } }
         private string SavesDir { get { return this.Path + "\\saves"; } }
+
+        public enum InstanceItemType
+        {
+            Main,
+            MinecraftVersion,
+            ModPack,
+            ResourcePack,
+            TexturePack,
+            MinecraftSave
+        };
 
         public Instance(string Name)
         {
@@ -109,12 +119,31 @@ namespace MCM.BackupFramework
             // Minecraft version
             TreeViewItem mcVer = new TreeViewItem();
             mcVer.Header = "Minecraft version " + ((this.Version == null) ? "" : this.Version.Key);
-            mcVer.Tag = this.Version;
+            mcVer.MouseUp += (s, e) =>
+            {
+                Label tb = new Label();
+                tb.Content = (this.Version == null ? "no version" : this.Version.Key);
+                Button bt = new Button();
+                bt.Content = "Change version";
+                bt.Click += (s2, e2) =>
+                    {
+                        ChangeMCVersion cv = new ChangeMCVersion();
+                        if (cv.ShowDialog() == true)
+                        {
+                            this.Version = cv.version;
+                            tb.Content = (this.Version == null ? "no version" : this.Version.Key);
+                        }
+                    };
+                App.mainWindow.listBox_instanceInfo.Items.Clear();
+                App.mainWindow.listBox_instanceInfo.Items.Add(tb);
+                App.mainWindow.listBox_instanceInfo.Items.Add(bt);
+            };
             node.Items.Add(mcVer);
 
             // Modpack
             TreeViewItem modPack = new TreeViewItem();
             modPack.Header = "Mods";
+            modPack.Tag = InstanceItemType.ModPack;
             if (this.mods != null)
             {
                 foreach (Mod mod in this.mods.Mods)
@@ -130,6 +159,7 @@ namespace MCM.BackupFramework
             // ResourcePacks
             TreeViewItem resPack = new TreeViewItem();
             resPack.Header = "Resource Packs";
+            resPack.Tag = InstanceItemType.ResourcePack;
             foreach (ResourcePack pack in this.ResourcePacks)
             {
                 TreeViewItem thisPack = new TreeViewItem();
@@ -143,6 +173,7 @@ namespace MCM.BackupFramework
             // Texturepacks
             TreeViewItem texturePack = new TreeViewItem();
             texturePack.Header = "Texture Packs";
+            texturePack.Tag = InstanceItemType.TexturePack;
             foreach (string pack in this.texturePacks)
             {
                 TreeViewItem thisPack = new TreeViewItem();
@@ -154,6 +185,7 @@ namespace MCM.BackupFramework
             // World Saves
             TreeViewItem worldSave = new TreeViewItem();
             worldSave.Header = "World Saves";
+            worldSave.Tag = InstanceItemType.MinecraftSave;
             foreach (string save in this.Saves)
             {
                 TreeViewItem thisSave = new TreeViewItem();

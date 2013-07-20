@@ -40,14 +40,21 @@ namespace MCM
             updateUsersList();
             updateInstances();
 
+<<<<<<< HEAD
+=======
+            //System.Timers.Timer t = new System.Timers.Timer(200);
+            //t.Elapsed += timerTick;
+            //t.Start();
+
+>>>>>>> dev-Jens
         }
 
         void timerTick(object sender, System.Timers.ElapsedEventArgs e)
         {
-            App.InvokeAction(delegate
+            /*App.InvokeAction(delegate
             {
                 updateDownloadConsole();
-            });
+            });*/
         }
 
         /// <summary>
@@ -117,6 +124,7 @@ namespace MCM
 
         #region UpdateStuff
 
+<<<<<<< HEAD
         private static int olddl;
         private void updateDownloadConsole()
         {
@@ -152,6 +160,8 @@ namespace MCM
 >>>>>>> dev-Andreas
         }
 
+=======
+>>>>>>> dev-Jens
         private void updateUsersList()
         {
             comboBox_users.Items.Clear();
@@ -259,7 +269,7 @@ namespace MCM
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            DownloadManager.DownloadAll();
+            //DownloadManager.DownloadAll();
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -281,19 +291,20 @@ namespace MCM
             TreeViewItem item = treeView_instances.SelectedItem as TreeViewItem;
             if (item != null)
             {
-                if ((item.Header as String).Contains("Minecraft version "))
+                if (item.Tag is Instance.InstanceItemType)
                 {
-                    Label tb = new Label();
-                    tb.Content = (item.Tag != null ? (item.Tag as MinecraftVersion).GetDescription() : "no version");
-                    Button bt = new Button();
-                    bt.Content = "Change version";
-                    bt.Click += bt_Click;
-                    listBox_instanceInfo.Items.Add(tb);
-                    listBox_instanceInfo.Items.Add(bt);
+                    switch ((Instance.InstanceItemType)item.Tag)
+                    {
+                        case Instance.InstanceItemType.MinecraftVersion:
+                            
+                            break;
+                        case Instance.InstanceItemType.ModPack:
+                            break;
+                    }
                 }
-                else if ((item.Header as String).Contains("Mods"))
+                else if (item.Tag is Instance)
                 {
-                    Button bt = new Button();
+
                 }
             }
         }
