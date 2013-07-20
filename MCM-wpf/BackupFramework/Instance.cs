@@ -132,6 +132,7 @@ namespace MCM.BackupFramework
                         {
                             this.Version = cv.version;
                             tb.Content = (this.Version == null ? "no version" : this.Version.Key);
+                            App.mainWindow.updateInstances();
                         }
                     };
                 App.mainWindow.listBox_instanceInfo.Items.Clear();

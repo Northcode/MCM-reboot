@@ -24,9 +24,14 @@ namespace MCM.BackupFramework
                 {
                     Instance i = new Instance(obj2["name"].ToString());
                     i.Description = obj2["desc"].ToString();
+                    i.Version = VersionManager.versions.Find(ver => obj2["version"].ToString() == ver.Key);
                     instances.Add(i);
                 }
             }
+            App.InvokeAction(delegate
+            {
+                App.mainWindow.updateInstances();
+            });
         }
 
         public static void SaveInstances()
@@ -47,6 +52,8 @@ namespace MCM.BackupFramework
                     writer.WriteValue(instance.Name);
                     writer.WritePropertyName("desc");
                     writer.WriteValue(instance.Description);
+                    writer.WritePropertyName("version");
+                    writer.WriteValue(instance.Version.Key);
                     writer.WriteEndObject();
                 }
 
