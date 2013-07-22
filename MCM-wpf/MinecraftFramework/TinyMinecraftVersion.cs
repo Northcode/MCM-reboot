@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCM.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -55,11 +56,11 @@ namespace MCM.MinecraftFramework
 
         public void DownloadVersionInfo()
         {
-            try
+            App.Log("Downloading json for minecraftversion: " + Key);
+            Download dl = DownloadManager.ScheduleDownload("Minecraft json", JsonUrl, false);
+            dl.Downloaded += (d) =>
             {
-                App.Log("Downloading json for minecraftversion: " + Key);
-                WebClient wc = new WebClient();
-                string data = wc.DownloadString(JsonUrl);
+                string data = Encoding.ASCII.GetString(d.Data);
                 var fi = new FileInfo(JsonPath);
                 if (!Directory.Exists(fi.DirectoryName))
                 {
@@ -68,12 +69,7 @@ namespace MCM.MinecraftFramework
                 }
                 File.WriteAllText(JsonPath, data);
                 App.Log("Json Downloaded, saved to: " + JsonPath);
-            }
-            catch (Exception e)
-            {
-                App.Log("An error occured while downloading json for: " + Key);
-                App.Log("Error data: " + e.ToString());
-            }
+            };
         }
 
         public MinecraftVersion FullVersion

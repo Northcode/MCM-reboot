@@ -25,7 +25,6 @@ namespace MCM.Utils
 
         public virtual void DoDownload()
         {
-            Continued = false;
             this.onContinue += delegate { this.Continued = true; };
             if (DownloadManager.hasInternet)
             {
@@ -104,10 +103,11 @@ namespace MCM.Utils
 
         public void WaitForComplete()
         {
-            while (!Complete || (ShouldContinue ? !Continued : true))
+            while (!Complete || (ShouldContinue ? !Continued : false))
             {
                 Thread.Sleep(100);
             }
+            App.Log("Download complete " + this.ToString());
         }
     }
 }
