@@ -81,6 +81,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression">
       <HintPath>C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.IO.Compression.dll</HintPath>
     </Reference>
@@ -111,10 +112,15 @@
     <Compile Include="Utils\ChangeMCVersion.xaml.cs">
       <DependentUpon>ChangeMCVersion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Crypto.cs" />
     <Compile Include="Utils\DownloadPackage.cs" />
+    <Compile Include="Utils\MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\StringPrompt.xaml.cs">
       <DependentUpon>StringPrompt.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\SystemTray.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -214,6 +220,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utils\DownloadControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Utils\MessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

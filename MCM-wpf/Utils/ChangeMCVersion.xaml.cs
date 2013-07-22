@@ -45,7 +45,8 @@ namespace MCM.Utils
             }
             catch
             {
-                MessageBox.Show("The versions haven't initialized yet");
+                MessageBox mb = new MessageBox("Warning!","The versions haven't initialized yet");
+                mb.Show();
                 this.Close();
             }
         }
@@ -73,7 +74,8 @@ namespace MCM.Utils
             }
             else
             {
-                MessageBox.Show("Please select a version or press cancel!");
+                MessageBox mb = new MessageBox("Warning","Please select a version or press cancel!");
+                mb.Show();
             }
         }
     }

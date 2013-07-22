@@ -28,11 +28,13 @@ namespace MCM
             //Set NewsBlocked to False for every Navigate call
             NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed, true);
-            webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
+            if(DownloadManager.hasInternet)
+                webBrowser_launcherFeed.Navigate("http://mcupdate.tumblr.com/");
 
             NewsBlocked = false;
             HideScriptErrors(webBrowser_launcherFeed_Twitter, true);
-            webBrowser_launcherFeed_Twitter.Source = new Uri("http://mcm.northcode.no/resources/twitter_mojang.html");
+            if (DownloadManager.hasInternet)
+                webBrowser_launcherFeed_Twitter.Source = new Uri("http://mcm.northcode.no/resources/twitter_mojang.html");
 
             Task t = new Task(ParseMojangFeed);
             t.Start();
@@ -101,26 +103,29 @@ namespace MCM
 
         private void DownloadMojangFeed()
         {
-            try
+            if (DownloadManager.hasInternet)
             {
-                Download dl = DownloadManager.ScheduleDownload("Mojang Feed", "https://www.mojang.com/feed/",false);
-                dl.Downloaded += d =>
+                try
                 {
-                    try
+                    Download dl = DownloadManager.ScheduleDownload("Mojang Feed", "https://www.mojang.com/feed/", false);
+                    dl.Downloaded += d =>
                     {
-                        File.WriteAllBytes(NewsStorage.MojangFeedPath, d.Data);
-                        ParseMojangXml(NewsStorage.MojangFeedPath);
-                    }
-                    catch
-                    {
+                        try
+                        {
+                            File.WriteAllBytes(NewsStorage.MojangFeedPath, d.Data);
+                            ParseMojangXml(NewsStorage.MojangFeedPath);
+                        }
+                        catch
+                        {
 
-                    }
-                };
-                dl.DoDownload();
-            }
-            catch (Exception ex)
-            {
-                App.Log("An error occured while downlaoding mojang feed: " + ex.ToString());
+                        }
+                    };
+                    dl.DoDownload();
+                }
+                catch (Exception ex)
+                {
+                    App.Log("An error occured while downlaoding mojang feed: " + ex.ToString());
+                }
             }
         }
 
