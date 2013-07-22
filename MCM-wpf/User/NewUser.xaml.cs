@@ -33,7 +33,7 @@ namespace MCM.User
             {
                 ListBoxItem item = new ListBoxItem();
                 item.Content = usr.displayname;
-                item.Uid = usr.username + ";" + usr.password_enc;
+                item.Uid = usr.username + ";" + usr.password;
                 lb_users.Items.Add(item);
             }
         }
@@ -50,7 +50,7 @@ namespace MCM.User
         {
             foreach (MinecraftUser usr in MinecraftUserData.users)
             {
-                if((lb_users.SelectedItem as ListBoxItem).Uid == usr.username + ";" + usr.password_enc)
+                if((lb_users.SelectedItem as ListBoxItem).Uid == usr.username + ";" + usr.password)
                 {
                     return usr;
                 }
@@ -69,7 +69,7 @@ namespace MCM.User
             MinecraftUser user = getSelectedUser();
             tb_displayname.Text = user.displayname;
             tb_username.Text = user.username;
-            tb_password.Password = MinecraftUser.decryptPwd(user.password_enc);
+            tb_password.Password = MinecraftUser.decryptPwd(user.password);
             Button_Click_1(null, null);
         }
     }

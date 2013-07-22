@@ -65,8 +65,15 @@ namespace MCM.MinecraftFramework
 
         public bool NeedsDownload()
         {
-            if (!Directory.Exists(Path) && !File.Exists(Path))
-                return true;
+            if (!Directory.Exists(Path))
+            {
+                if (!File.Exists(Path))
+                    return true;
+                else if (Crypto.GenerateMd5Hash(File.ReadAllBytes(Path)) != this.md5)
+                    return true;
+                else
+                    return false; 
+            }
             else
             {
                 return false;
