@@ -43,7 +43,7 @@ namespace MCM.Data
                     suffix = "_" + i.ToString();
                     i++;
                 }
-                File.WriteAllText(userDataSavePath + user.username + suffix, user.ToString());
+                File.WriteAllText(userDataSavePath + user.username + suffix + ".udat", user.ToString());
             }
         }
     }

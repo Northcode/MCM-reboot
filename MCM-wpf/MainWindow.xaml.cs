@@ -34,26 +34,11 @@ namespace MCM
         {
             InitializeComponent();
 
-            updateStatus(null,null);
+            updateStatus(null, null);
             // News feed display
             initializeNewsFeed();
             updateUsersList();
-            updateInstances();
-<<<<<<< HEAD
-=======
-
-            //System.Timers.Timer t = new System.Timers.Timer(200);
-            //t.Elapsed += timerTick;
-            //t.Start();
-        }
-
-        void timerTick(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            /*App.InvokeAction(delegate
-            {
-                updateDownloadConsole();
-            });*/
->>>>>>> fcf227dea41fff186f9f505af5375f0c50a18574
+            UpdateInstances();
         }
 
         /// <summary>
@@ -61,20 +46,19 @@ namespace MCM
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void StartMinecraftButton(object sender, RoutedEventArgs e)
+        public void StartMinecraftButton(object sender, RoutedEventArgs e)
         {
-            if (lstBackup.SelectedItem != null)
+            if (comboBox_instances.SelectedItem != null)
             {
                 Task t = new Task(delegate
-                {
-                    MinecraftFramework.MinecraftVersion v = null;
-                    App.InvokeAction(delegate
                     {
-                        v = ((lstBackup.SelectedItem as Label).Tag as MinecraftFramework.TinyMinecraftVersion).FullVersion;
+                        Instance i = null;
+                        App.InvokeAction(delegate
+                        {
+                            i = (comboBox_instances.SelectedItem as Control).Tag as Instance;
+                        });
+                        App.StartMinecraft(i);
                     });
-                    App.StartMinecraft(v);
-                    
-                });
                 t.Start();
             }
         }
@@ -127,13 +111,13 @@ namespace MCM
         {
             comboBox_users.Items.Clear();
             ListBoxItem newItem = new ListBoxItem();
-            newItem.Content = "(Create new)";
+            newItem.Content = "(new/edit)";
             newItem.Uid = "(new)";
             foreach (MinecraftUser user in MinecraftUserData.users)
             {
                 ListBoxItem item = new ListBoxItem();
                 item.Content = user.displayname;
-                item.Uid = user.username + ";" + user.password_enc;
+                item.Uid = user.username + ";" + user.password;
                 comboBox_users.Items.Add(item);
             }
             comboBox_users.Items.Add(newItem);
@@ -153,6 +137,7 @@ namespace MCM
 
         private void updateStatuses()
         {
+            DownloadManager.CheckForInternetConnection();
             App.mcStatus.refreshStatus();
             App.InvokeAction(delegate { 
                 label_loginStatus.Content = (App.mcStatus.login ? "Online" : "Offline");
@@ -160,13 +145,20 @@ namespace MCM
             });
         }
 
-        public void updateInstances()
+        public void UpdateInstances()
         {
             treeView_instances.Items.Clear();
+            comboBox_instances.Items.Clear();
 
             foreach (Instance i in InstanceManager.instances)
             {
                 treeView_instances.Items.Add(i.GetTreeViewItem());
+                comboBox_instances.Items.Add(new ComboBoxItem() { Content = i.Name, Tag = i });
+            }
+
+            if (comboBox_instances.Items.Count > 0)
+            {
+                comboBox_instances.SelectedIndex = 0;
             }
         }
 
@@ -184,7 +176,7 @@ namespace MCM
                 throw new Exception("No user selected");
             foreach (MinecraftUser user in MinecraftUserData.users)
             {
-                if (user.username + ";" + user.password_enc == ((ListBoxItem)comboBox_users.SelectedItem).Uid)
+                if (user.username + ";" + user.password == ((ListBoxItem)comboBox_users.SelectedItem).Uid)
                 {
                     return user;
                 }
@@ -212,6 +204,11 @@ namespace MCM
         {
         }
 
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            App.Log(String.Format("------ Stopping MC Manager version {0} ------ ({1})", App.version, DateTime.Now.ToString("s")));
+        }
+
         private void cbxType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
@@ -237,7 +234,7 @@ namespace MCM
             //DownloadManager.DownloadAll();
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void Button_aInstance(object sender, RoutedEventArgs e)
         {
             StringPrompt sp = new StringPrompt("New Instance", "Name:");
             if (sp.ShowDialog() == true)
@@ -245,7 +242,7 @@ namespace MCM
                 Instance i = new Instance(sp.theString);
                 InstanceManager.instances.Add(i);
 
-                updateInstances();
+                UpdateInstances();
             }
 
         }
@@ -292,6 +289,12 @@ namespace MCM
                     }
                 }
             }
+        }
+
+        private void Button_rInstance(object sender, RoutedEventArgs e)
+        {
+            InstanceManager.DeleteInstance(getSelectedInstance());
+            UpdateInstances();
         }
     }
 }

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace MCM.BackupFramework
@@ -18,9 +20,14 @@ namespace MCM.BackupFramework
         public TinyMinecraftVersion Version { get; set; }
         public ModPack mods { get; set; }
 
-        private string ResourcePackDir { get { return this.Path + "\\resourcepacks"; } }
-        private string TexturePackDir { get { return this.Path + "\\texturepacks"; } }
-        private string SavesDir { get { return this.Path + "\\saves"; } }
+        public string MinecraftDirPath { get { return this.Path + "\\minecraft"; } }
+        private string ResourcePackDir { get { return this.MinecraftDirPath + "\\resourcepacks"; } }
+        private string TexturePackDir { get { return this.MinecraftDirPath + "\\texturepacks"; } }
+        private string SavesDir { get { return this.MinecraftDirPath + "\\saves"; } }
+        private string MinecraftJarDir { get { return this.Path + "\\jar"; } }
+        public string MinecraftJarFilePath { get { return MinecraftJarDir + String.Format("\\{0}.jar", Version.Key); } }
+
+        private bool changingVersion;
 
         public enum InstanceItemType
         {
@@ -45,6 +52,7 @@ namespace MCM.BackupFramework
             Directory.CreateDirectory(this.ResourcePackDir);
             Directory.CreateDirectory(this.TexturePackDir);
             Directory.CreateDirectory(this.SavesDir);
+            Directory.CreateDirectory(this.MinecraftJarDir);
         }
 
         public string Path
@@ -110,6 +118,17 @@ namespace MCM.BackupFramework
             }
         }
 
+        public string GetStartArguments(string username,string password)
+        {
+            return this.Version.FullVersion.GetStartArguments(username, password, MinecraftJarFilePath, MinecraftDirPath);
+        }
+
+        private void CopyJar()
+        {
+            Directory.GetFiles(MinecraftJarDir).ToList().ForEach(jarfile => { File.Delete(jarfile); });
+            File.Copy(this.Version.LocalPath + "\\" + this.Version.Key + ".jar", this.MinecraftJarFilePath);
+        }
+
         public TreeViewItem GetTreeViewItem()
         {
             TreeViewItem node = new TreeViewItem();
@@ -127,12 +146,65 @@ namespace MCM.BackupFramework
                 bt.Content = "Change version";
                 bt.Click += (s2, e2) =>
                     {
-                        ChangeMCVersion cv = new ChangeMCVersion();
-                        if (cv.ShowDialog() == true)
+                        if (changingVersion)
                         {
-                            this.Version = cv.version;
-                            tb.Content = (this.Version == null ? "no version" : this.Version.Key);
-                            App.mainWindow.updateInstances();
+                            MessageBox mb = new MessageBox("Warning", "The version is currently being changed/downloaded! Cannot change now!");
+                            mb.Show();
+                        }
+                        else
+                        {
+                            ChangeMCVersion cv = new ChangeMCVersion();
+                            if (cv.ShowDialog() == true)
+                            {
+                                this.changingVersion = true;
+                                TinyMinecraftVersion prevVer = this.Version;
+                                this.Version = cv.version;
+                                try
+                                {
+                                    if (!File.Exists(cv.version.FullVersion.BinaryPath))
+                                    {
+
+                                        Task t = new Task(delegate
+                                        {
+                                            Download dl = cv.version.FullVersion.ScheduleJarDownload();
+
+                                            DownloadPackage dp = new DownloadPackage("Libraries", true);
+                                            dp.ShouldContinue = true;
+                                            cv.version.FullVersion.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(dp); } });
+                                            if (dp.getDownloads().Count > 0)
+                                                DownloadManager.ScheduleDownload(dp);
+
+                                            dl.WaitForComplete();
+                                            CopyJar();
+                                            App.InvokeAction(delegate
+                                            {
+                                                tb.Content = (this.Version == null ? "no version" : this.Version.Key);
+                                                App.mainWindow.UpdateInstances();
+                                            });
+                                            this.changingVersion = false;
+                                        });
+                                        t.Start();
+
+
+                                    }
+                                    else
+                                    {
+                                        CopyJar();
+                                        tb.Content = (this.Version == null ? "no version" : this.Version.Key);
+                                        App.mainWindow.UpdateInstances();
+                                        this.changingVersion = false;
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+
+                                    MCM.Utils.MessageBox.ShowDialog("Error", "The selected version could not be changed because: " + ex.Message);
+                                    this.Version = prevVer;
+                                    tb.Content = (this.Version == null ? "no version" : this.Version.Key);
+                                    App.mainWindow.UpdateInstances();
+                                    this.changingVersion = false;
+                                }
+                            }
                         }
                     };
                 App.mainWindow.listBox_instanceInfo.Items.Clear();
@@ -141,6 +213,7 @@ namespace MCM.BackupFramework
             };
             node.Items.Add(mcVer);
 
+            /*
             // Modpack
             TreeViewItem modPack = new TreeViewItem();
             modPack.Header = "Mods";
@@ -195,7 +268,7 @@ namespace MCM.BackupFramework
                 worldSave.Items.Add(thisSave);
             }
             node.Items.Add(worldSave);
-
+            */
             node.ExpandSubtree();
             return node;
         }

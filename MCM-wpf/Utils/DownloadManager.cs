@@ -97,19 +97,19 @@ namespace MCM.Utils
             //}
         }
 
-        public static bool CheckForInternetConnection()
+        public static void CheckForInternetConnection()
         {
             try
             {
                 using (var client = new WebClient())
                 using (var stream = client.OpenRead("http://www.google.com"))
                 {
-                    return true;
+                    hasInternet = true;
                 }
             }
             catch
             {
-                return false;
+                hasInternet = false;
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCM.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -17,19 +18,27 @@ namespace MCM.MinecraftFramework
             {
                 try
                 {
-                    WebClient wc = new WebClient();
-                    string result = wc.DownloadString(String.Format(MinecraftData.MinecraftLoginUrl, Username, Password));
-                    if (result == "Bad Login")
+                    if (DownloadManager.hasInternet)
                     {
-                        throw new Exception("Bad Login!");
+                        WebClient wc = new WebClient();
+                        string result = wc.DownloadString(String.Format(MinecraftData.MinecraftLoginUrl, Username, Password));
+                        if (result == "Bad Login")
+                        {
+                            throw new Exception("Bad Login!");
+                        }
+                        string[] arguments = result.Split(':');
+                        SessionInfo si = new SessionInfo();
+                        si.username = arguments[2];
+                        si.sessionid = arguments[3];
+                        return si;
                     }
-                    string[] arguments = result.Split(':');
-
-                    SessionInfo si = new SessionInfo();
-                    si.username = arguments[2];
-                    si.sessionid = arguments[3];
-
-                    return si;
+                    else
+                    {
+                        SessionInfo si = new SessionInfo();
+                        si.username = Username;
+                        si.sessionid = "";
+                        return si;
+                    }
                 }
                 catch (Exception ex)
                 {

@@ -12,9 +12,9 @@ namespace MCM.Data
         public static string DataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.mcm2";
         public static string OldAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\.mcm";
         public static string DocumentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MC Manager";
-        public static string LogFilePath = DataPath + "\\console.log";
+        public static string LogPath = DataPath + "\\logs";
 
-        public static string InstancesPath {get { return DocumentPath + "\\instances"; }}
+        public static string InstancesPath {get { return DataPath + "\\instances"; }}
         public static string SettingsPath { get { return DataPath + "\\settings.xml"; } }
 
         public static void InitDirectories()
@@ -22,6 +22,7 @@ namespace MCM.Data
             Directory.CreateDirectory(DataPath);
             Directory.CreateDirectory(DocumentPath);
             Directory.CreateDirectory(InstancesPath);
+            Directory.CreateDirectory(LogPath);
         }
     }
 }
