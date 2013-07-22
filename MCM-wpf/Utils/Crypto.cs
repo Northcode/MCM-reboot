@@ -145,5 +145,13 @@ namespace MCM.Utils
 
             return buffer;
         }
+
+        public static string GenerateMd5Hash(byte[] input)
+        {
+            MD5 md5Hash = MD5.Create();
+            byte[] data = md5Hash.ComputeHash(input); ;
+            string str = System.Text.Encoding.Default.GetString(data);
+            return str;
+        }
     }
 }

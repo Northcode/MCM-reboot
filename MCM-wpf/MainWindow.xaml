@@ -3,7 +3,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:MCM"
-        Title="MC Manager" Height="482" Width="722" BorderThickness="0" MinHeight="482" MinWidth="722" Initialized="MetroWindow_Initialized" Icon="favicon.ico">
+        Title="MC Manager" Height="482" Width="722" BorderThickness="0" MinHeight="482" MinWidth="722" Initialized="MetroWindow_Initialized" Closing="MetroWindow_Closing" Icon="favicon.ico">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -29,8 +29,8 @@
                     </Grid.ColumnDefinitions>
                     <TreeView x:Name="treeView_instances" BorderThickness="0" Margin="0,0,0,40" SelectedItemChanged="treeView_instances_SelectedItemChanged" />
                     <ListBox x:Name="listBox_instanceInfo" Grid.Column="1"/>
-                    <Button Content="Add instance" HorizontalAlignment="Left" Margin="0,0,0,10" Width="121" Height="25" VerticalAlignment="Bottom" Click="Button_Click_4"/>
-                    <Button Content="Remove Instance" HorizontalAlignment="Left" Margin="126,0,0,10" VerticalAlignment="Bottom" Width="121"/>
+                    <Button Content="Add instance" HorizontalAlignment="Left" Margin="0,0,0,10" Width="121" Height="25" VerticalAlignment="Bottom" Click="Button_aInstance"/>
+                    <Button Content="Remove Instance" HorizontalAlignment="Left" Margin="126,0,0,10" VerticalAlignment="Bottom" Width="121" Click="Button_rInstance"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Versions">
@@ -39,9 +39,9 @@
                         <RowDefinition Height="25"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Button Content="All" Grid.Row="0" Width="100" HorizontalAlignment="Left" Click="Button_Click"/>
-                    <Button Content="Releases" Grid.Row="0" Margin="101,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_1"/>
-                    <Button Content="Snapshots" Grid.Row="0" Margin="202,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_2"/>
+                    <Button Content="Releases" Grid.Row="0" Margin="0,0,0,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_1"/>
+                    <Button Content="Snapshots" Grid.Row="0" Margin="105,0,0,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_2"/>
+                    <Button Content="All" Grid.Row="0" Width="100" HorizontalAlignment="Left" Click="Button_Click" Margin="210,0,0,0"/>
                     <ListBox x:Name="lstBackup" Margin="0" Grid.Row="1"/>
                 </Grid>
             </TabItem>
@@ -87,7 +87,7 @@
                             </Grid>
                         </TabItem>
                         <TabItem Header="Minecraft">
-                            <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" VerticalScrollBarVisibility="Visible" local:TextBoxBehaviour.ScrollOnTextChanged="True"/>
+                            <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" local:TextBoxBehaviour.ScrollOnTextChanged="True"/>
                         </TabItem>
                         <TabItem Header="Download Manager">
                             <ListBox x:Name="listBox_downloadManager" x:FieldModifier="public">

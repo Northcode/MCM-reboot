@@ -15,6 +15,8 @@ namespace MCM.MinecraftFramework
 
         public static void LoadAssets()
         {
+            if (!DownloadManager.hasInternet)
+                return;
             DownloadPackage dlp = new DownloadPackage("Assets XML", true);
             dlp.ScheduleDownload("Assets XML", MinecraftData.AssetsUrl);
             string xml = "";

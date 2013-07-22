@@ -61,7 +61,7 @@ namespace MCM.MinecraftFramework
             }
         }
 
-        public string GetStartArguments(string Username, string Password)
+        public string GetStartArguments(string Username, string Password,string BinaryPath,string GameDataPath)
         {
             StringBuilder processArguments = new StringBuilder();
             processArguments.Append("-Xmx"); processArguments.Append(Settings.SettingsManager.GetSetting("MinecraftRAM").data.ToString()); processArguments.Append(" ");
@@ -71,7 +71,9 @@ namespace MCM.MinecraftFramework
             processArguments.Append(mainClass + " ");
 
             MinecraftData.currentSession = SessionInfo.Connect(Username, Password);
-            string ArgumentsString = MinecraftArguments.Replace("${auth_player_name}", MinecraftData.currentSession.username).Replace("${auth_session}", MinecraftData.currentSession.sessionid).Replace("${game_directory}", "\"" + MinecraftData.AppdataPath + "\"").Replace("${game_assets}", "\"" + MinecraftData.AssetsPath + "\"");
+            string ArgumentsString = MinecraftArguments.Replace("${auth_player_name}", MinecraftData.currentSession.username).Replace("${auth_session}", MinecraftData.currentSession.sessionid).Replace("${game_directory}", "\"" + GameDataPath + "\"").Replace("${game_assets}", "\"" + MinecraftData.AssetsPath + "\"");
+            if (MinecraftData.currentSession.sessionid == "")
+                ArgumentsString = ArgumentsString.Replace("--session", "");
             processArguments.Append(ArgumentsString);
             return processArguments.ToString();
         }
@@ -88,13 +90,14 @@ namespace MCM.MinecraftFramework
             return sb.ToString();
         }
 
-        public void ScheduleJarDownload()
+        public Download ScheduleJarDownload()
         {
             Download dl = DownloadManager.ScheduleDownload(Key, JarUrl,true);
             dl.Downloaded += (d) => {
                 new FileInfo(LocalPath).Directory.Create();
                 File.WriteAllBytes(LocalPath + "\\" + Key + ".jar", d.Data);
             };
+            return dl;
         }
 
         public static MinecraftVersion fromJson(string json)

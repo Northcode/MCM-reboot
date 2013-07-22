@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using System.Windows.Controls;
 namespace MCM.BackupFramework
 {
     public static class InstanceManager
@@ -28,9 +29,21 @@ namespace MCM.BackupFramework
                     instances.Add(i);
                 }
             }
+
+            string[] dirs = Directory.GetDirectories(PathData.InstancesPath);
+            foreach (string s in dirs)
+            {
+                Instance i = instances.Find(In => In.Path == s);
+                if (i == null)
+                {
+                    Instance newI = new Instance(Path.GetFileName(s));
+                    instances.Add(newI);
+                }
+            }
+
             App.InvokeAction(delegate
             {
-                App.mainWindow.updateInstances();
+                App.mainWindow.UpdateInstances();
             });
         }
 
@@ -41,6 +54,7 @@ namespace MCM.BackupFramework
 
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
+                writer.Formatting = Formatting.Indented;
                 writer.WriteStartObject();
                 writer.WritePropertyName("instances");
                 writer.WriteStartArray();
@@ -53,7 +67,7 @@ namespace MCM.BackupFramework
                     writer.WritePropertyName("desc");
                     writer.WriteValue(instance.Description);
                     writer.WritePropertyName("version");
-                    writer.WriteValue(instance.Version.Key);
+                    writer.WriteValue((instance.Version == null ? "" : instance.Version.Key));
                     writer.WriteEndObject();
                 }
 
@@ -61,6 +75,23 @@ namespace MCM.BackupFramework
             }
 
             File.WriteAllText(InstanceFile, sb.ToString());
+        }
+
+        public static Instance GetSelectedInstance(Control selectedItem)
+        {
+            foreach (Instance i in instances)
+            {
+                if (i == selectedItem.Tag)
+                    return i;
+            }
+            throw new Exception("Selected Instance not found");
+        }
+
+        public static void DeleteInstance(Instance instance)
+        {
+            if (Directory.Exists(instance.Path))
+                Directory.Delete(instance.Path,true);
+            instances.Remove(instance);
         }
     }
 }

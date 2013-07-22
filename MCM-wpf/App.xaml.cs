@@ -18,6 +18,7 @@ using System.Net;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -30,6 +31,11 @@ namespace MCM
     {
         public static MainWindow mainWindow;
         public static MinecraftStatus mcStatus = new MinecraftStatus();
+        public static string version = "indev 0.1";
+        private static string minecraftJsonFilePath = PathData.DataPath + "\\versions\\versions.json";
+        private static string logFile;
+
+        public static SystemTray sysTray;
 
         App()
         {
@@ -39,8 +45,7 @@ namespace MCM
         [STAThread]
         static void Main()
         {
-
-            DownloadManager.hasInternet = DownloadManager.CheckForInternetConnection();
+            DownloadManager.CheckForInternetConnection();
             PathData.InitDirectories();
             NewsStorage.InitDirectories();
             SettingsManager.Load();
@@ -50,6 +55,8 @@ namespace MCM
             SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
 
             App app = new App();
+            App.sysTray = new SystemTray();
+
             mainWindow = new MainWindow();
 
             SettingsManager.LoadList();
@@ -58,51 +65,82 @@ namespace MCM
 
             MinecraftAssetManager.LoadAssets();
 
+            App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':','-') + ".log");
+            App.Log(String.Format("====== Starting MC Manager version {0} ====== ({1})", App.version, DateTime.Now.ToString("s")));
             App.Log("Java version: " + GetJavaVersionInformation());
 
             app.Run(mainWindow);
 
-            AppendLogFile();
+
             InstanceManager.SaveInstances();
             MinecraftUserData.saveUsers();
             SettingsManager.Save();
+            AppendLogFile();
+        }
+
+        private static void StartInternetCheckTimer()
+        {
+            Timer t = new Timer(30000);
+            t.Elapsed += delegate
+            {
+                DownloadManager.CheckForInternetConnection();
+            };
+            t.Start();
         }
 
         private static void ScheduleMinecraftVersionJsonDownload()
         {
-            Download dl = DownloadManager.ScheduleDownload("Minecraft Version Json", MinecraftData.VersionsUrl,true);
-            dl.Downloaded += (d) =>
+            if (DownloadManager.hasInternet)
             {
-                string json = Encoding.ASCII.GetString(d.Data);
-                VersionManager.LoadJson(json);
-                App.InvokeAction(delegate
+                Download dl = DownloadManager.ScheduleDownload("Minecraft Version Json", MinecraftData.VersionsUrl, true);
+                dl.Downloaded += (d) =>
                 {
-                    foreach (TinyMinecraftVersion item in VersionManager.versions)
+                    File.WriteAllBytes(minecraftJsonFilePath, d.Data);
+                    LoadMinecraftVersionJson(d.Data);
+                };
+            }
+            else if (File.Exists(minecraftJsonFilePath))
+            {
+                LoadMinecraftVersionJson(File.ReadAllBytes(minecraftJsonFilePath));
+            }
+            else
+            {
+                MCM.Utils.MessageBox.ShowDialog("Warning!", "You don't have the versions file downloaded and you have no internet connection! You can't view/play any versions!");
+            }
+        }
+
+        private static void LoadMinecraftVersionJson(byte[] data)
+        {
+            string json = Encoding.ASCII.GetString(data);
+            VersionManager.LoadJson(json);
+            App.InvokeAction(delegate
+            {
+                foreach (TinyMinecraftVersion item in VersionManager.versions)
+                {
+                    Label lbl = new Label();
+                    lbl.Content = item.Key;
+                    lbl.Tag = item;
+                    lbl.MouseDoubleClick += (s, e) =>
                     {
-                        Label lbl = new Label();
-                        lbl.Content = item.Key;
-                        lbl.Tag = item;
-                        lbl.MouseDoubleClick += (s, e) =>
+                        MinecraftVersion mcversion = ((s as Label).Tag as TinyMinecraftVersion).FullVersion;
+                        App.InvokeAction(delegate
                         {
-                            MinecraftVersion mcversion = ((s as Label).Tag as TinyMinecraftVersion).FullVersion;
-                            App.InvokeAction(delegate
-                            {
-                                TabItem tp = new TabItem();
-                                tp.Header = mcversion.Key;
-                                MCVersionPage versionPage = new MCVersionPage();
-                                versionPage.VersionNameText.Text = mcversion.Key;
-                                versionPage.VersionInfoText.Text = mcversion.ToString();
-                                versionPage.Version = mcversion;
-                                versionPage.ChooseVersion += ChooseVersion;
-                                tp.Content = versionPage;
-                                mainWindow.Tabs.Items.Insert(1, tp);
-                            });
-                        };
-                        App.mainWindow.lstBackup.Items.Add(lbl);
-                    }
-                });
-                InstanceManager.LoadInstances();
-            };
+                            TabItem tp = new TabItem();
+                            tp.Header = mcversion.Key;
+                            MCVersionPage versionPage = new MCVersionPage();
+                            versionPage.VersionNameText.Text = mcversion.Key;
+                            versionPage.VersionInfoText.Text = mcversion.ToString();
+                            versionPage.Version = mcversion;
+                            versionPage.ChooseVersion += ChooseVersion;
+                            tp.Content = versionPage;
+                            mainWindow.Tabs.Items.Insert(1, tp);
+                        });
+                    };
+                    App.mainWindow.lstBackup.Items.Add(lbl);
+                    App.mainWindow.lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
+                }
+            });
+            InstanceManager.LoadInstances();
         }
 
         public static void ChooseVersion(MinecraftVersion version, MCVersionPage page)
@@ -126,7 +164,7 @@ namespace MCM
 
         private static void AppendLogFile()
         {
-            File.AppendAllText(PathData.LogFilePath, mainWindow.txtLog.Text);
+            File.AppendAllText(App.logFile, mainWindow.txtLog.Text);
             mainWindow.txtLog.Clear();
         }
 
@@ -189,7 +227,7 @@ namespace MCM
             }
         }
 
-        internal static void StartMinecraft(MinecraftVersion version)
+        internal static void StartMinecraft(Instance instance)
         {
             try
             {
@@ -198,28 +236,26 @@ namespace MCM
                 DownloadManager.WaitForAllMCRequire();
                 App.Log("Downloads should be finished!");
                 Process p = new Process();
-                MinecraftData.AppdataPath = MinecraftData.VersionsPath + "\\" + version.Key + "\\minecraft";
                 string java = SettingsManager.GetSetting("javapath").data.ToString();
                 p.StartInfo.FileName = java;
                 MinecraftUser user = null;
+                MinecraftData.AppdataPath = instance.Version.FullVersion.LocalPath;
                 App.InvokeAction(delegate {
                     user = mainWindow.getSelectedUser();
                 });
-                string uname = user.username;
-                string passw = MinecraftUser.decryptPwd(user.password);
-                if (!File.Exists(version.BinaryPath))
+                if (!File.Exists(instance.MinecraftJarFilePath))
                 {
-                    version.ScheduleJarDownload();
+                    throw new Exception("No version selected");
                 }
                 DownloadPackage dp = new DownloadPackage("Libraries", true);
                 dp.ShouldContinue = true;
-                version.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(dp); } });
+                instance.Version.FullVersion.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(dp); } });
                 if(dp.getDownloads().Count > 0)
                     DownloadManager.ScheduleDownload(dp);
 
                 App.Log("Waiting for minecraft download...");
                 DownloadManager.WaitForAllMCRequire();
-                p.StartInfo.Arguments = version.GetStartArguments(uname, passw);
+                p.StartInfo.Arguments = instance.GetStartArguments(user.username, user.password);
                 App.Log("Starting Minecraft with arguments: " + p.StartInfo.FileName + " " + p.StartInfo.Arguments);
                 p.StartInfo.UseShellExecute = false;
                 p.EnableRaisingEvents = true;
@@ -244,6 +280,7 @@ namespace MCM
             }
             catch (Exception ex)
             {
+                App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = true; });
                 App.Log("An error occured while starting minecraft: " + ex.ToString());
             }
         }

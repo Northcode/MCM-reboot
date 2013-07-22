@@ -47,7 +47,7 @@ namespace MCM.User
         {
             this.username = data[0];
             this.displayname = data[1];
-            this.password = data[2];
+            this.password_enc = data[2];
         }
 
         public static string encryptPwd(string password)
