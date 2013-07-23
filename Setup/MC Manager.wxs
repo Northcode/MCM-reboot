@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <Product Id="*" Name="MC Manager" Language="1033" Version="1.0.0" Manufacturer="Northcode" UpgradeCode="ACF05BC3-CB56-4901-846F-94C422205226">
-        <Package Id="CCB97DAA-A536-4D73-94A0-3EEAEACA6EC0" InstallerVersion="200" />
+        <Package InstallerVersion="200" Compressed="yes" />
         <Feature Id="ProductFeature" Title="MC Manager Default" Level="1" TypicalDefault="install">
             <ComponentRef Id="MainEXE" />
             <ComponentRef Id="MetroLib" />
             <ComponentRef Id="JsonLib" />
             <ComponentRef Id="InteractivityLib" />
             <ComponentRef Id="ApplicationShortcut" />
-        </Feature>
-        <Feature Id="MinecraftNotes" Level="1" Title="Minecraft Notes we used" TypicalDefault="advertise">
-            <ComponentRef Id="MinecraftNotes" />
         </Feature>
         <Icon Id="icon.ico" SourceFile="favicon.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
@@ -33,9 +30,6 @@
                     <Component Id="InteractivityLib" Guid="353A38BD-4DCA-484D-94EE-8AA194B7EFD7">
                         <File Id="System.Windows.Interactivity.dll" KeyPath="yes" Source="..\Setup_Files\System.Windows.Interactivity.dll" />
                     </Component>
-                    <Component Id="MinecraftNotes" Guid="21AC3FB2-1C41-4C7B-9AA5-D0B9725DC340">
-                        <File Id="minecraftNotes" KeyPath="yes" Source="..\Setup_Files\minecraft notes.txt" />
-                    </Component>
                 </Directory>
             </Directory>
             <Directory Id="ProgramMenuFolder">
@@ -50,7 +44,7 @@
                 <RegistryValue Key="Software\Microsoft\MCManager" KeyPath="yes" Name="installed" Root="HKCU" Type="integer" Value="1" />
             </Component>
         </DirectoryRef>
-        <Media Id="1" />
+        <Media Id="1" EmbedCab="yes" Cabinet="files.cab" />
         <Icon Id="DesktopIcon.exe" SourceFile="..\Setup_Files\MC Manager.exe" />
         <UIRef Id="WixUI_Mondo" />
     </Product>
