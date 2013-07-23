@@ -195,6 +195,8 @@ namespace MCM
             return (item.Tag as Instance);
         }
 
+        #region Events
+
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             
@@ -221,12 +223,12 @@ namespace MCM
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
+            lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.snapshot; };
+            lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.snapshot; };
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -307,5 +309,7 @@ namespace MCM
                 (treeView_instances.SelectedItem as TreeViewItem).Header = stp.theString;
             }
         }
+
+        #endregion
     }
 }

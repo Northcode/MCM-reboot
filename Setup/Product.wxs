@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" Name="MC Manager" Language="1033" Version="1.0.0.0" Manufacturer="Northcode" UpgradeCode="fc7b4efd-44d5-4c57-a0bc-46836edfaa18">
+        <Package Id="CCB97DAA-A536-4D73-94A0-3EEAEACA6EC0" InstallerVersion="200" />
+        <Feature Id="ProductFeature" Title="Setup" Level="1">
+        </Feature>
+        <UI>
+        </UI>
+    </Product>
+</Wix>
