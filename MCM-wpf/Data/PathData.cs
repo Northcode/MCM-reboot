@@ -14,6 +14,7 @@ namespace MCM.Data
         public static string DocumentPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MC Manager";
         public static string LogPath = DataPath + "\\logs";
 
+        public static string PluginsPath { get { return DataPath + "\\plugins"; } }
         public static string InstancesPath {get { return DataPath + "\\instances"; }}
         public static string SettingsPath { get { return DataPath + "\\settings.xml"; } }
 
@@ -23,6 +24,7 @@ namespace MCM.Data
             Directory.CreateDirectory(DocumentPath);
             Directory.CreateDirectory(InstancesPath);
             Directory.CreateDirectory(LogPath);
+            Directory.CreateDirectory(PluginsPath);
         }
     }
 }
