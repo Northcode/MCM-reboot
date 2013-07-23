@@ -43,7 +43,7 @@
                     <Button Content="Releases" Grid.Row="0" Margin="0,0,0,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_1"/>
                     <Button Content="Snapshots" Grid.Row="0" Margin="105,0,0,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_2"/>
                     <Button Content="All" Grid.Row="0" Width="100" HorizontalAlignment="Left" Click="Button_Click" Margin="210,0,0,0"/>
-                    <ListBox x:Name="lstBackup" Margin="0" Grid.Row="1"/>
+                    <ListBox x:Name="lstBackup" Margin="0,5,0,0" Grid.Row="1"/>
                 </Grid>
             </TabItem>
             <TabItem Header="News Feed">

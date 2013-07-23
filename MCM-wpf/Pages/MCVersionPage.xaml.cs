@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,27 +18,13 @@ namespace MCM.Pages
     /// <summary>
     /// Interaction logic for MCVersionPage.xaml
     /// </summary>
-    public partial class MCVersionPage : UserControl
+    public partial class MCVersionPage : MetroWindow
     {
-        public delegate void ChooseMinecraftVersion(MinecraftFramework.MinecraftVersion version, MCVersionPage page);
-
-        public ChooseMinecraftVersion ChooseVersion;
-
         public MinecraftFramework.MinecraftVersion Version { get; set; }
 
         public MCVersionPage()
         {
             InitializeComponent();
-        }
-
-        private void ChooseVersionButton_Click(object sender, RoutedEventArgs e)
-        {
-            ChooseVersion(Version, this);
-        }
-
-        private void CloseTab_Click(object sender, RoutedEventArgs e)
-        {
-            ((Parent as TabItem).Parent as TabControl).Items.Remove(Parent);
         }
     }
 }
