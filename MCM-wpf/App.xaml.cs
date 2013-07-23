@@ -3,6 +3,7 @@ using MCM.Data;
 using MCM.MinecraftFramework;
 using MCM.News;
 using MCM.Pages;
+using MCM.PluginAPI;
 using MCM.Settings;
 using MCM.User;
 using MCM.Utils;
@@ -17,6 +18,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -50,9 +52,14 @@ namespace MCM
             NewsStorage.InitDirectories();
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
+            PluginManager.LoadPlugins();
+
+            Task.Factory.StartNew(delegate { PluginManager.EnablePlugins(); });
 
             SettingsManager.AddDefault("javapath", "java", "java.exe");
             SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
+            SettingsManager.AddDefault("Sync options", "sync", "true");
+            SettingsManager.AddDefault("Sync serverlists", "sync", "true");
 
             App app = new App();
             App.sysTray = new SystemTray();
@@ -71,6 +78,7 @@ namespace MCM
 
             app.Run(mainWindow);
 
+            Task.Factory.StartNew(delegate { PluginManager.DisablePlugins(); });
 
             InstanceManager.SaveInstances();
             MinecraftUserData.saveUsers();
@@ -80,7 +88,7 @@ namespace MCM
 
         private static void StartInternetCheckTimer()
         {
-            Timer t = new Timer(30000);
+            System.Timers.Timer t = new System.Timers.Timer(30000);
             t.Elapsed += delegate
             {
                 DownloadManager.CheckForInternetConnection();
@@ -231,6 +239,11 @@ namespace MCM
         {
             try
             {
+                if (instance.Version == null)
+                {
+                    App.InvokeAction(delegate { MCM.Utils.MessageBox.ShowDialog("Error", "Version not set in instance!"); });
+                    return;
+                }
                 App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = false; });
                 App.Log("Waiting for downloads to finish...");
                 DownloadManager.WaitForAllMCRequire();
@@ -273,7 +286,12 @@ namespace MCM
                 p.Exited += (s, e) =>
                 {
                     App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = true; });
+                    Thread.Sleep(200);
+                    Syncronizer.SyncOptions(instance);
+                    Syncronizer.SyncServerlist(instance);
+                    PluginManager.onCloseMinecraft(instance,user);
                 };
+                PluginManager.onStartMinecraft(instance, user);
                 p.Start();
                 p.BeginErrorReadLine();
                 p.BeginOutputReadLine();

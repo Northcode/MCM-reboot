@@ -34,6 +34,7 @@ namespace MCM.Settings
             edit.SettingSave.Click += (s, ea) =>
             {
                 setting.data = edit.SettingValue.Text;
+                PluginAPI.PluginManager.onSettingChange(setting);
                 edit.Close();
                 this.SettingValue.Content = setting.data.ToString();
             };
