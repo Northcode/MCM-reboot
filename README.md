@@ -3,13 +3,15 @@ MCM-reboot
 
 This Project is a remake of our projects MCM and MC-JarRestorer
 
+[Download] (https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true)
+
 Primary Goals
 -------------
 
-- Managing of Minecraft jars
- - Implementing features of the new Minecraft Launcher
- - Implementing snapshot and update detection of the new Minecraft Launcher
- - Download all versions of Minecraft
+- Managing of Minecraft jars - Done
+ - Implementing features of the new Minecraft Launcher - Done
+ - Implementing snapshot and update detection of the new Minecraft Launcher - Done
+ - Download all versions of Minecraft - Done
 - Managing of Mods
  - Mainly forgemods
 - Displaying Minecraft news
@@ -19,9 +21,9 @@ Primary Goals
   - Different versions of the world save stored as one unit
  - Screenshots
  - More...
-- Managing multiple Minecraft accounts
-- AWESOME UI
-- Server list manager
+- Managing multiple Minecraft accounts - Done
+- AWESOME UI - Done
+- Server list manager - Done
 
 
 Other Goals
