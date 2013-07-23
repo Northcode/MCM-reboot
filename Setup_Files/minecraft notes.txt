@@ -1,0 +1,38 @@
+﻿Versions info url: https://s3.amazonaws.com/Minecraft.Download/versions/versions.json
+
+Specific version info url: https://s3.amazonaws.com/Minecraft.Download/versions/{version_id}/{version_id}.json
+Minecraft.jar: https://s3.amazonaws.com/Minecraft.Download/versions/{version_id}/{version_id}.jar
+
+liberary url:
+	example libname: = "net.minecraft:launchwrapper:1.2"
+	python function for liburl:
+	def mcliburl(name):
+		s = name.split(':')
+		a = s[0].replace('.','/') + "/" + str(s[1]) + "/" + str(s[2])
+		b = str(s[1]) + "-" + str(s[2]) + ".jar"
+		return "https://s3.amazonaws.com/Minecraft.Download/libraries/" + a + "/" + b
+
+liberaries (os spesific):
+	def mcliburlnatives(name,os):
+		s = name.split(':')
+		a = s[0].replace('.','/') + "/" + str(s[1]) + "/" + str(s[2])
+		b = str(s[1]) + "-" + str(s[2]) + "-" + os + ".jar"
+		return "https://s3.amazonaws.com/Minecraft.Download/libraries/" + a + "/" + b
+
+
+Minecraft.jar java launch path: 
+C:\Program Files (x86)\Java\jre7\bin\javaw.exe
+	-Xmx1G -Djava.library.path=C:\Users\Andreas\AppData\Roaming\.minecraft\versions\1.5.2\1.5.2-natives-161805961904828
+	-cp 
+	C:\Users\Andreas\AppData\Roaming\.minecraft\libraries\net\minecraft\launchwrapper\1.2\launchwrapper-1.2.jar;
+	C:\Users\Andreas\AppData\Roaming\.minecraft\libraries\net\sf\jopt-simple\jopt-simple\4.5\jopt-simple-4.5.jar;
+	C:\Users\Andreas\AppData\Roaming\.minecraft\libraries\org\ow2\asm\asm-all\4.1\asm-all-4.1.jar;
+	C:\Users\Andreas\AppData\Roaming\.minecraft\libraries\org\lwjgl\lwjgl\lwjgl\2.9.0\lwjgl-2.9.0.jar;
+	C:\Users\Andreas\AppData\Roaming\.minecraft\libraries\org\lwjgl\lwjgl\lwjgl_util\2.9.0\lwjgl_util-2.9.0.jar;
+	C:\Users\Andreas\AppData\Roaming\.minecraft\libraries\net\java\jinput\jinput\2.0.5\jinput-2.0.5.jar;
+	C:\Users\Andreas\AppData\Roaming\.minecraft\libraries\net\java\jutils\jutils\1.0.0\jutils-1.0.0.jar;
+	C:\Users\Andreas\AppData\Roaming\.minecraft\versions\1.5.2\1.5.2.jar
+	net.minecraft.launchwrapper.Launch
+	{username} {session}
+	--gameDir C:\Users\Andreas\AppData\Roaming\.minecraft 
+	--assetsDir C:\Users\Andreas\AppData\Roaming\.minecraft\assets

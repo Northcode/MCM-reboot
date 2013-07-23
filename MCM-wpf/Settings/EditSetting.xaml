@@ -1,0 +1,35 @@
+﻿<Controls:MetroWindow x:Class="MCM.Settings.EditSetting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:MCM"
+        Title="EditSetting" Height="150" Width="320" Topmost="True">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="70"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="SettingName" x:FieldModifier="public" Content="SETTING NAME" Margin="5" Grid.Row="0" Grid.ColumnSpan="4"/>
+        <TextBox x:Name="SettingValue" x:FieldModifier="public" Text="SETTING NAME" Margin="5" Grid.Row="1" Grid.ColumnSpan="4"/>
+        <Button x:Name="SettingSave" x:FieldModifier="public" Content="Save" Margin="5"  Grid.Row="2" Grid.Column="3"/>
+        <Button Content="Browse From File" Margin="5" Grid.Row="2" Grid.Column="2" Click="Button_Click"/>
+    </Grid>
+</Controls:MetroWindow>
