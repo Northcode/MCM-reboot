@@ -69,7 +69,14 @@ namespace MCM.User
             MinecraftUser user = getSelectedUser();
             tb_displayname.Text = user.displayname;
             tb_username.Text = user.username;
-            tb_password.Password = MinecraftUser.decryptPwd(user.password);
+            try
+            {
+                tb_password.Password = MinecraftUser.decryptPwd(user.password);
+            }
+            catch
+            {
+                tb_password.Password = "";
+            }
             Button_Click_1(null, null);
         }
     }

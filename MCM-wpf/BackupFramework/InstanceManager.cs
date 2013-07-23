@@ -89,9 +89,17 @@ namespace MCM.BackupFramework
 
         public static void DeleteInstance(Instance instance)
         {
+            PluginAPI.PluginManager.onRemoveInstance(instance);
             if (Directory.Exists(instance.Path))
                 Directory.Delete(instance.Path,true);
             instances.Remove(instance);
+        }
+
+        internal static void RenameInstance(Instance instance, string p)
+        {
+            PluginAPI.PluginManager.onRenameInstance(instance);
+            Directory.Move(instance.Path, PathData.InstancesPath + "\\" + p);
+            instance.Name = p;
         }
     }
 }

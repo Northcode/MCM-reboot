@@ -43,7 +43,7 @@ namespace MCM.Utils
             this.components = new System.ComponentModel.Container();
 
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
-            this.notifyIcon.Icon = new Icon("favicon.ico");
+            this.notifyIcon.Icon = MCM.Properties.Resources.favicon;
             this.notifyIcon.Visible = true;
             this.notifyIcon.ContextMenu = contextMenu;
             this.notifyIcon.Click += notifyIcon_Click;
