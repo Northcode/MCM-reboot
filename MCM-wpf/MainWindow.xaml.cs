@@ -38,11 +38,7 @@ namespace MCM
             // News feed display
             initializeNewsFeed();
             updateUsersList();
-<<<<<<< HEAD
-            updateInstances();
-=======
             UpdateInstances();
->>>>>>> dev
         }
 
         /// <summary>
@@ -299,6 +295,17 @@ namespace MCM
         {
             InstanceManager.DeleteInstance(getSelectedInstance());
             UpdateInstances();
+        }
+
+        private void Button_rnInstance(object sender, RoutedEventArgs e)
+        {
+            StringPrompt stp = new StringPrompt("Rename Instance", "New name:");
+            stp.ShowDialog();
+            if (stp.theString != "" && stp.DialogResult == true)
+            {
+                InstanceManager.RenameInstance(((treeView_instances.SelectedItem as TreeViewItem).Tag as Instance), stp.theString);
+                (treeView_instances.SelectedItem as TreeViewItem).Header = stp.theString;
+            }
         }
     }
 }

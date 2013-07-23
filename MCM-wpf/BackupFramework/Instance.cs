@@ -44,6 +44,7 @@ namespace MCM.BackupFramework
             this.Name = Name;
             if (!Directory.Exists(this.Path))
                 this.Create();
+            PluginAPI.PluginManager.onCreateInstance(this);
         }
 
         public void Create()
@@ -167,7 +168,7 @@ namespace MCM.BackupFramework
                                         Task t = new Task(delegate
                                         {
                                             Download dl = cv.version.FullVersion.ScheduleJarDownload();
-
+                                            PluginAPI.PluginManager.onVersionDownload(dl);
                                             DownloadPackage dp = new DownloadPackage("Libraries", true);
                                             dp.ShouldContinue = true;
                                             cv.version.FullVersion.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(dp); } });
