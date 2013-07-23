@@ -19,7 +19,7 @@ Primary Goals
   - Different versions of the world save stored as one unit
  - Screenshots
  - More...
-- Managung multiple Minecraft accounts
+- Managing multiple Minecraft accounts
 - AWESOME UI
 - Server list manager
 
