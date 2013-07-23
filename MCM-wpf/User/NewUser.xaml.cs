@@ -40,9 +40,11 @@ namespace MCM.User
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-                MinecraftUser usr = new MinecraftUser(tb_username.Text, tb_displayname.Text, tb_password.Password);
-                MinecraftUserData.users.Add(usr);
-                tb_username.Text = "";
+            MinecraftUser usr = new MinecraftUser(tb_username.Text, tb_displayname.Text, tb_password.Password);
+            MinecraftUserData.users.Add(usr);
+            tb_username.Text = "";
+            tb_displayname.Text = "";
+            tb_password.Password = "";
             updateList();
         }
 
@@ -78,6 +80,11 @@ namespace MCM.User
                 tb_password.Password = "";
             }
             Button_Click_1(null, null);
+        }
+
+        private void Close(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

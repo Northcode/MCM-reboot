@@ -113,7 +113,7 @@ namespace MCM
             }
             else
             {
-                MCM.Utils.MessageBox.ShowDialog("Warning!", "You don't have the versions file downloaded and you have no internet connection! You can't view/play any versions!");
+                MCM.Utils.MessageBox.ShowDialog("Warning!", "You don't have the versions file downloaded and you have no internet connection! You can't view/change any versions!");
             }
         }
 
@@ -122,6 +122,14 @@ namespace MCM
             string json = Encoding.ASCII.GetString(data);
             VersionManager.LoadJson(json);
             App.InvokeAction(delegate
+            {
+                foreach (TinyMinecraftVersion item in VersionManager.versions)
+                {
+                    item.CreateControl();
+                    App.mainWindow.lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
+                }
+            });
+            /*App.InvokeAction(delegate
             {
                 foreach (TinyMinecraftVersion item in VersionManager.versions)
                 {
@@ -145,9 +153,9 @@ namespace MCM
                         });
                     };
                     App.mainWindow.lstBackup.Items.Add(lbl);
-                    App.mainWindow.lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
+                    App.mainWindow.lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
                 }
-            });
+            });*/
             InstanceManager.LoadInstances();
         }
 
