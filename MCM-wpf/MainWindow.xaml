@@ -31,6 +31,7 @@
                     <ListBox x:Name="listBox_instanceInfo" Grid.Column="1"/>
                     <Button Content="Add instance" HorizontalAlignment="Left" Margin="0,0,0,10" Width="121" Height="25" VerticalAlignment="Bottom" Click="Button_aInstance"/>
                     <Button Content="Remove Instance" HorizontalAlignment="Left" Margin="126,0,0,10" VerticalAlignment="Bottom" Width="121" Click="Button_rInstance"/>
+                    <Button Content="Rename Instance" HorizontalAlignment="Left" Margin="252,0,0,10" VerticalAlignment="Bottom" Width="121" Click="Button_rnInstance"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Versions">
