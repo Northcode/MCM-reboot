@@ -129,6 +129,7 @@
       <DependentUpon>StringPrompt.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\SystemTray.cs" />
+    <Compile Include="Utils\Updater.cs" />
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -250,7 +251,9 @@
     <None Include="MCM2_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="VersionInformation\ver.txt" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="minecraft notes.txt" />
   </ItemGroup>
