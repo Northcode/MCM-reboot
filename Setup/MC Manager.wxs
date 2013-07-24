@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" Name="MC Manager" Language="1033" Version="1.0.0" Manufacturer="Northcode" UpgradeCode="ACF05BC3-CB56-4901-846F-94C422205226">
+    <Product Id="*" Name="MC Manager" Language="1033" Version="1.0.3" Manufacturer="Northcode" UpgradeCode="ACF05BC3-CB56-4901-846F-94C422205226">
         <Package InstallerVersion="200" Compressed="yes" />
-        <Feature Id="ProductFeature" Title="MC Manager Default" Level="1" TypicalDefault="install">
+        <Feature Id="ProductFeature" Title="MC Manager Default" Level="3" TypicalDefault="install">
             <ComponentRef Id="MainEXE" />
             <ComponentRef Id="MetroLib" />
             <ComponentRef Id="JsonLib" />
@@ -17,7 +17,7 @@
             <Directory Id="ProgramFilesFolder">
                 <Directory Id="APPLICATIONROOTDIRECTORY" Name="MC Manager">
                     <Component Id="MainEXE" Guid="853A8B7C-14B5-4048-BDAF-ED6A21372049">
-                        <File Id="MCManager.exe" Source="..\Setup_Files\MC Manager.exe" KeyPath="yes">
+                        <File Id="MCManager.exe" Source="..\MCM-wpf\bin\Release\MC Manager.exe" KeyPath="yes">
                             <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="MC Manager" WorkingDirectory="INSTALLDIR" Advertise="yes" Icon="DesktopIcon.exe" IconIndex="0" />
                         </File>
                     </Component>
@@ -47,5 +47,12 @@
         <Media Id="1" EmbedCab="yes" Cabinet="files.cab" />
         <Icon Id="DesktopIcon.exe" SourceFile="..\Setup_Files\MC Manager.exe" />
         <UIRef Id="WixUI_Mondo" />
+        <Upgrade Id="1BF1FCC4-158A-4D8A-B685-13ED8A5CEB01">
+            <UpgradeVersion Property="OLDERVERSIONBEINGUPGRADED" Maximum="1.0.3" Minimum="1.0.0">Bugfix</UpgradeVersion>
+        </Upgrade>
+        <InstallExecuteSequence>
+            <RemoveExistingProducts After="InstallInitialize" />
+        </InstallExecuteSequence>
+        <Condition Message="A newer version of MC Manager is allready installed!">NOT NEWERVERSIONDETECTED OR Installed</Condition>
     </Product>
 </Wix>

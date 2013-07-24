@@ -17,6 +17,7 @@ namespace MCM.Data
         public static string PluginsPath { get { return DataPath + "\\plugins"; } }
         public static string InstancesPath {get { return DataPath + "\\instances"; }}
         public static string SettingsPath { get { return DataPath + "\\settings.xml"; } }
+        public static string UpdaterPath { get { return DataPath + "\\updater.msi"; } }
 
         public static void InitDirectories()
         {
@@ -26,5 +27,6 @@ namespace MCM.Data
             Directory.CreateDirectory(LogPath);
             Directory.CreateDirectory(PluginsPath);
         }
+
     }
 }
