@@ -49,40 +49,40 @@ namespace MCM
         {
             DownloadManager.CheckForInternetConnection();
             PathData.InitDirectories();
-            NewsStorage.InitDirectories();
-            SettingsManager.Load();
-            MinecraftUserData.loadUsers();
-            PluginManager.LoadPlugins();
+            if (!Updater.CheckForUpdate())
+            {
+                NewsStorage.InitDirectories();
+                SettingsManager.Load();
+                MinecraftUserData.loadUsers();
+                PluginManager.LoadPlugins();
+                Task.Factory.StartNew(delegate { PluginManager.EnablePlugins(); });
 
-            Task.Factory.StartNew(delegate { PluginManager.EnablePlugins(); });
+                SettingsManager.AddDefault("javapath", "java", "java.exe");
+                SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
+                SettingsManager.AddDefault("Sync options", "sync", "true");
+                SettingsManager.AddDefault("Sync serverlists", "sync", "true");
 
-            SettingsManager.AddDefault("javapath", "java", "java.exe");
-            SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
-            SettingsManager.AddDefault("Sync options", "sync", "true");
-            SettingsManager.AddDefault("Sync serverlists", "sync", "true");
+                App app = new App();
+                App.sysTray = new SystemTray();
 
-            App app = new App();
-            App.sysTray = new SystemTray();
+                mainWindow = new MainWindow();
 
-            mainWindow = new MainWindow();
+                SettingsManager.LoadList();
 
-            SettingsManager.LoadList();
+                ScheduleMinecraftVersionJsonDownload();
 
-            ScheduleMinecraftVersionJsonDownload();
+                MinecraftAssetManager.LoadAssets();
 
-            MinecraftAssetManager.LoadAssets();
+                App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':', '-') + ".log");
+                App.Log(String.Format("====== Starting MC Manager version {0} ====== ({1})", App.version, DateTime.Now.ToString("s")));
+                App.Log("Java version: " + GetJavaVersionInformation());
 
-            App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':','-') + ".log");
-            App.Log(String.Format("====== Starting MC Manager version {0} ====== ({1})", App.version, DateTime.Now.ToString("s")));
-            App.Log("Java version: " + GetJavaVersionInformation());
-
-            app.Run(mainWindow);
-
-            Task.Factory.StartNew(delegate { PluginManager.DisablePlugins(); });
-
-            InstanceManager.SaveInstances();
-            MinecraftUserData.saveUsers();
-            SettingsManager.Save();
+                app.Run(mainWindow);
+                Task.Factory.StartNew(delegate { PluginManager.DisablePlugins(); });
+                InstanceManager.SaveInstances();
+                MinecraftUserData.saveUsers();
+                SettingsManager.Save();
+            }
             AppendLogFile();
         }
 
