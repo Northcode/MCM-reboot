@@ -18,19 +18,19 @@ namespace MCM.Utils
             }
         }
 
-        public static bool CheckForUpdate()
+        public static string CheckForUpdate()
         {
             if (DownloadManager.hasInternet)
             {
-                Download dl = DownloadManager.ScheduleDownload("MCM update check", "https://github.com/Northcode/MCM-reboot/blob/dev/MCM-wpf/VersionInformation/ver.txt?raw=true", false);
+                Download dl = DownloadManager.ScheduleDownload("MCM update check", "https://github.com/Northcode/MCM-reboot/blob/master/MCM-wpf/VersionInformation/ver.txt?raw=true", false);
                 dl.WaitForComplete();
                 string Uver = Encoding.Default.GetString(dl.Data.Skip(3).ToArray());
                 if (Uver != Version)
                 {
-                    return true;
+                    return Uver;
                 }
             }
-            return false;
+            return null;
         }
     }
 }
