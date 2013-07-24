@@ -24,7 +24,7 @@ namespace MCM.Utils
             {
                 Download dl = DownloadManager.ScheduleDownload("MCM update check", "https://github.com/Northcode/MCM-reboot/blob/dev/MCM-wpf/VersionInformation/ver.txt?raw=true", false);
                 dl.WaitForComplete();
-                string Uver = Encoding.ASCII.GetString(dl.Data);
+                string Uver = Encoding.Default.GetString(dl.Data.Skip(3).ToArray());
                 if (Uver != Version)
                 {
                     Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
