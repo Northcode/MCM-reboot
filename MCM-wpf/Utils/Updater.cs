@@ -14,7 +14,7 @@ namespace MCM.Utils
         {
             get
             {
-                return Properties.Resources.ver;
+                return App.version;
             }
         }
 
@@ -27,10 +27,6 @@ namespace MCM.Utils
                 string Uver = Encoding.Default.GetString(dl.Data.Skip(3).ToArray());
                 if (Uver != Version)
                 {
-                    Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
-                    udl.WaitForComplete();
-                    File.WriteAllBytes(PathData.UpdaterPath,udl.Data);
-                    Process.Start(PathData.UpdaterPath);
                     return true;
                 }
             }
