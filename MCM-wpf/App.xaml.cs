@@ -55,9 +55,13 @@ namespace MCM
         {
             DownloadManager.CheckForInternetConnection();
             PathData.InitDirectories();
-            if (Updater.CheckForUpdate())
+            string remoteVer = Updater.CheckForUpdate();
+            if (remoteVer != null)
             {
-                if(MessageBoxResult.Yes == System.Windows.MessageBox.Show("Do you want to update?","Update availible",MessageBoxButton.YesNo))
+                if(MessageBoxResult.Yes == System.Windows.MessageBox.Show("Do you want to update?" + Environment.NewLine +
+                    "Current version: " + App.version + Environment.NewLine +
+                        "Remote version: " + remoteVer,
+                    "Update availible",MessageBoxButton.YesNo))
                 {
                     Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
                     udl.WaitForComplete();
