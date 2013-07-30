@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Controls;
 
 namespace MCM.PluginAPI
 {
-    public interface IPlugin
+    public interface IBackup
     {
         string Name { get; }
-        string Version { get; }
 
-        void Enable();
-
-        void Disable();
+        TreeViewItem treeItem { get; }
     }
 }

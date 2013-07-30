@@ -74,6 +74,7 @@ namespace MCM
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
             PluginManager.LoadPlugins();
+            PluginManager.EnablePlugins();
             Task.Factory.StartNew(delegate { PluginManager.EnablePlugins(); });
 
             SettingsManager.AddDefault("javapath", "java", "java.exe");

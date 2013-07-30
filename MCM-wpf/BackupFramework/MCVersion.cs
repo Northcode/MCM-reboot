@@ -19,7 +19,6 @@ namespace MCM.BackupFramework
 
         //Well.. Duh...
         public bool IsSnapshot { get; set; }
-        public bool IsModded { get { return ModPack != null; } }
 
         //Minecraft versions come in Major.Minor.Revision
         //Technically Major should be 0 for beta! This is for comparing beta versions with 1.0+ versions!
@@ -31,9 +30,6 @@ namespace MCM.BackupFramework
         public int SnapshotYear { get; set; }
         public int SnapshotWeek { get; set; }
         public int SnapshotWeekVer { get; set; } //0: a , 1: b, 2: c ...
-
-        //If it uses a modpack
-        public ModPack ModPack { get; set; }
 
         //Making it do stuff
 
@@ -63,11 +59,11 @@ namespace MCM.BackupFramework
         {
             if (a.IsSnapshot && b.IsSnapshot)
             {
-                return (a.SnapshotYear == b.SnapshotYear && a.SnapshotWeek == b.SnapshotWeek && a.SnapshotWeekVer == b.SnapshotWeekVer) && a.IsModded == b.IsModded;
+                return (a.SnapshotYear == b.SnapshotYear && a.SnapshotWeek == b.SnapshotWeek && a.SnapshotWeekVer == b.SnapshotWeekVer);
             }
             else
             {
-                return ((a.Major == b.Major && a.Minor == b.Minor && a.Revision == b.Revision) && a.IsModded == b.IsModded);
+                return (a.Major == b.Major && a.Minor == b.Minor && a.Revision == b.Revision);
             }
         }
 
@@ -81,11 +77,11 @@ namespace MCM.BackupFramework
         {
             if (a.IsSnapshot && b.IsSnapshot)
             {
-                return (a.SnapshotYear != b.SnapshotYear || a.SnapshotWeek != b.SnapshotWeek || a.SnapshotWeekVer != b.SnapshotWeekVer) || a.IsModded != b.IsModded;
+                return (a.SnapshotYear != b.SnapshotYear || a.SnapshotWeek != b.SnapshotWeek || a.SnapshotWeekVer != b.SnapshotWeekVer);
             }
             else
             {
-                return (a.Major != b.Major || a.Minor != b.Minor || a.Revision != b.Revision) || a.IsModded != b.IsModded;
+                return (a.Major != b.Major || a.Minor != b.Minor || a.Revision != b.Revision);
             }
         }
 
@@ -108,7 +104,7 @@ namespace MCM.BackupFramework
         public override int GetHashCode()
         {
             return Name.GetHashCode() ^ IsSnapshot.GetHashCode() ^ Major.GetHashCode() ^ Minor.GetHashCode() ^ Revision.GetHashCode() ^
-                SnapshotYear.GetHashCode() ^ SnapshotWeek.GetHashCode() ^ SnapshotWeekVer.GetHashCode() ^ ModPack.GetHashCode();
+                SnapshotYear.GetHashCode() ^ SnapshotWeek.GetHashCode() ^ SnapshotWeekVer.GetHashCode();
         }
 
         public override bool Equals(object obj)

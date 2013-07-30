@@ -1,5 +1,6 @@
 ﻿using MCM.Data;
 using MCM.MinecraftFramework;
+using MCM.PluginAPI;
 using MCM.Utils;
 using Newtonsoft.Json.Linq;
 using System;
@@ -18,26 +19,17 @@ namespace MCM.BackupFramework
         public string Name { get; set; }
         public string Description { get; set; }
         public TinyMinecraftVersion Version { get; set; }
-        public ModPack mods { get; set; }
+
+        public List<object> metaData { get; set; }
 
         public string MinecraftDirPath { get { return this.Path + "\\minecraft"; } }
-        private string ResourcePackDir { get { return this.MinecraftDirPath + "\\resourcepacks"; } }
-        private string TexturePackDir { get { return this.MinecraftDirPath + "\\texturepacks"; } }
-        private string SavesDir { get { return this.MinecraftDirPath + "\\saves"; } }
-        private string MinecraftJarDir { get { return this.Path + "\\jar"; } }
+        public string ResourcePackDir { get { return this.MinecraftDirPath + "\\resourcepacks"; } }
+        public string TexturePackDir { get { return this.MinecraftDirPath + "\\texturepacks"; } }
+        public string SavesDir { get { return this.MinecraftDirPath + "\\saves"; } }
+        public string MinecraftJarDir { get { return this.Path + "\\jar"; } }
         public string MinecraftJarFilePath { get { return MinecraftJarDir + String.Format("\\{0}.jar", Version.Key); } }
 
         private bool changingVersion;
-
-        public enum InstanceItemType
-        {
-            Main,
-            MinecraftVersion,
-            ModPack,
-            ResourcePack,
-            TexturePack,
-            MinecraftSave
-        };
 
         public Instance(string Name)
         {
@@ -149,8 +141,7 @@ namespace MCM.BackupFramework
                     {
                         if (changingVersion)
                         {
-                            MessageBox mb = new MessageBox("Warning", "The version is currently being changed/downloaded! Cannot change now!");
-                            mb.Show();
+                            MessageBox.ShowDialog("Warning", "The version is currently being changed/downloaded! Cannot change now!");
                         }
                         else
                         {
@@ -206,6 +197,7 @@ namespace MCM.BackupFramework
                                     this.changingVersion = false;
                                 }
                             }
+                            PluginManager.onChangeVersion(this);
                         }
                     };
                 App.mainWindow.listBox_instanceInfo.Items.Clear();
@@ -213,6 +205,11 @@ namespace MCM.BackupFramework
                 App.mainWindow.listBox_instanceInfo.Items.Add(bt);
             };
             node.Items.Add(mcVer);
+
+            foreach (IBackup b in PluginManager.backups)
+            {
+                node.Items.Add(b.treeItem);
+            }
 
             /*
             // Modpack

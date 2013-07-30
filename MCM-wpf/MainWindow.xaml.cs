@@ -252,25 +252,6 @@ namespace MCM
         private void treeView_instances_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             listBox_instanceInfo.Items.Clear();
-            TreeViewItem item = treeView_instances.SelectedItem as TreeViewItem;
-            if (item != null)
-            {
-                if (item.Tag is Instance.InstanceItemType)
-                {
-                    switch ((Instance.InstanceItemType)item.Tag)
-                    {
-                        case Instance.InstanceItemType.MinecraftVersion:
-                            
-                            break;
-                        case Instance.InstanceItemType.ModPack:
-                            break;
-                    }
-                }
-                else if (item.Tag is Instance)
-                {
-
-                }
-            }
         }
 
         void bt_Click(object sender, RoutedEventArgs e)
