@@ -208,7 +208,7 @@ namespace MCM.BackupFramework
 
             foreach (IBackup b in PluginManager.backups)
             {
-                node.Items.Add(b.treeItem);
+                node.Items.Add(b.treeItem(this));
             }
 
             /*

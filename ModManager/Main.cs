@@ -17,7 +17,9 @@ namespace ModManager
     class Main : IPlugin
     {
         public void Disable()
-        { }
+        {
+            saveMods();
+        }
 
         public void Enable()
         {
@@ -133,31 +135,38 @@ namespace ModManager
             get { throw new NotImplementedException(); }
         }
 
-        public TreeViewItem treeItem
+        public TreeViewItem treeItem(Instance i)
         {
-            get {
-                
-                TreeViewItem item = new TreeViewItem();
-                item.Header = "Mods";
-                item.MouseUp += item_MouseUp;
-                foreach (Mod mod in Main.GetModList())
-                {
-                    TreeViewItem modItem = new TreeViewItem();
-                    item.Header = mod.name;
-                    item.Tag = mod;
-                    item.MouseRightButtonUp += item_MouseRightButtonUp;
-                    item.Items.Add(item);
-                }
-                return item;
+            TreeViewItem item = new TreeViewItem();
+            item.Header = "Mods";
+            item.MouseUp += onClick_root;
+            foreach (Mod mod in Main.GetModList(i))
+            {
+                TreeViewItem modItem = new TreeViewItem();
+                item.Header = mod.name;
+                item.Tag = mod;
+                item.MouseRightButtonUp += onRightClick_mod;
+                item.Items.Add(item);
             }
+            return item;
         }
 
-        void item_MouseRightButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        void onRightClick_mod(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            throw new NotImplementedException();
+            ContextMenu cm = new ContextMenu();
+            MenuItem item_delete = new MenuItem();
+            item_delete.Header = "Delete";
+            item_delete.Click += delegate {
+                TinyMinecraftVersion version = ((sender as TreeViewItem).Parent as TreeViewItem).Tag as TinyMinecraftVersion;
+                Mod mod = (sender as TreeViewItem).Tag as Mod;
+                // More to be done
+                throw new NotImplementedException();
+            };
+            cm.Items.Add(item_delete);
+
         }
 
-        void item_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        void onClick_root(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             throw new NotImplementedException();
         }
