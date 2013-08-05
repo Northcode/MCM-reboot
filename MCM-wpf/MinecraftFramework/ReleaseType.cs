@@ -9,7 +9,6 @@ namespace MCM.MinecraftFramework
     {
         release,
         snapshot,
-        old_beta,
         modified
     }
 }
