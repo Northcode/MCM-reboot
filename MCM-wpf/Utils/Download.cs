@@ -107,7 +107,7 @@ namespace MCM.Utils
             {
                 Thread.Sleep(100);
             }
-            App.Log("Download complete " + this.ToString());
+            //App.Log("Download complete " + this.ToString());
         }
     }
 }
