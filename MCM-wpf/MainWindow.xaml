@@ -46,9 +46,9 @@
                     <ListBox x:Name="lstBackup" Margin="0,5,0,0" Grid.Row="1"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="News Feed">
+            <TabItem Header="News">
                 <TabControl Margin="0">
-                    <TabItem Header="Launcher Feed">
+                    <TabItem Header="Minecraft">
                         <Grid Margin="0">
                             <WebBrowser x:Name="webBrowser_launcherFeed" Navigating="webBrowser_Navigating" Margin="0"/>
                         </Grid>
@@ -90,7 +90,7 @@
                         <TabItem Header="Minecraft">
                             <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" local:TextBoxBehaviour.ScrollOnTextChanged="True"/>
                         </TabItem>
-                        <TabItem Header="Download Manager">
+                        <TabItem Header="Downloads">
                             <ListBox x:Name="listBox_downloadManager" x:FieldModifier="public">
 
                             </ListBox>

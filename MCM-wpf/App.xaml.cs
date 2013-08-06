@@ -308,7 +308,8 @@ namespace MCM
                 };
                 p.ErrorDataReceived += (s, e) =>
                 {
-                    App.LogMinecraft("Error > " + e.Data);
+                    // No prefix since everything minecraft outputs seems to be an error
+                    App.LogMinecraft(e.Data);
                 };
                 p.Exited += (s, e) =>
                 {

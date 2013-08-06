@@ -20,7 +20,14 @@ namespace MCM.MinecraftFramework
             {
                 TinyMinecraftVersion mcv = new TinyMinecraftVersion();
                 mcv.Key = (string)obj2["id"];
-                mcv.Type = (ReleaseType)Enum.Parse(typeof(ReleaseType), (string)obj2["type"]);
+                try
+                {
+                    mcv.Type = (ReleaseType)Enum.Parse(typeof(ReleaseType), (string)obj2["type"]);
+                }
+                catch
+                {
+                    mcv.Type = ReleaseType.unknown;
+                }
                 versions.Add(mcv);
             }
         }
