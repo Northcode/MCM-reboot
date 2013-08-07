@@ -70,6 +70,22 @@ namespace ModManager
             return targetDir;
         }
 
+        public static void InstallMod(Mod mod, Instance i)
+        {
+            switch (mod.type)
+            {
+                case ModType.DirMod:
+                    InstallDirMod(mod, i);
+                    break;
+                case ModType.JarMod:
+                    InstallJarMod(mod, i);
+                    break;
+                case ModType.ZipMod:
+                    InstallZipMod(mod, i);
+                    break;
+            }
+        }
+
         public static void InstallDirMod(Mod mod, Instance i)
         {
             string targetDir = GetTargetDir(mod, i);

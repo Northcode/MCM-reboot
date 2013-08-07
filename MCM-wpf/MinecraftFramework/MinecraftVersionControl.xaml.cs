@@ -53,7 +53,7 @@ namespace MCM.MinecraftFramework
 
         public void Update()
         {
-            if (DownloadManager.hasInternet && !Directory.Exists(this.version.LocalPath))
+            if (DownloadManager.hasInternet && !File.Exists(this.version.BinaryPath))
             {
                 button_dl.IsEnabled = true;
                 label_status.Content = "not downloaded";

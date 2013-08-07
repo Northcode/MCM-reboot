@@ -233,8 +233,14 @@ namespace MCM
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            //DownloadManager.DownloadAll();
+            lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.old_beta; };
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.old_alpha; };
+        }
+
 
         private void Button_aInstance(object sender, RoutedEventArgs e)
         {

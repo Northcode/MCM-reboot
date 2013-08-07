@@ -71,6 +71,7 @@ namespace MCM.MinecraftFramework
 
         internal static void ScheduleAssetDownloads()
         {
+            bool need = false;
             DownloadPackage dlp = new DownloadPackage("Assets", true);
             List<MinecraftAsset> needDl = new List<MinecraftAsset>();
             assets.ForEach(a => {
@@ -79,9 +80,11 @@ namespace MCM.MinecraftFramework
                     needDl.Add(a);
                     Download dl = dlp.ScheduleDownload(a.Key, a.Url);
                     dl.Downloaded += AssetDownloaded;
+                    need = true;
                 }
             });
-            DownloadManager.ScheduleDownload(dlp);
+            if(need)
+                DownloadManager.ScheduleDownload(dlp);
         }
 
         private static void AssetDownloaded(Download dl)

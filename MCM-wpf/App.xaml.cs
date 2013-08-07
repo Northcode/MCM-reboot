@@ -77,10 +77,10 @@ namespace MCM
             PluginManager.EnablePlugins();
             Task.Factory.StartNew(delegate { PluginManager.EnablePlugins(); });
 
-            SettingsManager.AddDefault("javapath", "java", "java.exe");
-            SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
-            SettingsManager.AddDefault("Sync options", "sync", "true");
-            SettingsManager.AddDefault("Sync serverlists", "sync", "true");
+            SettingsManager.AddDefault("javapath", "java", "java.exe",Setting._Type._string);
+            SettingsManager.AddDefault("MinecraftRAM", "java", "2G", Setting._Type._string);
+            SettingsManager.AddDefault("Sync options", "sync", true, Setting._Type._bool);
+            SettingsManager.AddDefault("Sync serverlists", "sync", true, Setting._Type._bool);
 
             App app = new App();
             App.sysTray = new SystemTray();
@@ -98,6 +98,8 @@ namespace MCM
             App.Log("Java version: " + GetJavaVersionInformation());
 
             app.Run(mainWindow);
+
+            App.sysTray.destroy();
             Task.Factory.StartNew(delegate { PluginManager.DisablePlugins(); });
             InstanceManager.SaveInstances();
             MinecraftUserData.saveUsers();

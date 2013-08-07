@@ -31,6 +31,19 @@ namespace MCM.Utils
             {
                 App.InvokeAction(delegate { this.Dispatcher.Invoke((Action)delegate { CloseBtn.IsEnabled = true; }); });
             };
+
+            ContextMenu cm = new ContextMenu();
+            MenuItem mi_link = new MenuItem();
+            mi_link.Header = d.Url;
+            cm.Items.Add(mi_link);
+            MenuItem mi_cp = new MenuItem();
+            mi_cp.Header = "Copy to clipboard";
+            mi_cp.Click += delegate
+            {
+                Clipboard.SetText(d.Url);
+            };
+            cm.Items.Add(mi_cp);
+            this.ContextMenu = cm;
         }
 
         public void UpdateProgress(int i)

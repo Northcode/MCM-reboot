@@ -17,7 +17,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="Auto">
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="Auto" x:Name="tabControl">
             <TabItem Header="Zip-Mods">
             </TabItem>
             <TabItem Header="Dir-Mods">
@@ -39,12 +39,12 @@
             </Grid.ColumnDefinitions>
             <Label Content="Instance"/>
             <Label Content="Backupped" Grid.Column="1" Grid.ColumnSpan="2"/>
-            <ListBox Grid.Row="1"/>
-            <ListBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
-            <Button Grid.Row="2" Content="Remove Mod" Height="26" Margin="5" VerticalAlignment="Top"/>
-            <Button Grid.Row="2" Content="Install Mod" Grid.Column="1" Margin="5" Height="26" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-            <Button Grid.Row="3" Content="Delete Backup" Grid.Column="1" Margin="5" Height="25" VerticalAlignment="Top"/>
-            <Button Grid.Row="3" Content="Add Backup" Grid.Column="2" Margin="5" Height="25" VerticalAlignment="Top"/>
+            <ListBox x:Name="listBox_instance" Grid.Row="1"/>
+            <ListBox x:Name="listBox_backup" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2"/>
+            <Button Grid.Row="2" Content="Remove Mod" Height="26" Margin="5" VerticalAlignment="Top" Click="Button_Click"/>
+            <Button Grid.Row="2" Content="Install Mod" Grid.Column="1" Margin="5" Height="26" VerticalAlignment="Top" Grid.ColumnSpan="2" Click="Button_Click_1"/>
+            <Button Grid.Row="3" Content="Delete Backup" Grid.Column="1" Margin="5" Height="25" VerticalAlignment="Top" Click="Button_Click_2"/>
+            <Button Grid.Row="3" Content="Add Backup" Grid.Column="2" Margin="5" Height="25" VerticalAlignment="Top" Click="Button_Click_3"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>
