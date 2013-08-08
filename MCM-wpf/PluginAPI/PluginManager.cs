@@ -15,7 +15,8 @@ namespace MCM.PluginAPI
 {
     public class PluginManager
     {
-        static List<IPlugin> plugins = new List<IPlugin>();
+        public static List<IPlugin> plugins = new List<IPlugin>();
+        public static List<IBackup> backups = new List<IBackup>();
 
         public delegate void PluginEvent(params object[] parameters);
 
@@ -30,6 +31,7 @@ namespace MCM.PluginAPI
         public static PluginEvent_Instance onCreateInstance = dummyB;
         public static PluginEvent_Instance onRemoveInstance = dummyB;
         public static PluginEvent_Instance onRenameInstance = dummyB;
+        public static PluginEvent_Instance onChangeVersion = dummyB;
         public static PluginEvent_Download onVersionDownload = dummyC;
         public static PluginEvent_Plugin onPluginEvent = dummyE;
         public static PluginEvent_Download onNewsDownload = dummyC;
@@ -50,12 +52,20 @@ namespace MCM.PluginAPI
                 Assembly asm = Assembly.LoadFile(Dll);
 
                 Type iPlugin = typeof(IPlugin);
+                Type iBackup = typeof(IBackup);
 
                 foreach (Type type in asm.GetTypes())
                 {
                     if (iPlugin.IsAssignableFrom(type))
                     {
                         IPlugin plugin = Activator.CreateInstance(type) as IPlugin;
+                        plugins.Add(plugin);
+
+                    }
+                    if (iBackup.IsAssignableFrom(type))
+                    {
+                        IBackup backup = Activator.CreateInstance(type) as IBackup;
+                        backups.Add(backup);
                     }
                 }
             }
@@ -75,12 +85,20 @@ namespace MCM.PluginAPI
 
         public static void EnablePlugins()
         {
-            plugins.ForEach(p => p.Enable());
+            foreach (IPlugin pl in plugins)
+            {
+                pl.Enable();
+                App.Log(pl.Name + " version " + pl.Version + " has been loaded");
+            }
         }
 
         public static void DisablePlugins()
         {
-            plugins.ForEach(p => p.Disable());
+            foreach (IPlugin pl in plugins)
+            {
+                pl.Disable();
+                App.Log(pl.Name + " version " + pl.Version + " has been disabled");
+            }
         }
 
         internal static void LoadPlugins()

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="500" HorizontalAlignment="Stretch">
     <Grid Background="#FFF">
@@ -11,6 +12,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Label Content="SETTING NAME" x:Name="SettingName" x:FieldModifier="public" Grid.Column="0" Margin="0" />
-        <Label Content="SETTING VALUE" x:Name="SettingValue" x:FieldModifier="public" Grid.Column="1" Margin="0" MouseDoubleClick="SettingValue_MouseDoubleClick" />
+        <Label Content="SETTING VALUE" x:Name="SettingValue" x:FieldModifier="public" Grid.Column="1" Margin="0" MouseDoubleClick="SettingValue_MouseDoubleClick" Visibility="Hidden"/>
+        <Controls:ToggleSwitch x:Name="SettingValueBool" x:FieldModifier="public" Visibility="Hidden" HorizontalAlignment="Left" Width="75" OnLabel="" OffLabel="" Height="36" VerticalAlignment="Top" Margin="132,-9,0,0" Grid.ColumnSpan="2" Checked="SettingValueBool_Checked" Unchecked="SettingValueBool_Unchecked"/>
     </Grid>
 </UserControl>

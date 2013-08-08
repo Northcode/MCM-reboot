@@ -149,9 +149,13 @@ namespace MCM.Utils
         public static string GenerateMd5Hash(byte[] input)
         {
             MD5 md5Hash = MD5.Create();
-            byte[] data = md5Hash.ComputeHash(input); ;
-            string str = System.Text.Encoding.Default.GetString(data);
-            return str;
+            byte[] hash = md5Hash.ComputeHash(input);
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+            return sb.ToString();
         }
     }
 }
