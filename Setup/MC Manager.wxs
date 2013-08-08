@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" Name="MC Manager" Language="1033" Version="1.0.3" Manufacturer="Northcode" UpgradeCode="ACF05BC3-CB56-4901-846F-94C422205226">
+        <Package InstallerVersion="200" Compressed="yes" />
+        <Feature Id="ProductFeature" Title="MC Manager Default" Level="3" TypicalDefault="install">
+            <ComponentRef Id="MainEXE" />
+            <ComponentRef Id="MetroLib" />
+            <ComponentRef Id="JsonLib" />
+            <ComponentRef Id="InteractivityLib" />
+            <ComponentRef Id="ApplicationShortcut" />
+        </Feature>
+        <Icon Id="icon.ico" SourceFile="favicon.ico" />
+        <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+        <UI>
+        </UI>
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="APPLICATIONROOTDIRECTORY" Name="MC Manager">
+                    <Component Id="MainEXE" Guid="853A8B7C-14B5-4048-BDAF-ED6A21372049">
+                        <File Id="MCManager.exe" Source="..\MCM-wpf\bin\Release\MC Manager.exe" KeyPath="yes">
+                            <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="MC Manager" WorkingDirectory="INSTALLDIR" Advertise="yes" Icon="DesktopIcon.exe" IconIndex="0" />
+                        </File>
+                    </Component>
+                    <Component Id="MetroLib" Guid="99E89FEF-64D6-4477-AF99-8990AF8A1FD7">
+                        <File Id="MahApps.Metro.dll" Source="..\Setup_Files\MahApps.Metro.dll" KeyPath="yes" />
+                    </Component>
+                    <Component Id="JsonLib" Guid="4AEF0F62-A36A-4FBC-B3BB-0A5F94EC450A">
+                        <File Id="Newtonsoft.Json.dll" KeyPath="yes" Source="..\Setup_Files\Newtonsoft.Json.dll" />
+                    </Component>
+                    <Component Id="InteractivityLib" Guid="353A38BD-4DCA-484D-94EE-8AA194B7EFD7">
+                        <File Id="System.Windows.Interactivity.dll" KeyPath="yes" Source="..\Setup_Files\System.Windows.Interactivity.dll" />
+                    </Component>
+                </Directory>
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="MC Manager" />
+            </Directory>
+            <Directory Id="DesktopFolder" />
+        </Directory>
+        <DirectoryRef Id="ApplicationProgramsFolder">
+            <Component Id="ApplicationShortcut" Guid="8B2DBFF4-9720-474A-A4C4-0375161A947F">
+                <Shortcut Id="ApplicationStartMenuShortcut" Name="MC Manager" Description="Minecraft Manager - Northcode" Target="[APPLICATIONROOTDIRECTORY]MC Manager.exe" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+                <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+                <RegistryValue Key="Software\Microsoft\MCManager" KeyPath="yes" Name="installed" Root="HKCU" Type="integer" Value="1" />
+            </Component>
+        </DirectoryRef>
+        <Media Id="1" EmbedCab="yes" Cabinet="files.cab" />
+        <Icon Id="DesktopIcon.exe" SourceFile="..\Setup_Files\MC Manager.exe" />
+        <UIRef Id="WixUI_Mondo" />
+        <Upgrade Id="1BF1FCC4-158A-4D8A-B685-13ED8A5CEB01">
+            <UpgradeVersion Property="OLDERVERSIONBEINGUPGRADED" Maximum="1.0.3" Minimum="1.0.0">Bugfix</UpgradeVersion>
+        </Upgrade>
+        <InstallExecuteSequence>
+            <RemoveExistingProducts After="InstallInitialize" />
+        </InstallExecuteSequence>
+        <Condition Message="A newer version of MC Manager is allready installed!">NOT NEWERVERSIONDETECTED OR Installed</Condition>
+    </Product>
+</Wix>

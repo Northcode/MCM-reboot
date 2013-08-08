@@ -13,6 +13,16 @@ namespace MCM.MinecraftFramework
     {
         public string Key { get; set; }
         public ReleaseType Type { get; set; }
+        private MinecraftVersionControl control;
+
+        public void CreateControl()
+        {
+            App.InvokeAction(delegate
+            {
+                this.control = new MinecraftVersionControl(this);
+                App.mainWindow.lstBackup.Items.Add(control);
+            });
+        }
 
         public string JsonUrl
         {
@@ -54,7 +64,22 @@ namespace MCM.MinecraftFramework
             }
         }
 
-        public void DownloadVersionInfo()
+        public string BinaryPath
+        {
+            get
+            {
+                return LocalPath + "\\" + Key + ".jar";
+            }
+        }
+
+        public override string ToString()
+        {
+            return "Key: " + this.Key + Environment.NewLine +
+                "Releasetype: " + this.Type.ToString() + Environment.NewLine +
+                "Base URL: " + this.BaseUrl;
+        }
+
+        public Download DownloadVersionInfo()
         {
             App.Log("Downloading json for minecraftversion: " + Key);
             Download dl = DownloadManager.ScheduleDownload("Minecraft json", JsonUrl, false);
@@ -70,6 +95,7 @@ namespace MCM.MinecraftFramework
                 File.WriteAllText(JsonPath, data);
                 App.Log("Json Downloaded, saved to: " + JsonPath);
             };
+            return dl;
         }
 
         public MinecraftVersion FullVersion
@@ -82,11 +108,17 @@ namespace MCM.MinecraftFramework
                 }
                 else
                 {
+                    string data;
                     if (!File.Exists(JsonPath))
                     {
-                        DownloadVersionInfo();
+                        Download dl = DownloadVersionInfo();
+                        dl.WaitForComplete();
+                        data = Encoding.ASCII.GetString(dl.Data);
                     }
-                    string data = File.ReadAllText(JsonPath);
+                    else
+                    {
+                        data = File.ReadAllText(JsonPath);
+                    }
                     return MinecraftVersion.fromJson(data);
                 }
             }

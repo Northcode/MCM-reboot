@@ -20,9 +20,10 @@ namespace MCM.MinecraftFramework
                 {
                     if (DownloadManager.hasInternet)
                     {
-                        WebClient wc = new WebClient();
-                        string result = wc.DownloadString(String.Format(MinecraftData.MinecraftLoginUrl, Username, Password));
-                        if (result == "Bad Login")
+                        Download dl = DownloadManager.ScheduleDownload("minecraft session info", String.Format(MinecraftData.MinecraftLoginUrl, Username, Password), true);
+                        dl.WaitForComplete();
+                        string result = Encoding.ASCII.GetString(dl.Data);
+                        if (result.ToUpper() == "BAD LOGIN")
                         {
                             throw new Exception("Bad Login!");
                         }

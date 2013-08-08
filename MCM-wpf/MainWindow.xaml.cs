@@ -195,6 +195,8 @@ namespace MCM
             return (item.Tag as Instance);
         }
 
+        #region Events
+
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
             
@@ -221,18 +223,24 @@ namespace MCM
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
+            lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.snapshot; };
+            lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.snapshot; };
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            //DownloadManager.DownloadAll();
+            lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.old_beta; };
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.old_alpha; };
+        }
+
 
         private void Button_aInstance(object sender, RoutedEventArgs e)
         {
@@ -250,25 +258,6 @@ namespace MCM
         private void treeView_instances_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             listBox_instanceInfo.Items.Clear();
-            TreeViewItem item = treeView_instances.SelectedItem as TreeViewItem;
-            if (item != null)
-            {
-                if (item.Tag is Instance.InstanceItemType)
-                {
-                    switch ((Instance.InstanceItemType)item.Tag)
-                    {
-                        case Instance.InstanceItemType.MinecraftVersion:
-                            
-                            break;
-                        case Instance.InstanceItemType.ModPack:
-                            break;
-                    }
-                }
-                else if (item.Tag is Instance)
-                {
-
-                }
-            }
         }
 
         void bt_Click(object sender, RoutedEventArgs e)
@@ -296,5 +285,18 @@ namespace MCM
             InstanceManager.DeleteInstance(getSelectedInstance());
             UpdateInstances();
         }
+
+        private void Button_rnInstance(object sender, RoutedEventArgs e)
+        {
+            StringPrompt stp = new StringPrompt("Rename Instance", "New name:");
+            stp.ShowDialog();
+            if (stp.theString != "" && stp.DialogResult == true)
+            {
+                InstanceManager.RenameInstance(((treeView_instances.SelectedItem as TreeViewItem).Tag as Instance), stp.theString);
+                (treeView_instances.SelectedItem as TreeViewItem).Header = stp.theString;
+            }
+        }
+
+        #endregion
     }
 }

@@ -3,6 +3,7 @@ using MCM.Data;
 using MCM.MinecraftFramework;
 using MCM.News;
 using MCM.Pages;
+using MCM.PluginAPI;
 using MCM.Settings;
 using MCM.User;
 using MCM.Utils;
@@ -17,6 +18,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -31,7 +33,13 @@ namespace MCM
     {
         public static MainWindow mainWindow;
         public static MinecraftStatus mcStatus = new MinecraftStatus();
-        public static string version = "indev 0.1";
+        public static string version
+        {
+            get
+            {
+                return MCM.Properties.Resources.ver;
+            }
+        }
         private static string minecraftJsonFilePath = PathData.DataPath + "\\versions\\versions.json";
         private static string logFile;
 
@@ -47,12 +55,32 @@ namespace MCM
         {
             DownloadManager.CheckForInternetConnection();
             PathData.InitDirectories();
+            string remoteVer = Updater.CheckForUpdate();
+            if (remoteVer != null)
+            {
+                if(MessageBoxResult.Yes == System.Windows.MessageBox.Show("Do you want to update?" + Environment.NewLine +
+                    "Current version: " + App.version + Environment.NewLine +
+                        "Remote version: " + remoteVer,
+                    "Update availible",MessageBoxButton.YesNo))
+                {
+                    Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
+                    udl.WaitForComplete();
+                    File.WriteAllBytes(PathData.UpdaterPath,udl.Data);
+                    Process.Start(PathData.UpdaterPath);
+                    Environment.Exit(0);
+                }
+            }
             NewsStorage.InitDirectories();
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
+            PluginManager.LoadPlugins();
+            PluginManager.EnablePlugins();
+            Task.Factory.StartNew(delegate { PluginManager.EnablePlugins(); });
 
-            SettingsManager.AddDefault("javapath", "java", "java.exe");
-            SettingsManager.AddDefault("MinecraftRAM", "java", "2G");
+            SettingsManager.AddDefault("javapath", "java", "java.exe",Setting._Type._string);
+            SettingsManager.AddDefault("MinecraftRAM", "java", "2G", Setting._Type._string);
+            SettingsManager.AddDefault("Sync options", "sync", true, Setting._Type._bool);
+            SettingsManager.AddDefault("Sync serverlists", "sync", true, Setting._Type._bool);
 
             App app = new App();
             App.sysTray = new SystemTray();
@@ -65,13 +93,14 @@ namespace MCM
 
             MinecraftAssetManager.LoadAssets();
 
-            App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':','-') + ".log");
+            App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':', '-') + ".log");
             App.Log(String.Format("====== Starting MC Manager version {0} ====== ({1})", App.version, DateTime.Now.ToString("s")));
             App.Log("Java version: " + GetJavaVersionInformation());
 
             app.Run(mainWindow);
 
-
+            App.sysTray.destroy();
+            Task.Factory.StartNew(delegate { PluginManager.DisablePlugins(); });
             InstanceManager.SaveInstances();
             MinecraftUserData.saveUsers();
             SettingsManager.Save();
@@ -80,7 +109,7 @@ namespace MCM
 
         private static void StartInternetCheckTimer()
         {
-            Timer t = new Timer(30000);
+            System.Timers.Timer t = new System.Timers.Timer(30000);
             t.Elapsed += delegate
             {
                 DownloadManager.CheckForInternetConnection();
@@ -105,7 +134,7 @@ namespace MCM
             }
             else
             {
-                MCM.Utils.MessageBox.ShowDialog("Warning!", "You don't have the versions file downloaded and you have no internet connection! You can't view/play any versions!");
+                MCM.Utils.MessageBox.ShowDialog("Warning!", "You don't have the versions file downloaded and you have no internet connection! You can't view/change any versions!");
             }
         }
 
@@ -114,6 +143,14 @@ namespace MCM
             string json = Encoding.ASCII.GetString(data);
             VersionManager.LoadJson(json);
             App.InvokeAction(delegate
+            {
+                foreach (TinyMinecraftVersion item in VersionManager.versions)
+                {
+                    item.CreateControl();
+                    App.mainWindow.lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
+                }
+            });
+            /*App.InvokeAction(delegate
             {
                 foreach (TinyMinecraftVersion item in VersionManager.versions)
                 {
@@ -137,9 +174,9 @@ namespace MCM
                         });
                     };
                     App.mainWindow.lstBackup.Items.Add(lbl);
-                    App.mainWindow.lstBackup.Items.Filter = (p) => { return ((p as Label).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
+                    App.mainWindow.lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.release; };
                 }
-            });
+            });*/
             InstanceManager.LoadInstances();
         }
 
@@ -231,6 +268,11 @@ namespace MCM
         {
             try
             {
+                if (instance.Version == null)
+                {
+                    App.InvokeAction(delegate { MCM.Utils.MessageBox.ShowDialog("Error", "Version not set in instance!"); });
+                    return;
+                }
                 App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = false; });
                 App.Log("Waiting for downloads to finish...");
                 DownloadManager.WaitForAllMCRequire();
@@ -268,12 +310,18 @@ namespace MCM
                 };
                 p.ErrorDataReceived += (s, e) =>
                 {
-                    App.LogMinecraft("Error > " + e.Data);
+                    // No prefix since everything minecraft outputs seems to be an error
+                    App.LogMinecraft(e.Data);
                 };
                 p.Exited += (s, e) =>
                 {
                     App.InvokeAction(delegate { App.mainWindow.btn_startMinecraft.IsEnabled = true; });
+                    Thread.Sleep(200);
+                    Syncronizer.SyncOptions(instance);
+                    Syncronizer.SyncServerlist(instance);
+                    PluginManager.onCloseMinecraft(instance,user);
                 };
+                PluginManager.onStartMinecraft(instance, user);
                 p.Start();
                 p.BeginErrorReadLine();
                 p.BeginOutputReadLine();

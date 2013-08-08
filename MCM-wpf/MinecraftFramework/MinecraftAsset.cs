@@ -69,7 +69,7 @@ namespace MCM.MinecraftFramework
             {
                 if (!File.Exists(Path))
                     return true;
-                else if (Crypto.GenerateMd5Hash(File.ReadAllBytes(Path)) != this.md5)
+                else if (Crypto.GenerateMd5Hash(File.ReadAllBytes(Path)).ToLower() != this.md5.ToLower())
                     return true;
                 else
                     return false; 

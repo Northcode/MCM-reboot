@@ -34,10 +34,21 @@ namespace MCM.Settings
             edit.SettingSave.Click += (s, ea) =>
             {
                 setting.data = edit.SettingValue.Text;
+                PluginAPI.PluginManager.onSettingChange(setting);
                 edit.Close();
                 this.SettingValue.Content = setting.data.ToString();
             };
             edit.Show();
+        }
+
+        private void SettingValueBool_Checked(object sender, RoutedEventArgs e)
+        {
+            setting.data = true;
+        }
+
+        private void SettingValueBool_Unchecked(object sender, RoutedEventArgs e)
+        {
+            setting.data = false;
         }
     }
 }

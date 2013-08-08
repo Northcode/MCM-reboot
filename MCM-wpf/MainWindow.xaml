@@ -28,9 +28,10 @@
                         <ColumnDefinition Width="253"/>
                     </Grid.ColumnDefinitions>
                     <TreeView x:Name="treeView_instances" BorderThickness="0" Margin="0,0,0,40" SelectedItemChanged="treeView_instances_SelectedItemChanged" />
-                    <ListBox x:Name="listBox_instanceInfo" Grid.Column="1"/>
+                    <ListBox x:Name="listBox_instanceInfo" x:FieldModifier="public" Grid.Column="1"/>
                     <Button Content="Add instance" HorizontalAlignment="Left" Margin="0,0,0,10" Width="121" Height="25" VerticalAlignment="Bottom" Click="Button_aInstance"/>
                     <Button Content="Remove Instance" HorizontalAlignment="Left" Margin="126,0,0,10" VerticalAlignment="Bottom" Width="121" Click="Button_rInstance"/>
+                    <Button Content="Rename Instance" HorizontalAlignment="Left" Margin="252,0,0,10" VerticalAlignment="Bottom" Width="121" Click="Button_rnInstance"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Versions">
@@ -41,13 +42,15 @@
                     </Grid.RowDefinitions>
                     <Button Content="Releases" Grid.Row="0" Margin="0,0,0,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_1"/>
                     <Button Content="Snapshots" Grid.Row="0" Margin="105,0,0,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_2"/>
-                    <Button Content="All" Grid.Row="0" Width="100" HorizontalAlignment="Left" Click="Button_Click" Margin="210,0,0,0"/>
-                    <ListBox x:Name="lstBackup" Margin="0" Grid.Row="1"/>
+                    <Button Content="Beta-Versions" Grid.Row="0" Margin="210,0,0,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_3"/>
+                    <Button Content="Alpha-Versions" Grid.Row="0" Margin="315,0,0,0" Width="100" HorizontalAlignment="Left" Click="Button_Click_4"/>
+                    <Button Content="All" Grid.Row="0" Width="100" HorizontalAlignment="Left" Click="Button_Click" Margin="420,0,0,0"/>
+                    <ListBox x:Name="lstBackup" Margin="0,5,0,0" Grid.Row="1"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="News Feed">
+            <TabItem Header="News">
                 <TabControl Margin="0">
-                    <TabItem Header="Launcher Feed">
+                    <TabItem Header="Minecraft">
                         <Grid Margin="0">
                             <WebBrowser x:Name="webBrowser_launcherFeed" Navigating="webBrowser_Navigating" Margin="0"/>
                         </Grid>
@@ -89,7 +92,7 @@
                         <TabItem Header="Minecraft">
                             <TextBox x:Name="mcLog" x:FieldModifier="public" FontFamily="Consolas" FontSize="13" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" local:TextBoxBehaviour.ScrollOnTextChanged="True"/>
                         </TabItem>
-                        <TabItem Header="Download Manager">
+                        <TabItem Header="Downloads">
                             <ListBox x:Name="listBox_downloadManager" x:FieldModifier="public">
 
                             </ListBox>
