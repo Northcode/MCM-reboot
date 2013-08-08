@@ -42,7 +42,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -110,6 +110,7 @@
     <Compile Include="MinecraftFramework\MinecraftVersionControl.xaml.cs">
       <DependentUpon>MinecraftVersionControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PluginAPI\IBackup.cs" />
     <Compile Include="PluginAPI\IPlugin.cs" />
     <Compile Include="PluginAPI\PluginManager.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -190,8 +191,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BackupFramework\MCVersion.cs" />
-    <Compile Include="BackupFramework\Mod.cs" />
-    <Compile Include="BackupFramework\ModPack.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

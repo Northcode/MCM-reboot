@@ -64,6 +64,14 @@ namespace MCM.MinecraftFramework
             }
         }
 
+        public string BinaryPath
+        {
+            get
+            {
+                return LocalPath + "\\" + Key + ".jar";
+            }
+        }
+
         public override string ToString()
         {
             return "Key: " + this.Key + Environment.NewLine +
