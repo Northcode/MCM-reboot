@@ -29,7 +29,7 @@ namespace MCM.MinecraftFramework
             InitializeComponent();
             this.version = version;
             this.Tag = version;
-            this.label_verName.Content = version.Key;
+            this.label_verName.Content = version.Key + " - " + version.Type.ToString();
             Update();
 
             this.MouseDoubleClick += MinecraftVersionControl_MouseDoubleClick;
@@ -53,7 +53,7 @@ namespace MCM.MinecraftFramework
 
         public void Update()
         {
-            if (DownloadManager.hasInternet && !Directory.Exists(this.version.LocalPath))
+            if (DownloadManager.hasInternet && !File.Exists(this.version.BinaryPath))
             {
                 button_dl.IsEnabled = true;
                 label_status.Content = "not downloaded";
@@ -73,6 +73,7 @@ namespace MCM.MinecraftFramework
             {
                 Task.Factory.StartNew(delegate
                 {
+
                     Download dl = version.FullVersion.ScheduleJarDownload();
                     dl.Downloaded += delegate
                     {

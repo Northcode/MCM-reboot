@@ -53,13 +53,7 @@ namespace MCM.MinecraftFramework
             }
         }
 
-        public string BinaryPath
-        {
-            get
-            {
-                return LocalPath + "\\" + Key + ".jar";
-            }
-        }
+       
 
         public string GetStartArguments(string Username, string Password,string BinaryPath,string GameDataPath)
         {
@@ -110,8 +104,21 @@ namespace MCM.MinecraftFramework
                 JObject obj = JObject.Parse(json);
 
                 version.Key = (string)obj["id"];
-                version.Type = (ReleaseType)Enum.Parse(typeof(ReleaseType), (string)obj["type"]);
-                version.Arguments = (ProcessArguments)Enum.Parse(typeof(ProcessArguments), (string)obj["processArguments"]);
+                try
+                {
+                    version.Type = (ReleaseType)Enum.Parse(typeof(ReleaseType), (string)obj["type"]);
+                }
+                catch 
+                {
+                    version.Type = ReleaseType.unknown;
+                }
+                try
+                {
+                    version.Arguments = (ProcessArguments)Enum.Parse(typeof(ProcessArguments), (string)obj["processArguments"]);
+                }
+                catch {
+                    version.Arguments = ProcessArguments.legacy;
+                }
                 version.MinecraftArguments = (string)obj["minecraftArguments"];
                 version.minimumLauncherVersion = Convert.ToInt32((string)obj["minimumLauncherVersion"]);
                 version.mainClass = (string)obj["mainClass"];

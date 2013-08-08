@@ -17,12 +17,10 @@ namespace MCM.MinecraftFramework
         {
             if (!DownloadManager.hasInternet)
                 return;
-            DownloadPackage dlp = new DownloadPackage("Assets XML", true);
-            dlp.ScheduleDownload("Assets XML", MinecraftData.AssetsUrl);
+            Download dl = DownloadManager.ScheduleDownload("Assets XML", MinecraftData.AssetsUrl, true);
             string xml = "";
-            dlp.Downloaded += delegate
+            dl.Downloaded += (d) =>
             {
-                Download d = dlp.GetDownload("Assets XML");
                 xml = Encoding.ASCII.GetString(d.Data);
 
                 StringReader sr = new StringReader(xml);
@@ -73,6 +71,7 @@ namespace MCM.MinecraftFramework
 
         internal static void ScheduleAssetDownloads()
         {
+            bool need = false;
             DownloadPackage dlp = new DownloadPackage("Assets", true);
             List<MinecraftAsset> needDl = new List<MinecraftAsset>();
             assets.ForEach(a => {
@@ -81,8 +80,11 @@ namespace MCM.MinecraftFramework
                     needDl.Add(a);
                     Download dl = dlp.ScheduleDownload(a.Key, a.Url);
                     dl.Downloaded += AssetDownloaded;
+                    need = true;
                 }
             });
+            if(need)
+                DownloadManager.ScheduleDownload(dlp);
         }
 
         private static void AssetDownloaded(Download dl)
