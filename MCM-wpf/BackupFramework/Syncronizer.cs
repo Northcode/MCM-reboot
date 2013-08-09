@@ -11,30 +11,37 @@ namespace MCM.BackupFramework
     {
         public static void SyncOptions(Instance i)
         {
-            if (SettingsManager.GetSetting("Sync options").data as string == "true")
+            if ((bool)SettingsManager.GetSetting("Sync options").data)
             {
-                App.Log("Syncing options from " + i.Name);
-                string path = i.MinecraftDirPath + "\\options.txt";
-                foreach (Instance instance in InstanceManager.instances)
+                try
                 {
-                    if (instance != i)
+                    App.Log("Syncing options from " + i.Name);
+                    string path = i.MinecraftDirPath + "\\options.txt";
+                    foreach (Instance instance in InstanceManager.instances)
                     {
-                        App.Log("Options synced to: " + instance.Name);
-                        string opath = instance.MinecraftDirPath + "\\options.txt";
-                        File.Copy(path, opath,true);
-                        if(File.Exists(i.MinecraftDirPath + "\\optionsof.txt"))
+                        if (instance != i)
                         {
-                            File.Copy(i.MinecraftDirPath + "\\optionsof.txt",instance.MinecraftDirPath + "\\optionsof.txt",true);
+                            App.Log("Options synced to: " + instance.Name);
+                            string opath = instance.MinecraftDirPath + "\\options.txt";
+                            File.Copy(path, opath, true);
+                            if (File.Exists(i.MinecraftDirPath + "\\optionsof.txt"))
+                            {
+                                File.Copy(i.MinecraftDirPath + "\\optionsof.txt", instance.MinecraftDirPath + "\\optionsof.txt", true);
+                            }
                         }
                     }
+                    App.Log("Options synced!");
                 }
-                App.Log("Options synced!");
+                catch
+                {
+                    App.Log("Options could not be synced!");
+                }
             }
         }
 
         public static void SyncServerlist(Instance i)
         {
-            if (SettingsManager.GetSetting("Sync serverlists").data as string == "true")
+            if ((bool)SettingsManager.GetSetting("Sync serverlists").data)
             {
                 App.Log("Syncing serverlist from: " + i.Name);
                 string path = i.MinecraftDirPath + "\\servers.dat";

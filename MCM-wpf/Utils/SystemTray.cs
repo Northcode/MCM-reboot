@@ -56,5 +56,10 @@ namespace MCM.Utils
                 App.mainWindow.Focus();
             });
         }
+
+        public void destroy()
+        {
+            this.notifyIcon.Dispose();
+        }
     }
 }

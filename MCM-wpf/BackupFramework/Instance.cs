@@ -1,5 +1,6 @@
 ﻿using MCM.Data;
 using MCM.MinecraftFramework;
+using MCM.PluginAPI;
 using MCM.Utils;
 using Newtonsoft.Json.Linq;
 using System;
@@ -18,26 +19,17 @@ namespace MCM.BackupFramework
         public string Name { get; set; }
         public string Description { get; set; }
         public TinyMinecraftVersion Version { get; set; }
-        public ModPack mods { get; set; }
+
+        public List<object> metaData { get; set; }
 
         public string MinecraftDirPath { get { return this.Path + "\\minecraft"; } }
-        private string ResourcePackDir { get { return this.MinecraftDirPath + "\\resourcepacks"; } }
-        private string TexturePackDir { get { return this.MinecraftDirPath + "\\texturepacks"; } }
-        private string SavesDir { get { return this.MinecraftDirPath + "\\saves"; } }
-        private string MinecraftJarDir { get { return this.Path + "\\jar"; } }
+        public string ResourcePackDir { get { return this.MinecraftDirPath + "\\resourcepacks"; } }
+        public string TexturePackDir { get { return this.MinecraftDirPath + "\\texturepacks"; } }
+        public string SavesDir { get { return this.MinecraftDirPath + "\\saves"; } }
+        public string MinecraftJarDir { get { return this.Path + "\\jar"; } }
         public string MinecraftJarFilePath { get { return MinecraftJarDir + String.Format("\\{0}.jar", Version.Key); } }
 
         private bool changingVersion;
-
-        public enum InstanceItemType
-        {
-            Main,
-            MinecraftVersion,
-            ModPack,
-            ResourcePack,
-            TexturePack,
-            MinecraftSave
-        };
 
         public Instance(string Name)
         {
@@ -142,136 +134,87 @@ namespace MCM.BackupFramework
             mcVer.MouseUp += (s, e) =>
             {
                 Label tb = new Label();
-                tb.Content = (this.Version == null ? "no version" : this.Version.Key);
+                tb.Content = (this.Version == null ? "no version" : this.Version.Type.ToString() + " - " + this.Version.Key);
                 Button bt = new Button();
                 bt.Content = "Change version";
-                bt.Click += (s2, e2) =>
-                    {
-                        if (changingVersion)
-                        {
-                            MessageBox mb = new MessageBox("Warning", "The version is currently being changed/downloaded! Cannot change now!");
-                            mb.Show();
-                        }
-                        else
-                        {
-                            ChangeMCVersion cv = new ChangeMCVersion();
-                            if (cv.ShowDialog() == true)
-                            {
-                                this.changingVersion = true;
-                                TinyMinecraftVersion prevVer = this.Version;
-                                this.Version = cv.version;
-                                try
-                                {
-                                    if (!File.Exists(cv.version.FullVersion.BinaryPath))
-                                    {
-
-                                        Task t = new Task(delegate
-                                        {
-                                            Download dl = cv.version.FullVersion.ScheduleJarDownload();
-                                            PluginAPI.PluginManager.onVersionDownload(dl);
-                                            DownloadPackage dp = new DownloadPackage("Libraries", true);
-                                            dp.ShouldContinue = true;
-                                            cv.version.FullVersion.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(dp); } });
-                                            if (dp.getDownloads().Count > 0)
-                                                DownloadManager.ScheduleDownload(dp);
-
-                                            dl.WaitForComplete();
-                                            CopyJar();
-                                            App.InvokeAction(delegate
-                                            {
-                                                tb.Content = (this.Version == null ? "no version" : this.Version.Key);
-                                                App.mainWindow.UpdateInstances();
-                                            });
-                                            this.changingVersion = false;
-                                        });
-                                        t.Start();
-
-
-                                    }
-                                    else
-                                    {
-                                        CopyJar();
-                                        tb.Content = (this.Version == null ? "no version" : this.Version.Key);
-                                        App.mainWindow.UpdateInstances();
-                                        this.changingVersion = false;
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-
-                                    MCM.Utils.MessageBox.ShowDialog("Error", "The selected version could not be changed because: " + ex.Message);
-                                    this.Version = prevVer;
-                                    tb.Content = (this.Version == null ? "no version" : this.Version.Key);
-                                    App.mainWindow.UpdateInstances();
-                                    this.changingVersion = false;
-                                }
-                            }
-                        }
-                    };
+                bt.Click +=bt_Click;                
                 App.mainWindow.listBox_instanceInfo.Items.Clear();
                 App.mainWindow.listBox_instanceInfo.Items.Add(tb);
                 App.mainWindow.listBox_instanceInfo.Items.Add(bt);
             };
             node.Items.Add(mcVer);
 
-            /*
-            // Modpack
-            TreeViewItem modPack = new TreeViewItem();
-            modPack.Header = "Mods";
-            modPack.Tag = InstanceItemType.ModPack;
-            if (this.mods != null)
+            foreach (IBackup b in PluginManager.backups)
             {
-                foreach (Mod mod in this.mods.Mods)
-                {
-                    TreeViewItem thisMod = new TreeViewItem();
-                    thisMod.Header = mod.Name;
-                    thisMod.Tag = mod;
-                    modPack.Items.Add(thisMod);
-                }
+                node.Items.Add(b.treeItem(this));
             }
-            node.Items.Add(modPack);
-
-            // ResourcePacks
-            TreeViewItem resPack = new TreeViewItem();
-            resPack.Header = "Resource Packs";
-            resPack.Tag = InstanceItemType.ResourcePack;
-            foreach (ResourcePack pack in this.ResourcePacks)
-            {
-                TreeViewItem thisPack = new TreeViewItem();
-                thisPack.Header = pack.name;
-                thisPack.ToolTip = pack.packInfo.desc;
-                thisPack.Tag = pack;
-                resPack.Items.Add(thisPack);
-            }
-            node.Items.Add(resPack);
-
-            // Texturepacks
-            TreeViewItem texturePack = new TreeViewItem();
-            texturePack.Header = "Texture Packs";
-            texturePack.Tag = InstanceItemType.TexturePack;
-            foreach (string pack in this.texturePacks)
-            {
-                TreeViewItem thisPack = new TreeViewItem();
-                thisPack.Header = pack;
-                texturePack.Items.Add(thisPack);
-            }
-            node.Items.Add(texturePack);
-
-            // World Saves
-            TreeViewItem worldSave = new TreeViewItem();
-            worldSave.Header = "World Saves";
-            worldSave.Tag = InstanceItemType.MinecraftSave;
-            foreach (string save in this.Saves)
-            {
-                TreeViewItem thisSave = new TreeViewItem();
-                thisSave.Header = System.IO.Path.GetFileName(save);
-                thisSave.Tag = save;
-                worldSave.Items.Add(thisSave);
-            }
-            node.Items.Add(worldSave);
-            */
             node.ExpandSubtree();
             return node;
+        }
+
+        void bt_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (changingVersion)
+            {
+                MessageBox.ShowDialog("Warning", "The version is currently being changed/downloaded! Cannot change now!");
+            }
+            else
+            {
+                ChangeMCVersion cv = new ChangeMCVersion();
+                if (cv.ShowDialog() == true)
+                {
+                    this.changingVersion = true;
+                    TinyMinecraftVersion prevVer = this.Version;
+                    this.Version = cv.version;
+                    try
+                    {
+                        Task.Factory.StartNew(delegate
+                        {
+                            if (!File.Exists(cv.version.FullVersion.BinaryPath))
+                            {
+
+                                Download dl = cv.version.FullVersion.ScheduleJarDownload();
+                                PluginAPI.PluginManager.onVersionDownload(dl);
+                                DownloadPackage dp = new DownloadPackage("Libraries", true);
+                                dp.ShouldContinue = true;
+                                cv.version.FullVersion.Libraries.ForEach(l => { if (!File.Exists(l.Extractpath)) { l.ScheduleExtract(dp); } });
+                                if (dp.getDownloads().Count > 0)
+                                    DownloadManager.ScheduleDownload(dp);
+
+                                dl.WaitForComplete();
+                                CopyJar();
+                                App.InvokeAction(delegate
+                                {
+                                    (App.mainWindow.listBox_instanceInfo.Items[0] as Label).Content = (this.Version == null ? "no version" : this.Version.Key);
+                                    App.mainWindow.UpdateInstances();
+                                });
+                                this.changingVersion = false;
+
+                            }
+                            else
+                            {
+                                CopyJar();
+                                App.InvokeAction(delegate
+                                {
+                                    (App.mainWindow.listBox_instanceInfo.Items[0] as Label).Content = (this.Version == null ? "no version" : this.Version.Key);
+                                    App.mainWindow.UpdateInstances();
+                                });
+                                this.changingVersion = false;
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+
+                        MCM.Utils.MessageBox.ShowDialog("Error", "The selected version could not be changed because: " + ex.Message);
+                        this.Version = prevVer;
+                        (App.mainWindow.listBox_instanceInfo.Items[0] as Label).Content = (this.Version == null ? "no version" : this.Version.Key);
+                        App.mainWindow.UpdateInstances();
+                        this.changingVersion = false;
+                    }
+                }
+                PluginManager.onChangeVersion(this);
+            }
         }
 
         private string[] GetSubFilesAsStringArray(string path)
