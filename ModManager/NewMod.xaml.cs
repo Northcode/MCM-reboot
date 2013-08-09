@@ -39,9 +39,24 @@ namespace ModManager
 
         public void bt_browse_Click(object sender, EventArgs e)
         {
-            FolderSelectDialog fsd = new FolderSelectDialog();
-            fsd.ShowDialog();
-
+            if ((tabControl_modType.SelectedItem as TabItem).Tag.ToString() == "zip")
+            {
+                System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
+                dialog.Filter = "Zipped mod|*.zip";
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    tb_path.Text = dialog.FileName;
+                }
+            }
+            else
+            {
+                FolderSelectDialog fsd = new FolderSelectDialog();
+                fsd.ShowDialog();
+                if (fsd.ShowDialog())
+                {
+                    tb_path.Text = fsd.FileName;
+                }
+            }
             /*
             string path = null;
 
