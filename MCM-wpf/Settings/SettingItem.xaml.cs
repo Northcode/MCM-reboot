@@ -40,5 +40,15 @@ namespace MCM.Settings
             };
             edit.Show();
         }
+
+        private void SettingValueBool_Checked(object sender, RoutedEventArgs e)
+        {
+            setting.data = true;
+        }
+
+        private void SettingValueBool_Unchecked(object sender, RoutedEventArgs e)
+        {
+            setting.data = false;
+        }
     }
 }
