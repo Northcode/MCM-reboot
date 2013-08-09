@@ -39,6 +39,13 @@ namespace ModManager
             get { return "1.0.0"; }
         }
 
+        public List<UIElement> GetConfigElemets()
+        {
+            List<UIElement> elements = new List<UIElement>();
+
+            return elements;
+        }
+
         public string DataPath
         {
             get { return PathData.DataPath + "\\mods"; }
@@ -157,6 +164,12 @@ namespace ModManager
                 writer.WriteEnd();
             }
             return sb.ToString();
+        }
+
+
+        public List<UIElement> GetConfigControls()
+        {
+            throw new NotImplementedException();
         }
     }
 

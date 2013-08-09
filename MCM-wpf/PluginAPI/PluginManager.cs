@@ -47,27 +47,35 @@ namespace MCM.PluginAPI
 
         public static void LoadPlugin(string Dll)
         {
-            if (File.Exists(Dll))
+            try
             {
-                Assembly asm = Assembly.LoadFile(Dll);
-
-                Type iPlugin = typeof(IPlugin);
-                Type iBackup = typeof(IBackup);
-
-                foreach (Type type in asm.GetTypes())
+                if (File.Exists(Dll))
                 {
-                    if (iPlugin.IsAssignableFrom(type))
-                    {
-                        IPlugin plugin = Activator.CreateInstance(type) as IPlugin;
-                        plugins.Add(plugin);
+                    Assembly asm = Assembly.LoadFile(Dll);
 
-                    }
-                    if (iBackup.IsAssignableFrom(type))
+                    Type iPlugin = typeof(IPlugin);
+                    Type iBackup = typeof(IBackup);
+
+                    foreach (Type type in asm.GetTypes())
                     {
-                        IBackup backup = Activator.CreateInstance(type) as IBackup;
-                        backups.Add(backup);
+                        if (iPlugin.IsAssignableFrom(type))
+                        {
+                            IPlugin plugin = Activator.CreateInstance(type) as IPlugin;
+                            plugins.Add(plugin);
+
+                        }
+                        if (iBackup.IsAssignableFrom(type))
+                        {
+                            IBackup backup = Activator.CreateInstance(type) as IBackup;
+                            backups.Add(backup);
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                App.Log("Error while loading plugin: " + Path.GetFileNameWithoutExtension(Dll));
+                App.Log(e.Message);
             }
         }
 

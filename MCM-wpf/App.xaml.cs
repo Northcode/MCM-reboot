@@ -55,21 +55,7 @@ namespace MCM
         {
             DownloadManager.CheckForInternetConnection();
             PathData.InitDirectories();
-            string remoteVer = Updater.CheckForUpdate();
-            if (remoteVer != null)
-            {
-                if(MessageBoxResult.Yes == System.Windows.MessageBox.Show("Do you want to update?" + Environment.NewLine +
-                    "Current version: " + App.version + Environment.NewLine +
-                        "Remote version: " + remoteVer,
-                    "Update availible",MessageBoxButton.YesNo))
-                {
-                    Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
-                    udl.WaitForComplete();
-                    File.WriteAllBytes(PathData.UpdaterPath,udl.Data);
-                    Process.Start(PathData.UpdaterPath);
-                    Environment.Exit(0);
-                }
-            }
+            CheckForUpdates();
             NewsStorage.InitDirectories();
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
@@ -105,6 +91,31 @@ namespace MCM
             MinecraftUserData.saveUsers();
             SettingsManager.Save();
             AppendLogFile();
+        }
+
+        private static void CheckForUpdates()
+        {
+            Task.Factory.StartNew(delegate
+            {
+                string remoteVer = Updater.CheckForUpdate();
+                if (remoteVer != null)
+                {
+                    App.InvokeAction(delegate
+                    {
+                        if (MessageBoxResult.Yes == System.Windows.MessageBox.Show("Do you want to update?" + Environment.NewLine +
+                            "Current version: " + App.version + Environment.NewLine +
+                                "Remote version: " + remoteVer,
+                            "Update availible", MessageBoxButton.YesNo))
+                        {
+                            Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
+                            udl.WaitForComplete();
+                            File.WriteAllBytes(PathData.UpdaterPath, udl.Data);
+                            Process.Start(PathData.UpdaterPath);
+                            Environment.Exit(0);
+                        }
+                    });
+                }
+            });
         }
 
         private static void StartInternetCheckTimer()
@@ -283,7 +294,7 @@ namespace MCM
                 MinecraftUser user = null;
                 MinecraftData.AppdataPath = instance.Version.FullVersion.LocalPath;
                 App.InvokeAction(delegate {
-                    user = mainWindow.getSelectedUser();
+                    user = mainWindow.GetSelectedUser();
                 });
                 if (!File.Exists(instance.MinecraftJarFilePath))
                 {

@@ -22,6 +22,8 @@ using MCM.Utils;
 using MCM.MinecraftFramework;
 using MCM.Settings;
 using System.Diagnostics;
+using MCM.PluginAPI;
+using System.IO;
 
 namespace MCM
 {
@@ -34,11 +36,12 @@ namespace MCM
         {
             InitializeComponent();
 
-            updateStatus(null, null);
+            UpdateStatus(null, null);
             // News feed display
-            initializeNewsFeed();
-            updateUsersList();
+            InitializeNewsFeed();
+            UpdateUsersList();
             UpdateInstances();
+            UpdatePluginList();
         }
 
         /// <summary>
@@ -66,7 +69,6 @@ namespace MCM
         /// <summary>
         /// Make the webbrowser navigate to the link but in the default webbrowser.
         /// <value name="webBrowser_willNavigate">The count of the webbrowsers. Update this if you add/remove a webbrowser with this void with this event handler</value>
-        /// <param name="sender">The webbrowser that fired the event</param>
         /// </summary>
         private static int webBrowser_willNavigate = 0;
         private void webBrowser_Navigating(object sender, NavigatingCancelEventArgs e)
@@ -90,8 +92,6 @@ namespace MCM
         /// <summary>
         /// Check if the NewUser dialog has to be opened
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ComboBox_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             if (comboBox_users.SelectedIndex == -1)
@@ -101,13 +101,13 @@ namespace MCM
                 NewUser nu = new NewUser();
                 nu.ShowDialog();
                 comboBox_users.SelectedIndex = -1;
-                updateUsersList();
+                UpdateUsersList();
             }
         }
 
         #region UpdateStuff
 
-        private void updateUsersList()
+        private void UpdateUsersList()
         {
             comboBox_users.Items.Clear();
             ListBoxItem newItem = new ListBoxItem();
@@ -127,15 +127,15 @@ namespace MCM
             }
         }
 
-        private void updateStatus(object sender, MouseButtonEventArgs e)
+        private void UpdateStatus(object sender, MouseButtonEventArgs e)
         {
             label_loginStatus.Content = "Refreshing...";
             label_multiplayerStatus.Content = "Refreshing...";
-            Thread t = new Thread(updateStatuses);
+            Thread t = new Thread(UpdateStatuses);
             t.Start();
         }
 
-        private void updateStatuses()
+        private void UpdateStatuses()
         {
             DownloadManager.CheckForInternetConnection();
             App.mcStatus.refreshStatus();
@@ -162,15 +162,27 @@ namespace MCM
             }
         }
 
-        public void updateProgressBar(int i)
+        public void UpdateProgressBar(int i)
         {
             progressBar_dl.Value = i;
+        }
+
+        public void UpdatePluginList()
+        {
+            listBox_plugins.Items.Clear();
+
+            listBox_plugins.Items.Add(new ListBoxItem() { Content = "Manage Plugins", Tag = "mainItem" });
+
+            foreach (IPlugin plugin in PluginManager.plugins)
+            {
+                listBox_plugins.Items.Add(new ListBoxItem() { Content = plugin.Name, Tag = plugin });
+            }
         }
 
         #endregion
 
 
-        public MinecraftUser getSelectedUser()
+        public MinecraftUser GetSelectedUser()
         {
             if (comboBox_users.SelectedIndex == -1)
                 throw new Exception("No user selected");
@@ -184,7 +196,7 @@ namespace MCM
             throw new Exception("Specified user not found!");
         }
 
-        public Instance getSelectedInstance()
+        public Instance GetSelectedInstance()
         {
             TreeViewItem item = (treeView_instances.SelectedItem as TreeViewItem);
             while (item.Parent.GetType() != typeof(TreeView))
@@ -204,6 +216,7 @@ namespace MCM
 
         private void MetroWindow_Initialized(object sender, EventArgs e)
         {
+
         }
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -241,7 +254,6 @@ namespace MCM
             lstBackup.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == ReleaseType.old_alpha; };
         }
 
-
         private void Button_aInstance(object sender, RoutedEventArgs e)
         {
             StringPrompt sp = new StringPrompt("New Instance", "Name:");
@@ -265,7 +277,7 @@ namespace MCM
             ChangeMCVersion cmv = new ChangeMCVersion();
             if (cmv.ShowDialog() == true)
             {
-                Instance instance = getSelectedInstance();
+                Instance instance = GetSelectedInstance();
                 for (int i = 0; i < InstanceManager.instances.Count; i++)
                 {
                     if (InstanceManager.instances[i] == instance)
@@ -282,7 +294,7 @@ namespace MCM
 
         private void Button_rInstance(object sender, RoutedEventArgs e)
         {
-            InstanceManager.DeleteInstance(getSelectedInstance());
+            InstanceManager.DeleteInstance(GetSelectedInstance());
             UpdateInstances();
         }
 
@@ -297,6 +309,46 @@ namespace MCM
             }
         }
 
+        private void listBox_plugins_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            grid_pluginData.Children.Clear();
+            object tag = ((sender as ListBox).SelectedItem as ListBoxItem).Tag;
+            if (tag.GetType() == typeof(string))
+            {
+                if (tag == "mainItem")
+                {
+                    ViewPluginManager();
+                }
+            }
+            else if (tag.GetType() == typeof(IPlugin))
+            {
+                IPlugin plugin = tag as IPlugin;
+                foreach(UIElement control in plugin.GetConfigElemets())
+                {
+                    grid_pluginData.Children.Add(control);
+                }
+            }
+        }
+
         #endregion
+
+        private void ViewPluginManager()
+        {
+            Button btn_installPlugin = new Button() { Content = "Install Plugin", Height = 25, VerticalAlignment = System.Windows.VerticalAlignment.Top };
+            btn_installPlugin.Click += btn_installPlugin_Click;
+
+            grid_pluginData.Children.Add(btn_installPlugin);
+        }
+
+        void btn_installPlugin_Click(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+            ofd.Filter = "MCM Plugins |*.dll";
+            ofd.CheckFileExists = true;
+            if (System.Windows.Forms.DialogResult.OK == ofd.ShowDialog())
+            {
+                File.Copy(ofd.FileName, PathData.PluginsPath, true);
+            }
+        }
     }
 }

@@ -59,6 +59,7 @@ namespace MCM.Utils
 
         public void destroy()
         {
+            this.notifyIcon.Visible = false;
             this.notifyIcon.Dispose();
         }
     }

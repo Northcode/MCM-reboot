@@ -110,7 +110,8 @@ namespace ModManager
         /// </summary>
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            NewMod nm = new NewMod();
+            nm.ShowDialog();
         }
     }
 }
