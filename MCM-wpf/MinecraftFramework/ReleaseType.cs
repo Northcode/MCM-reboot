@@ -9,14 +9,9 @@ namespace MCM.MinecraftFramework
     {
         release,
         snapshot,
-<<<<<<< HEAD
-        modified,
-        old_beta
-=======
         old_beta,
         old_alpha,
         modified,
         unknown
->>>>>>> dev-Jens
     }
 }
