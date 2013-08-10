@@ -107,11 +107,14 @@ namespace MCM
                                 "Remote version: " + remoteVer,
                             "Update availible", MessageBoxButton.YesNo))
                         {
-                            Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
-                            udl.WaitForComplete();
-                            File.WriteAllBytes(PathData.UpdaterPath, udl.Data);
-                            Process.Start(PathData.UpdaterPath);
-                            Environment.Exit(0);
+                            Task.Factory.StartNew(delegate
+                            {
+                                Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
+                                udl.WaitForComplete();
+                                File.WriteAllBytes(PathData.UpdaterPath, udl.Data);
+                                Process.Start(PathData.UpdaterPath);
+                                Environment.Exit(0);
+                            });
                         }
                     });
                 }

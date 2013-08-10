@@ -34,7 +34,7 @@ namespace ModManager
 
         public void tabControl_modType_selectionChanged(object sender, EventArgs e)
         {
-
+            tb_path.Text = "";
         }
 
         public void bt_browse_Click(object sender, EventArgs e)

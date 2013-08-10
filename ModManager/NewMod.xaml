@@ -27,7 +27,7 @@
         <Label Content="Name" VerticalAlignment="Top" Margin="0,72,0,0" Height="26"/>
         <TextBox x:Name="tb_name" Grid.Column="1" Height="23" Margin="0,72,99,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <Label Content="Minecraft Version" VerticalAlignment="Top" Margin="0,103,0,0" Height="26"/>
-        <ComboBox x:Name="cb_mcverType" Grid.Column="1" HorizontalAlignment="Left" Margin="0,103,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox_vType_selectionChanged">
+        <ComboBox x:Name="cb_mcverType" Grid.Column="1" SelectedIndex="0" HorizontalAlignment="Left" Margin="0,103,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="comboBox_vType_selectionChanged">
             <ComboBoxItem Content="Release"/>
             <ComboBoxItem Content="Snapshot"/>
             <ComboBoxItem Content="Beta"/>
