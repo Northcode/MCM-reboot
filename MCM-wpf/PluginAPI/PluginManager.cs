@@ -26,6 +26,7 @@ namespace MCM.PluginAPI
         public delegate void PluginEvent_Setting(Setting setting);
         public delegate void PluginEvent_Plugin(IPlugin plugin, params object[] parameters);
 
+        public static PluginEvent onMinecraftVersionsDownload = dummy;
         public static PluginEvent_Minecraft onStartMinecraft = dummyA;
         public static PluginEvent_Minecraft onCloseMinecraft = dummyA;
         public static PluginEvent_Instance onCreateInstance = dummyB;

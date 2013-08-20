@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MCM.Utils;
+using MCM.MinecraftFramework;
 
 namespace ModManager
 {
@@ -25,10 +26,47 @@ namespace ModManager
         public NewMod()
         {
             InitializeComponent();
+            AddItems();
+            //comboBox_vType_selectionChanged(null, null);
+        }
+
+        private void AddItems()
+        {
+            foreach (TinyMinecraftVersion ver in VersionManager.versions)
+            {
+                comboBox_mcver.Items.Add(new ComboBoxItem()
+                {
+                    Content = ver.Key,
+                    Tag = ver
+                });
+            }
         }
 
         public void comboBox_vType_selectionChanged(object sender, EventArgs e)
         {
+            ReleaseType type = ReleaseType.unknown;
+            string value = ((comboBox_vType.SelectedItem as ComboBoxItem).Content.ToString());
+            switch (value)
+            {
+                case "Release":
+                    type = ReleaseType.release;
+                    break;
+                case "Snapshot":
+                    type = ReleaseType.snapshot;
+                    break;
+                case "Beta":
+                    type = ReleaseType.old_beta;
+                    break;
+                case "Alpha":
+                    type = ReleaseType.old_alpha;
+                    break;
+                case "All":
+                    comboBox_mcver.Items.Filter = null;
+                    return;
+            }
+
+            comboBox_mcver.Items.Filter = (p) => { return ((p as Control).Tag as TinyMinecraftVersion).Type == type; };
+
 
         }
 
@@ -70,6 +108,44 @@ namespace ModManager
                     path = dialog.FileName;
             }
             */
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (tb_path.Text != "" && tb_name.Text != "" && comboBox_mcver.SelectedIndex != -1)
+            {
+                Mod mod = new Mod();
+                switch (tabControl_modType.SelectedIndex)
+                {
+                    case 0:
+                        mod.type = Mod.ModType.ZipMod;
+                        break;
+                    case 1:
+                        mod.type = Mod.ModType.DirMod;
+                        break;
+                    case 2:
+                        mod.type = Mod.ModType.JarMod;
+                        break;
+                }
+                mod.name = tb_name.Text;
+                mod.level = Mod.ModLevel.mod;
+                mod.version = (comboBox_mcver.SelectedItem as ComboBoxItem).Tag as TinyMinecraftVersion;
+
+                string target;
+                if (mod.type == Mod.ModType.DirMod)
+                {
+                    target = Main.DataPath + "\\" + new System.IO.DirectoryInfo(tb_path.Text).Name;
+                    MCM.Utils.CopyDirectory.Copy(tb_path.Text, target);
+                }
+                else
+                {
+                    target = Main.DataPath + "\\" + System.IO.Path.GetFileName(tb_path.Text);
+                    System.IO.File.Copy(tb_path.Text, target);
+                }
+                mod.path = target;
+                Main.BackuppedMods.Add(mod);
+                this.Close();
+            }
         }
     }
 }
