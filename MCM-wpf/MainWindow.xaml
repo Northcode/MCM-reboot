@@ -32,7 +32,9 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="253"/>
                     </Grid.ColumnDefinitions>
-                    <TreeView x:Name="treeView_instances" BorderThickness="0" Margin="0,0,0,40" SelectedItemChanged="treeView_instances_SelectedItemChanged" />
+                    <TreeView x:Name="treeView_instances" BorderThickness="0" Margin="0,0,0,40" SelectedItemChanged="treeView_instances_SelectedItemChanged" >
+                        <TreeViewItem Header="Loading..."/>
+                    </TreeView>
                     <ListBox x:Name="listBox_instanceInfo" x:FieldModifier="public" Grid.Column="1"/>
                     <Button Content="Add instance" HorizontalAlignment="Left" Margin="0,0,0,10" Width="121" Height="25" VerticalAlignment="Bottom" Click="Button_aInstance"/>
                     <Button Content="Remove Instance" HorizontalAlignment="Left" Margin="126,0,0,10" VerticalAlignment="Bottom" Width="121" Click="Button_rInstance"/>

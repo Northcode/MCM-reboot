@@ -17,7 +17,7 @@
             <Directory Id="ProgramFilesFolder">
                 <Directory Id="APPLICATIONROOTDIRECTORY" Name="MC Manager">
                     <Component Id="MainEXE" Guid="853A8B7C-14B5-4048-BDAF-ED6A21372049">
-                        <File Id="MCManager.exe" Source="..\MCM-wpf\bin\Debug\MC Manager.exe" KeyPath="yes">
+                        <File Id="MCManager.exe" Source="..\MCM-wpf\bin\Release\MC Manager.exe" KeyPath="yes">
                             <Shortcut Id="desktopShortcut" Directory="DesktopFolder" Name="MC Manager" WorkingDirectory="INSTALLDIR" Advertise="yes" Icon="DesktopIcon.exe" IconIndex="0" />
                         </File>
                     </Component>

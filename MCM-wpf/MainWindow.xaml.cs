@@ -43,7 +43,6 @@ namespace MCM
             // News feed display
             InitializeNewsFeed();
             UpdateUsersList();
-            UpdateInstances();
             UpdatePluginList();
         }
 
