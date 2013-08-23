@@ -59,9 +59,10 @@ namespace MCM
             NewsStorage.InitDirectories();
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
+            ScheduleMinecraftVersionJsonDownload();
+            MinecraftAssetManager.LoadAssets();
             PluginManager.LoadPlugins();
             PluginManager.EnablePlugins();
-            Task.Factory.StartNew(delegate { PluginManager.EnablePlugins(); });
 
             SettingsManager.AddDefault("javapath", "java", "java.exe",Setting._Type._string);
             SettingsManager.AddDefault("MinecraftRAM", "java", "2G", Setting._Type._string);
@@ -71,22 +72,16 @@ namespace MCM
             App app = new App();
             App.sysTray = new SystemTray();
 
+            App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':', '-') + ".log");
+
             mainWindow = new MainWindow();
 
             SettingsManager.LoadList();
 
-            ScheduleMinecraftVersionJsonDownload();
-
-            MinecraftAssetManager.LoadAssets();
-
-            App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':', '-') + ".log");
-            App.Log(String.Format("====== Starting MC Manager version {0} ====== ({1})", App.version, DateTime.Now.ToString("s")));
-            App.Log("Java version: " + GetJavaVersionInformation());
-
             app.Run(mainWindow);
 
             App.sysTray.destroy();
-            Task.Factory.StartNew(delegate { PluginManager.DisablePlugins(); });
+            PluginManager.DisablePlugins();
             InstanceManager.SaveInstances();
             MinecraftUserData.saveUsers();
             SettingsManager.Save();
@@ -140,11 +135,13 @@ namespace MCM
                 {
                     File.WriteAllBytes(minecraftJsonFilePath, d.Data);
                     LoadMinecraftVersionJson(d.Data);
+                    PluginManager.onMinecraftVersionsDownload();
                 };
             }
             else if (File.Exists(minecraftJsonFilePath))
             {
                 LoadMinecraftVersionJson(File.ReadAllBytes(minecraftJsonFilePath));
+                PluginManager.onMinecraftVersionsDownload();
             }
             else
             {

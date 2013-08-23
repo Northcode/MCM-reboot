@@ -55,9 +55,9 @@ namespace ModManager
                     break;
                 case "dir":
                     foreach (Mod mod in mods)
-                        if (mod.type == Mod.ModType.ZipMod) { addItem(mod,false); }
+                        if (mod.type == Mod.ModType.DirMod) { addItem(mod,false); }
                     foreach (Mod mod in Main.BackuppedMods)
-                        if (mod.type == Mod.ModType.ZipMod) { addItem(mod, true); }
+                        if (mod.type == Mod.ModType.DirMod) { addItem(mod, true); }
                     break;
             }
         }
@@ -78,8 +78,11 @@ namespace ModManager
         /// </summary>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Mod.DeleteMod((listBox_instance.SelectedItem as ListBoxItem).Tag as Mod, instance);
-            UpdateList();
+            if (listBox_instance.SelectedItem != null)
+            {
+                Mod.DeleteMod((listBox_instance.SelectedItem as ListBoxItem).Tag as Mod, instance);
+                UpdateList();
+            }
         }
 
         /// <summary>
@@ -87,8 +90,11 @@ namespace ModManager
         /// </summary>
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Mod.InstallMod(((sender as ListBoxItem).Tag as Mod), instance);
-            UpdateList();
+            if (listBox_backup.SelectedItem != null)
+            {
+                Mod.InstallMod((listBox_backup.SelectedItem as ListBoxItem).Tag as Mod, instance);
+                UpdateList();
+            }
         }
 
         /// <summary>
@@ -96,7 +102,7 @@ namespace ModManager
         /// </summary>
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Mod mod = ((sender as ListBoxItem).Tag as Mod);
+            Mod mod = ((listBox_backup.SelectedItem as ListBoxItem).Tag as Mod);
             Main.BackuppedMods.Remove(mod);
             if (File.Exists(mod.path))
                 File.Delete(mod.path);
@@ -112,6 +118,12 @@ namespace ModManager
         {
             NewMod nm = new NewMod();
             nm.ShowDialog();
+            UpdateList();
+        }
+
+        private void tabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateList();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MCM.BackupFramework;
+﻿using MCM;
+using MCM.BackupFramework;
 using MCM.Data;
 using MCM.MinecraftFramework;
 using MCM.PluginAPI;
@@ -25,7 +26,7 @@ namespace ModManager
         public void Enable()
         {
             PluginManager.onCreateInstance += onCreateInstance;
-            loadMods();
+            PluginManager.onMinecraftVersionsDownload += loadMods;
         }
 
         public string Name
@@ -46,12 +47,12 @@ namespace ModManager
             return elements;
         }
 
-        public string DataPath
+        public static string DataPath
         {
             get { return PathData.DataPath + "\\mods"; }
         }
 
-        public string ModsJson
+        public static string ModsJson
         {
             get { return DataPath + "\\mods.json"; }
         }
@@ -76,18 +77,32 @@ namespace ModManager
             }
             return mods;
         }
-
-        private void loadMods()
+        public static void AddModToInstance(Instance i, Mod mod)
         {
+            GetModList(i).Add(mod);
+        }
+
+
+        private void loadMods(params object[] parameters)
+        {
+            BackuppedMods = new List<Mod>();
             if (File.Exists(ModsJson))
-                BackuppedMods = JsonToMods(ModsJson);
-            else
-                BackuppedMods = new List<Mod>();
+            {
+                foreach (Mod mod in JsonToMods(ModsJson))
+                {
+                    if(File.Exists(mod.path))
+                        BackuppedMods.Add(mod);
+                }
+            }
 
             foreach (Instance i in InstanceManager.instances)
             {
                 i.metaData.Add(JsonToMods(GetModJsonPath(i)));
             }
+            App.InvokeAction(delegate
+            {
+                App.mainWindow.UpdateInstances();
+            });
         }
 
         private List<Mod> JsonToMods(string path)
@@ -119,6 +134,8 @@ namespace ModManager
 
         private void saveMods()
         {
+            if (BackuppedMods == null)
+                return;
             if (!Directory.Exists(DataPath))
                 Directory.CreateDirectory(DataPath);
             File.WriteAllText(ModsJson, ModsToJson(BackuppedMods));
@@ -199,9 +216,8 @@ namespace ModManager
             foreach (Mod mod in mods)
             {
                 TreeViewItem modItem = new TreeViewItem();
-                item.Header = mod.name;
-                item.Tag = mod;
-                item.Items.Add(item);
+                modItem.Header = mod.name;
+                modItem.Tag = mod;
 
                 ContextMenu cm = new ContextMenu();
                 MenuItem item_delete = new MenuItem();
@@ -214,7 +230,8 @@ namespace ModManager
                     MCM.App.InvokeAction(delegate { MCM.App.mainWindow.UpdateInstances(); });
                 };
                 cm.Items.Add(item_delete);
-                item.ContextMenu = cm;
+                modItem.ContextMenu = cm;
+                item.Items.Add(modItem);
             }
             return item;
         }
@@ -237,6 +254,7 @@ namespace ModManager
         {
             ModSelector ms = new ModSelector(((sender as Button).Tag as Instance));
             ms.ShowDialog();
+            App.mainWindow.UpdateInstances();
         }
     }
 }

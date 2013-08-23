@@ -25,6 +25,9 @@ namespace ModManager
             coremod
         }
 
+        public Mod()
+        { }
+
         public Mod(ModType type, ModLevel level, string name, string path, TinyMinecraftVersion version)
         {
             this.type = type;
@@ -43,19 +46,28 @@ namespace ModManager
         public static void InstallZipMod(Mod mod, Instance i)
         {
             string targetDir = GetTargetDir(mod, i);
-
-            File.Copy(mod.path, targetDir);
+            try
+            {
+                File.Copy(mod.path, targetDir);
+            }
+            catch (IOException e)
+            {
+                if (!e.Message.Contains("already exists"))
+                    throw e;
+            }
+            Main.AddModToInstance(i, mod);
         }
 
         public static void DeleteMod(Mod mod, Instance i)
         {
             string targetDir = GetTargetDir(mod, i);
             if (mod.type == ModType.ZipMod)
-                File.Delete(targetDir + "\\" + Path.GetFileName(mod.path));
+                File.Delete(targetDir);
             else if (mod.type == ModType.DirMod)
-                Directory.Delete(targetDir + "\\" + Path.GetFileName(mod.path), true);
+                Directory.Delete(targetDir, true);
             else
                 throw new Exception("Cannot delete jarmod");
+            Main.GetModList(i).Remove(mod);
         }
 
         private static string GetTargetDir(Mod mod, Instance i)
@@ -67,6 +79,8 @@ namespace ModManager
                 targetDir = Main.GetCoreModsPath(i);
             else
                 throw new Exception("Dafuq? this isn't possible");
+
+            targetDir = targetDir + "\\" + Path.GetFileName(mod.path);
             return targetDir;
         }
 
@@ -116,6 +130,7 @@ namespace ModManager
                     writer.Write(File.ReadAllBytes(filePath));
                 }
             }
+            Main.AddModToInstance(i, mod);
         }
     }
 }

@@ -17,12 +17,12 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="Auto" x:Name="tabControl">
-            <TabItem Header="Zip-Mods">
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Top" Width="Auto" x:Name="tabControl" SelectionChanged="tabControl_SelectionChanged">
+            <TabItem Header="Zip-Mods" Tag="zip">
             </TabItem>
-            <TabItem Header="Dir-Mods">
+            <TabItem Header="Dir-Mods" Tag="dir">
             </TabItem>
-            <TabItem Header="Jar-Mods">
+            <TabItem Header="Jar-Mods" Tag="jar">
             </TabItem>
         </TabControl>
         <Grid Margin="0,53,0,0">

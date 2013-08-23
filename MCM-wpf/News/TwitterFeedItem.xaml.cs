@@ -1,9 +1,7 @@
-﻿using MahApps.Metro.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,6 +22,16 @@ namespace MCM.News
         public TwitterFeedItem()
         {
             InitializeComponent();
+        }
+
+        private void UpdateSize(object sender, NavigationEventArgs e)
+        {
+            mshtml.HTMLDocument htmlDoc = webBrowser.Document as mshtml.HTMLDocument;
+            if (htmlDoc != null && htmlDoc.body != null)
+            {
+                mshtml.IHTMLElement2 body = (mshtml.IHTMLElement2)htmlDoc.body;
+                this.Height = body.scrollHeight + 51;
+            }
         }
     }
 }

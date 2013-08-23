@@ -36,6 +36,9 @@ namespace MCM
         {
             InitializeComponent();
 
+            App.Log(String.Format("====== Starting MC Manager version {0} ====== ({1})", App.version, DateTime.Now.ToString("s")));
+            App.Log("Java version: " + App.GetJavaVersionInformation());
+
             UpdateStatus(null, null);
             // News feed display
             InitializeNewsFeed();
@@ -47,8 +50,6 @@ namespace MCM
         /// <summary>
         /// Start Minecraft
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         public void StartMinecraftButton(object sender, RoutedEventArgs e)
         {
             if (comboBox_instances.SelectedItem != null)

@@ -5,6 +5,7 @@ using MCM.Utils;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,7 @@ namespace MCM.BackupFramework
         public Instance(string Name)
         {
             this.Name = Name;
+            this.metaData = new List<object>();
             if (!Directory.Exists(this.Path))
                 this.Create();
             PluginAPI.PluginManager.onCreateInstance(this);
@@ -127,6 +129,16 @@ namespace MCM.BackupFramework
             TreeViewItem node = new TreeViewItem();
             node.Header = this.Name;
             node.Tag = this;
+            {
+                ContextMenu cm = new ContextMenu();
+                MenuItem item1 = new MenuItem() { Header = "Open instance in explorer" };
+                item1.Click += delegate
+                {
+                    Process.Start(this.Path);
+                };
+                cm.Items.Add(item1);
+                node.ContextMenu = cm;
+            }
 
             // Minecraft version
             TreeViewItem mcVer = new TreeViewItem();

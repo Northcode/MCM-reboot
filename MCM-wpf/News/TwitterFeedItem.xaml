@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-        Height="260.975" Width="463.359">
-    <Grid Background="#ECECEC">
-        
+             mc:Ignorable="d" Height="232" >
+    <Grid Background="White">
+        <Image x:Name="pic" HorizontalAlignment="Left" Height="60" Margin="10,10,0,0" VerticalAlignment="Top" Width="60" Source="/MC Manager;component/favicon.ico"/>
+        <Label x:Name="name" Content="Label" Margin="75,10,10,0" VerticalAlignment="Top"/>
+        <WebBrowser x:Name="webBrowser" Margin="75,41,10,10" LoadCompleted="UpdateSize"/>
     </Grid>
 </UserControl>
