@@ -23,7 +23,7 @@ namespace MCM
         public UIElement[] MojangFeedContentPlaceholder = null;
 
 
-        public void initializeNewsFeed()
+        public void InitializeNewsFeed()
         {
             //Set NewsBlocked to False for every Navigate call
             NewsBlocked = false;

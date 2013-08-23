@@ -26,7 +26,7 @@
         </Grid.ColumnDefinitions>
         <Label Content="Release" VerticalAlignment="Top" Height="26"/>
         <Label Content="Pre-Release" VerticalAlignment="Top" Grid.Column="1" Height="26"/>
-        <Label Content="Instances" VerticalAlignment="Top" Grid.Column="2" Height="26"/>
+        <Label Content="Alpha and Beta" VerticalAlignment="Top" Grid.Column="2" Height="26"/>
         <Button Content="OK" Grid.Column="2" Margin="0,5,10,2" HorizontalAlignment="Right" Width="66" IsDefault="True" Grid.Row="1" Click="Button_Click"/>
         <Button Content="Cancel" Grid.Column="2" Margin="0,5,81,2" HorizontalAlignment="Right" Width="65" IsCancel="True" Grid.Row="1"/>
         <ListBox x:Name="lb_release" Margin="0,26,0,0" Grid.RowSpan="2" SelectionChanged="lb_SelectionChanged"/>

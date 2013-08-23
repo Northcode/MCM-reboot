@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace MCM.PluginAPI
 {
@@ -13,5 +14,7 @@ namespace MCM.PluginAPI
         void Enable();
 
         void Disable();
+
+        List<UIElement> GetConfigElemets();
     }
 }

@@ -55,27 +55,14 @@ namespace MCM
         {
             DownloadManager.CheckForInternetConnection();
             PathData.InitDirectories();
-            string remoteVer = Updater.CheckForUpdate();
-            if (remoteVer != null)
-            {
-                if(MessageBoxResult.Yes == System.Windows.MessageBox.Show("Do you want to update?" + Environment.NewLine +
-                    "Current version: " + App.version + Environment.NewLine +
-                        "Remote version: " + remoteVer,
-                    "Update availible",MessageBoxButton.YesNo))
-                {
-                    Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
-                    udl.WaitForComplete();
-                    File.WriteAllBytes(PathData.UpdaterPath,udl.Data);
-                    Process.Start(PathData.UpdaterPath);
-                    Environment.Exit(0);
-                }
-            }
+            CheckForUpdates();
             NewsStorage.InitDirectories();
             SettingsManager.Load();
             MinecraftUserData.loadUsers();
+            ScheduleMinecraftVersionJsonDownload();
+            MinecraftAssetManager.LoadAssets();
             PluginManager.LoadPlugins();
             PluginManager.EnablePlugins();
-            Task.Factory.StartNew(delegate { PluginManager.EnablePlugins(); });
 
             SettingsManager.AddDefault("javapath", "java", "java.exe",Setting._Type._string);
             SettingsManager.AddDefault("MinecraftRAM", "java", "2G", Setting._Type._string);
@@ -85,26 +72,48 @@ namespace MCM
             App app = new App();
             App.sysTray = new SystemTray();
 
+            App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':', '-') + ".log");
+
             mainWindow = new MainWindow();
 
             SettingsManager.LoadList();
 
-            ScheduleMinecraftVersionJsonDownload();
-
-            MinecraftAssetManager.LoadAssets();
-
-            App.logFile = (PathData.LogPath + "\\" + DateTime.Now.ToString("s").Replace(':', '-') + ".log");
-            App.Log(String.Format("====== Starting MC Manager version {0} ====== ({1})", App.version, DateTime.Now.ToString("s")));
-            App.Log("Java version: " + GetJavaVersionInformation());
-
             app.Run(mainWindow);
 
             App.sysTray.destroy();
-            Task.Factory.StartNew(delegate { PluginManager.DisablePlugins(); });
+            PluginManager.DisablePlugins();
             InstanceManager.SaveInstances();
             MinecraftUserData.saveUsers();
             SettingsManager.Save();
             AppendLogFile();
+        }
+
+        private static void CheckForUpdates()
+        {
+            Task.Factory.StartNew(delegate
+            {
+                string remoteVer = Updater.CheckForUpdate();
+                if (remoteVer != null)
+                {
+                    App.InvokeAction(delegate
+                    {
+                        if (MessageBoxResult.Yes == System.Windows.MessageBox.Show("Do you want to update?" + Environment.NewLine +
+                            "Current version: " + App.version + Environment.NewLine +
+                                "Remote version: " + remoteVer,
+                            "Update availible", MessageBoxButton.YesNo))
+                        {
+                            Task.Factory.StartNew(delegate
+                            {
+                                Download udl = DownloadManager.ScheduleDownload("MCM updater", "https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true", false);
+                                udl.WaitForComplete();
+                                File.WriteAllBytes(PathData.UpdaterPath, udl.Data);
+                                Process.Start(PathData.UpdaterPath);
+                                Environment.Exit(0);
+                            });
+                        }
+                    });
+                }
+            });
         }
 
         private static void StartInternetCheckTimer()
@@ -126,11 +135,13 @@ namespace MCM
                 {
                     File.WriteAllBytes(minecraftJsonFilePath, d.Data);
                     LoadMinecraftVersionJson(d.Data);
+                    PluginManager.onMinecraftVersionsDownload();
                 };
             }
             else if (File.Exists(minecraftJsonFilePath))
             {
                 LoadMinecraftVersionJson(File.ReadAllBytes(minecraftJsonFilePath));
+                PluginManager.onMinecraftVersionsDownload();
             }
             else
             {
@@ -283,7 +294,7 @@ namespace MCM
                 MinecraftUser user = null;
                 MinecraftData.AppdataPath = instance.Version.FullVersion.LocalPath;
                 App.InvokeAction(delegate {
-                    user = mainWindow.getSelectedUser();
+                    user = mainWindow.GetSelectedUser();
                 });
                 if (!File.Exists(instance.MinecraftJarFilePath))
                 {

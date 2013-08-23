@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="*" Name="MC Manager" Language="1033" Version="1.0.4" Manufacturer="Northcode" UpgradeCode="ACF05BC3-CB56-4901-846F-94C422205226">
+    <Product Id="*" Name="MC Manager" Language="1033" Version="1.1.0" Manufacturer="Northcode" UpgradeCode="ACF05BC3-CB56-4901-846F-94C422205226">
         <Package InstallerVersion="200" Compressed="yes" />
         <Feature Id="ProductFeature" Title="MC Manager Default" Level="3" TypicalDefault="install">
             <ComponentRef Id="MainEXE" />
@@ -48,7 +48,7 @@
         <Icon Id="DesktopIcon.exe" SourceFile="..\Setup_Files\MC Manager.exe" />
         <UIRef Id="WixUI_Mondo" />
         <Upgrade Id="1BF1FCC4-158A-4D8A-B685-13ED8A5CEB01">
-            <UpgradeVersion Property="OLDERVERSIONBEINGUPGRADED" Maximum="1.0.4" Minimum="1.0.0">Bugfix</UpgradeVersion>
+            <UpgradeVersion Property="OLDERVERSIONBEINGUPGRADED" Maximum="1.1.0" Minimum="1.0.0">Bugfix</UpgradeVersion>
         </Upgrade>
         <InstallExecuteSequence>
             <RemoveExistingProducts After="InstallInitialize" />

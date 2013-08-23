@@ -123,9 +123,11 @@
     </Compile>
     <Compile Include="Utils\Crypto.cs" />
     <Compile Include="Utils\DownloadPackage.cs" />
+    <Compile Include="Utils\FolderSelectDialog.cs" />
     <Compile Include="Utils\MessageBox.xaml.cs">
       <DependentUpon>MessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Reflector.cs" />
     <Compile Include="Utils\StringPrompt.xaml.cs">
       <DependentUpon>StringPrompt.xaml</DependentUpon>
     </Compile>
