@@ -76,6 +76,7 @@ namespace MCM
 
             private void OnTextBoxOnTextChanged(object sender, TextChangedEventArgs args)
             {
+                TextBox.Select(TextBox.Text.Length,TextBox.Text.Length);
                 TextBox.ScrollToEnd();
             }
 
