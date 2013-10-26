@@ -315,7 +315,7 @@ namespace MCM
             object tag = ((sender as ListBox).SelectedItem as ListBoxItem).Tag;
             if (tag.GetType() == typeof(string))
             {
-                if ((string)tag == "mainItem")
+                if (tag == "mainItem")
                 {
                     ViewPluginManager();
                 }
