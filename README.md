@@ -3,7 +3,7 @@ MCM-reboot
 
 This Project is a remake of our projects MCM and MC-JarRestorer
 
-[Download] (https://github.com/Northcode/MCM-reboot/blob/dev/Setup/MC%20Manager.msi?raw=true)
+[Download] (https://github.com/Northcode/MCM-reboot/releases)
 
 Primary Goals
 -------------
