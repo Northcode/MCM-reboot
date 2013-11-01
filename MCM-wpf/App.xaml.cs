@@ -78,7 +78,15 @@ namespace MCM
 
             SettingsManager.LoadList();
 
-            app.Run(mainWindow);
+            try
+            {
+                app.Run(mainWindow);
+            }
+            catch (Exception e)
+            {
+                Error error = new Error(e);
+                error.ShowDialog();
+            }
 
             App.sysTray.destroy();
             PluginManager.DisablePlugins();

@@ -102,13 +102,16 @@ namespace ModManager
         /// </summary>
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Mod mod = ((listBox_backup.SelectedItem as ListBoxItem).Tag as Mod);
-            Main.BackuppedMods.Remove(mod);
-            if (File.Exists(mod.path))
-                File.Delete(mod.path);
-            if (Directory.Exists(mod.path))
-                Directory.Delete(mod.path,true);
-            UpdateList();
+            if (listBox_backup.SelectedIndex > 0)
+            {
+                Mod mod = ((listBox_backup.SelectedItem as ListBoxItem).Tag as Mod);
+                Main.BackuppedMods.Remove(mod);
+                if (File.Exists(mod.path))
+                    File.Delete(mod.path);
+                if (Directory.Exists(mod.path))
+                    Directory.Delete(mod.path, true);
+                UpdateList();
+            }
         }
 
         /// <summary>

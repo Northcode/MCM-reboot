@@ -89,7 +89,6 @@ namespace ModManager
             else
             {
                 FolderSelectDialog fsd = new FolderSelectDialog();
-                fsd.ShowDialog();
                 if (fsd.ShowDialog())
                 {
                     tb_path.Text = fsd.FileName;
@@ -132,7 +131,7 @@ namespace ModManager
                 mod.version = (comboBox_mcver.SelectedItem as ComboBoxItem).Tag as TinyMinecraftVersion;
 
                 string target;
-                if (mod.type == Mod.ModType.DirMod)
+                if (mod.type != Mod.ModType.ZipMod)
                 {
                     target = Main.DataPath + "\\" + new System.IO.DirectoryInfo(tb_path.Text).Name;
                     MCM.Utils.CopyDirectory.Copy(tb_path.Text, target);
@@ -146,6 +145,11 @@ namespace ModManager
                 Main.BackuppedMods.Add(mod);
                 this.Close();
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

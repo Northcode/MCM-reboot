@@ -90,7 +90,7 @@ namespace ModManager
             {
                 foreach (Mod mod in JsonToMods(ModsJson))
                 {
-                    if(File.Exists(mod.path))
+                    if(File.Exists(mod.path) || Directory.Exists(mod.path))
                         BackuppedMods.Add(mod);
                 }
             }

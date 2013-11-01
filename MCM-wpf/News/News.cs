@@ -71,7 +71,7 @@ namespace MCM
 
             MojangFeedDisplay feeddisp = new MojangFeedDisplay();
             feeddisp.Title_Text.Text = mitem.TitleText.Content as string;
-            feeddisp.web.NavigateToString("<style>body { font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif; };</style>" + data);
+            feeddisp.web.NavigateToString("<style>body { font-family: \"Helvetica Neue\", Helvetica, Arial, sans-serif; color: #6F6F6F};</style>" + data);
             feeddisp.BackButton.Click += CloseMojangFeedItem;
 
             grdMojangFeed.Children.Add(feeddisp);

@@ -104,6 +104,7 @@ namespace ModManager
         {
             string targetDir = GetTargetDir(mod, i);
             CopyDir.Copy(mod.path, targetDir);
+            Main.AddModToInstance(i, mod);
         }
         
         public static void InstallJarMod(Mod mod, Instance i)
@@ -120,7 +121,10 @@ namespace ModManager
             }
 
             while (markedRemove.Count > 0)
+            {
                 markedRemove[0].Delete();
+                markedRemove.Remove(markedRemove[0]);
+            }
 
             foreach (string filePath in Directory.GetFiles(mod.path, "*", SearchOption.AllDirectories))
             {
