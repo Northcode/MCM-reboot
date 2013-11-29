@@ -15,7 +15,7 @@ namespace MCM.MinecraftFramework
         public static string NativesPath { get { return BinPath + "\\natives"; } }
         public static string VersionsPath { get { return Data.PathData.DataPath + "\\versions"; } }
 
-        public const string AssetsUrl = "https://s3.amazonaws.com/Minecraft.Resources/";
+        public const string AssetsUrl = "https://s3.amazonaws.com/MinecraftResources/";
         public const string LibraryUrl = "https://s3.amazonaws.com/Minecraft.Download/libraries/";
         public const string VersionsUrl = "http://s3.amazonaws.com/Minecraft.Download/versions/versions.json";
 
